@@ -4,17 +4,17 @@
 exe
 C#
 .cs
-C:\Users\matan\source\repos\Wpf1 - Copy\obj\Debug\
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\
 TheUndergroundTower
 none
 false
 DEBUG;TRACE
-C:\Users\matan\source\repos\Wpf1 - Copy\App.xaml
+C:\Users\matan\Source\Repos\The-Underground-Tower\App.xaml
 5817991745
 
 212059418856
 131569487696
 MainWindow.xaml;Pages\CharacterCreationPage.xaml;Pages\MainMenuPage.xaml;Windows\MetaMenus\ErrorPrompt.xaml;Windows\MetaMenus\ExitDialog.xaml;
 
-False
+True
 
