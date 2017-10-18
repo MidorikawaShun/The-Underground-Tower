@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Classes>
+  <Class Name="Fighter">
+    <Public>
+      <Description></Description>
+      <StartingEquipment>
+        
+      </StartingEquipment>
+    </Public>
+    <Private>
+      <Caster>False</Caster>
+      <MeleeSkill></MeleeSkill>
+      <RangedSkill></RangedSkill>
+      <MagicSkill></MagicSkill>
+    </Private>
+  </Class>
+</Classes>

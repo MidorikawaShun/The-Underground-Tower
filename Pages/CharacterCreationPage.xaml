@@ -1,0 +1,30 @@
+﻿<Page x:Class="WpfApp1.Pages.CharacterCreationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp1.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="CharacterCreationPage">
+
+    <Canvas x:Name="CanvasCharacterCreation" >
+        <Image Source="/Assets/Images/Scroll-Background.png" x:Name="imgCharacterCreationBackground" Height="600" Width="800"/>
+        <Canvas x:Name="CanvasNameChoice"  Visibility="Hidden">
+            <Label x:Name="lblCharacterCreationNameChoice" Content="What would you like to be known as?" Canvas.Left="296" Canvas.Top="243"/>
+            <TextBox x:Name="txtCharacterCreationNameChoice" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="335" TextWrapping="Wrap" Text="" Canvas.Top="274" Height="31" Width="135"/>
+            <Button x:Name="btnCharacterCreationNameChoice" Content="Confirm" Canvas.Left="366" Canvas.Top="310" Width="75" Click="btnCharacterCreationNameChoice_Click"/>
+        </Canvas>
+        <Canvas x:Name="CanvasRaceChoice"  Visibility="Hidden">
+            <ScrollViewer Canvas.Left="132" Canvas.Top="124" Height="345" Width="557" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                <WrapPanel x:Name="RaceWrapPanel">
+                </WrapPanel>
+            </ScrollViewer>
+        </Canvas>
+        <Canvas x:Name="CanvasClassChoice">
+            <ScrollViewer Canvas.Left="132" Canvas.Top="124" Height="345" Width="557" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                <WrapPanel x:Name="ClassWrapPanel" />
+            </ScrollViewer>
+        </Canvas>
+    </Canvas>
+</Page>

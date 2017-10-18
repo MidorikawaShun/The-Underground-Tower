@@ -1,0 +1,15 @@
+﻿<Window x:Name="ErrorPromptWindow" x:Class="WpfApp1.Windows.MetaMenus.ErrorPrompt"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1.Windows.MetaMenus"
+        mc:Ignorable="d"
+        Title="ErrorPrompt" Height="117.195" Width="298.519"
+        SizeToContent="Width"
+        ResizeMode="NoResize" MinHeight="135" Closing="ErrorPromptWindow_Closing">
+    <StackPanel>
+        <TextBlock Height="48" Margin="15,10,15,0" TextWrapping="Wrap" Text="{Binding message}"/>
+        <Button x:Name="ErrorPromptExit" Height="23" Margin="100,5,100.333,0" Content="Exit" Click="ErrorPromptExit_Click"/>
+    </StackPanel>
+</Window>
