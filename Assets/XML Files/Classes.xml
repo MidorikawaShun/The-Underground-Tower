@@ -2,16 +2,32 @@
 <Classes>
   <Class Name="Fighter">
     <Public>
-      <Description></Description>
+      <Description>A melee fighter who loves to get up close and fight with a sword.</Description>
       <StartingEquipment>
-        
+        <Weapon Name="Rusty Sword">
+          <Description>An old-looking, rusty sword. It's almost useless, but the best you could bring with you.</Description>
+          <Speed>1</Speed>
+          <HitChance>1</HitChance>
+          <DamageRange>3-5</DamageRange>
+          <Two-Handed>False</Two-Handed>
+          <Weight>2</Weight>
+          <Value>1</Value>
+          <UnsellableItem>True</UnsellableItem>
+        </Weapon>
+        <Armor Name="Rusty Shield">
+          <Description>An old-looking, rusty shield. Hardly any better than not carrying it, at all.</Description>
+          <ArmorBonus>1</ArmorBonus>
+          <HeldInHand>True</HeldInHand>
+          <Weight>3</Weight>
+          <Value>1</Value>
+        </Armor>
       </StartingEquipment>
     </Public>
     <Private>
       <Caster>False</Caster>
-      <MeleeSkill></MeleeSkill>
-      <RangedSkill></RangedSkill>
-      <MagicSkill></MagicSkill>
+      <MeleeSkill>1.5</MeleeSkill>
+      <RangedSkill>0.7</RangedSkill>
+      <MagicSkill>0.3</MagicSkill>
     </Private>
   </Class>
 </Classes>

@@ -60,6 +60,5 @@ namespace WpfApp1.Creatures
             _speed = 100;
             GameStatus.CREATURES.Add(this);
         }
-
     }
 }

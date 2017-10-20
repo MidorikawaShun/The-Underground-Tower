@@ -64,10 +64,14 @@
     </ApplicationDefinition>
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="Creatures\Player.cs" />
+    <Compile Include="OtherClasses\Armor.cs" />
+    <Compile Include="OtherClasses\Class.cs" />
     <Compile Include="OtherClasses\Definitions.cs" />
     <Compile Include="OtherClasses\GameData.cs" />
     <Compile Include="OtherClasses\GameStatus.cs" />
+    <Compile Include="OtherClasses\Item.cs" />
     <Compile Include="OtherClasses\ObjectBase.cs" />
+    <Compile Include="OtherClasses\Weapon.cs" />
     <Compile Include="Pages\CharacterCreationPage.xaml.cs">
       <DependentUpon>CharacterCreationPage.xaml</DependentUpon>
     </Compile>
