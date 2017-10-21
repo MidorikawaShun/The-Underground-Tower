@@ -3,26 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheUndergroundTower.OtherClasses;
 
 namespace WpfApp1.Creatures
 {
-    public abstract class Creature
+    public abstract class Creature : GameObject
     {
         #region Properties
-
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        private string _description;
-        public string Description
-        {
-            get { return _description; }
-            set { _description = value; }
-        }
 
         /// <summary>
         /// The number representing how much damage the creature can take before being destroyed.

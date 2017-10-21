@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static WpfApp1.Utilities.ErrorLog;
 
 namespace WpfApp1.Windows.MetaMenus
 {
@@ -19,10 +20,15 @@ namespace WpfApp1.Windows.MetaMenus
     /// </summary>
     public partial class ErrorPrompt : Window
     {
-        public ErrorPrompt()
+
+        private EnumErrorSeverity Severity { get; set; }
+
+        public ErrorPrompt(EnumErrorSeverity severity)
         {
             InitializeComponent();
-            string errorMessage = "An error has occured: Detailed information can be found" + Environment.NewLine +  "in the Log file named \"Error Log - " + DateTime.Now.Date.ToString("dd/MM/yyyy") +"\"";
+            Severity = severity;
+            string errorMessage = $"A" + (severity == EnumErrorSeverity.Fatal ? " fatal" : "n") +
+                " error has occured: Detailed information can be found" + Environment.NewLine + "in the Log file named \"Error Log - " + DateTime.Now.Date.ToString("dd/MM/yyyy") + "\"";
             this.DataContext = new { message = errorMessage };
             SizeToContent = SizeToContent.WidthAndHeight;
             Window mainWindow = Application.Current.MainWindow;
@@ -33,12 +39,15 @@ namespace WpfApp1.Windows.MetaMenus
 
         private void ErrorPromptExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            if (Severity == EnumErrorSeverity.Fatal)
+                Application.Current.Shutdown();
+            else Close();
         }
 
         private void ErrorPromptWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Application.Current.Shutdown();
+            if (Severity == EnumErrorSeverity.Fatal)
+                Application.Current.Shutdown();
         }
     }
 }

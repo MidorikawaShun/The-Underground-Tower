@@ -55,9 +55,7 @@ namespace TheUndergroundTower.OtherClasses
                 }
                 catch (Exception ex)
                 {
-                    ErrorLog.Log(ex, $"DamangeRange of weapon {Name} not in correct format! Correct format is \"[smaller number]-[higher number]\"");
-                    ErrorPrompt prompt = new ErrorPrompt();
-                    prompt.ShowDialog();
+                    ErrorLog.Log(ex, $"DamageRange of weapon {Name} not in correct format! Correct format is \"[smaller number]-[higher number]\"");
                 }
             }
         }

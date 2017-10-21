@@ -86,3 +86,45 @@ System.NullReferenceException: Object reference not set to an instance of an obj
 System.NullReferenceException: Object reference not set to an instance of an object.
    at TheUndergroundTower.OtherClasses.Class..ctor(XmlNode newClass)
    at WpfApp1.Utilities.Xml.PopulateClasses()
+
+
+21-Oct-17 18:30:19 - An error has occured while trying to open the sound effect file in path: HELLO
+System.UriFormatException: Invalid URI: The format of the URI could not be determined.
+   at System.Uri.CreateThis(String uri, Boolean dontEscape, UriKind uriKind)
+   at System.Uri..ctor(String uriString)
+   at WpfApp1.Utilities.PlaySFX(EnumSfxFiles sfx) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 236
+
+
+21-Oct-17 18:31:05 - An error has occured while trying to open the sound effect file in path: ../../Assets/SFX/Nonstop.mp3
+System.UriFormatException: Invalid URI: The format of the URI could not be determined.
+   at System.Uri.CreateThis(String uri, Boolean dontEscape, UriKind uriKind)
+   at System.Uri..ctor(String uriString)
+   at WpfApp1.Utilities.PlaySFX(EnumSfxFiles sfx) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 236
+
+
+21-Oct-17 18:31:39 - An error has occured while trying to open the sound effect file in path: ../../Assets/SFX/Nonstop.mp3
+System.UriFormatException: Invalid URI: The format of the URI could not be determined.
+   at System.Uri.CreateThis(String uri, Boolean dontEscape, UriKind uriKind)
+   at System.Uri..ctor(String uriString)
+   at WpfApp1.Utilities.PlaySFX(EnumSfxFiles sfx) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 236
+
+
+21-Oct-17 18:33:00 - An error has occured while trying to open the sound effect file in path: ../../Assets/SFX/Nonstop.mp3
+System.UriFormatException: Invalid URI: The format of the URI could not be determined.
+   at System.Uri.CreateThis(String uri, Boolean dontEscape, UriKind uriKind)
+   at System.Uri..ctor(String uriString)
+   at WpfApp1.Utilities.PlaySFX(EnumSfxFiles sfx) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 235
+
+
+21-Oct-17 18:33:31 - An error has occured while trying to open the sound effect file in path: ../../Assets/SFX/Nonstop.mp3
+System.UriFormatException: Invalid URI: The format of the URI could not be determined.
+   at System.Uri.CreateThis(String uri, Boolean dontEscape, UriKind uriKind)
+   at System.Uri..ctor(String uriString)
+   at WpfApp1.Utilities.PlaySFX(EnumSfxFiles sfx) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 235
+
+
+21-Oct-17 18:33:59 - An error has occured while trying to open the sound effect file in path: ../../Assets/SFX/Nonstop.mp3
+System.UriFormatException: Invalid URI: The format of the URI could not be determined.
+   at System.Uri.CreateThis(String uri, Boolean dontEscape, UriKind uriKind)
+   at System.Uri..ctor(String uriString)
+   at WpfApp1.Utilities.PlaySFX(EnumSfxFiles sfx) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 235

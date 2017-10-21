@@ -73,11 +73,11 @@
     <Compile Include="OtherClasses\Item.cs" />
     <Compile Include="OtherClasses\ObjectBase.cs" />
     <Compile Include="OtherClasses\Weapon.cs" />
-    <Compile Include="Pages\CharacterCreationPage.xaml.cs">
-      <DependentUpon>CharacterCreationPage.xaml</DependentUpon>
+    <Compile Include="Pages\pageCharacterCreation.xaml.cs">
+      <DependentUpon>pageCharacterCreation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MainMenuPage.xaml.cs">
-      <DependentUpon>MainMenuPage.xaml</DependentUpon>
+    <Compile Include="Pages\pageMainMenu.xaml.cs">
+      <DependentUpon>pageMainMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="OtherClasses\Race.cs" />
     <Compile Include="OtherClasses\Utilities.cs" />
@@ -89,6 +89,9 @@
     </Compile>
     <Compile Include="Windows\MetaMenus\MessagePrompt.xaml.cs">
       <DependentUpon>MessagePrompt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MetaMenus\windowOptions.xaml.cs">
+      <DependentUpon>windowOptions.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -102,11 +105,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Pages\CharacterCreationPage.xaml">
+    <Page Include="Pages\pageCharacterCreation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MainMenuPage.xaml">
+    <Page Include="Pages\pageMainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -119,6 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MetaMenus\MessagePrompt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MetaMenus\windowOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,6 +170,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\XML Files\Classes.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\Sounds\Nonstop.mp3" />
+    <Content Include="Assets\Sounds\Sword Slash.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

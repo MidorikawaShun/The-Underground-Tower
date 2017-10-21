@@ -1,0 +1,18 @@
+﻿<Page x:Class="WpfApp1.Pages.pageMainMenu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp1.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="MainMenu">
+
+    <Canvas>
+        <Image Source="/Assets\Images\dd-4th-edition-eberron-map.jpg" Stretch="Fill" Width="800" Height="600"/>
+        <Button x:Name="New_Game" Content="Start Game" Canvas.Left="327" Canvas.Top="263" Height="44" Width="141" Click="New_Game_Click"/>
+        <Button x:Name="Options" Content="Options" Canvas.Left="327" Canvas.Top="312" Height="44" Width="141" Click="Options_Click"/>
+        <Button x:Name="Leaderboard" Content="Leaderboard" Canvas.Left="327" Canvas.Top="361" Height="45" Width="141" Click="Leaderboard_Click"/>
+        <Button x:Name="Exit_Game" Content="Exit" Canvas.Left="327" Canvas.Top="411" Height="45" Width="141" Click="Exit_Game_Click"/>
+    </Canvas>
+</Page>

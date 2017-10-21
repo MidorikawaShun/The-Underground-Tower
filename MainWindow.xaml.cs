@@ -18,6 +18,8 @@ using WpfApp1.Creatures;
 using WpfApp1.Windows;
 using WpfApp1.Pages;
 using WpfApp1.Windows.MetaMenus;
+using static WpfApp1.Definitions;
+using static WpfApp1.Utilities.Sound;
 
 namespace WpfApp1
 {
@@ -31,7 +33,8 @@ namespace WpfApp1
             InitializeComponent();
             GameStatus.CREATURES = new List<Creature>();
             Definitions.MAIN_WINDOW = this;
-            Main.Content = new MainMenu();
+            Main.Content = new pageMainMenu();
+            PlaySound(EnumSoundFiles.MainMenuMusic,EnumMediaPlayers.MusicPlayer);
         }
     }
 }

@@ -17,9 +17,9 @@ namespace WpfApp1.Windows
     /// <summary>
     /// Interaction logic for ExitDialog.xaml
     /// </summary>
-    public partial class ExitDialog : Window
+    public partial class windowExit : Window
     {
-        public ExitDialog()
+        public windowExit()
         {
             InitializeComponent();
             SizeToContent = SizeToContent.WidthAndHeight;

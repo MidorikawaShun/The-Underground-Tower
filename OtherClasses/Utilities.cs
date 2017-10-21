@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml;
 using TheUndergroundTower.OtherClasses;
 using WpfApp1.Windows.MetaMenus;
@@ -15,7 +17,6 @@ namespace WpfApp1
 {
     public static class Utilities
     {
-
         /// <summary>
         /// This class handles XML-related actions.
         /// </summary>
@@ -44,7 +45,6 @@ namespace WpfApp1
                 catch (Exception ex)
                 {
                     ErrorLog.Log(ex, "An error has occured while attempting to populate races from XML.");
-                    new ErrorPrompt();
                 }
             }
 
@@ -60,7 +60,6 @@ namespace WpfApp1
                 catch (Exception ex)
                 {
                     ErrorLog.Log(ex, "An error has occured while attempting to populate classes from XML.");
-                    new ErrorPrompt();
                 }
             }
 
@@ -96,12 +95,20 @@ namespace WpfApp1
         /// </summary>
         public static class ErrorLog
         {
+
+            public enum EnumErrorSeverity
+            {
+                Light = 0,
+                Fatal = 1
+            }
+
+
             /// <summary>
-            /// Create the log entry.
+            /// Creates an error-log entry and quits the application.
             /// </summary>
             /// <param name="ex">The exception details that will be written to the file.</param>
             /// <param name="details">(Optional) A custom message to further elaborate on what the error is.</param>
-            public static void Log(Exception ex, string details = null)
+            public static void Log(Exception ex, string details = null, EnumErrorSeverity severity = 0)
             {
                 FileInfo logFile = GetLogFile();
                 using (System.IO.StreamWriter file =
@@ -111,6 +118,7 @@ namespace WpfApp1
                     file.WriteLine(Environment.NewLine);
                     file.WriteLine(DateTime.Now + " - " + details + Environment.NewLine + ex);
                 }
+                new ErrorPrompt(severity);
             }
 
             /// <summary>
@@ -212,12 +220,117 @@ namespace WpfApp1
                 }
             }
         }
-        
 
-        public static void PlaySFX(EnumSfxFiles sfx)
+        public static class Sound
         {
 
-        }
+            public enum EnumMediaPlayers
+            {
+                MusicPlayer = 0,
+                SfxPlayer = 1
+            }
 
+            private static MediaPlayer MusicPlayer;
+            private static double MasterVolume = 0.5;
+            private static double MusicVolume = 1;
+            private static double SfxVolume = 1;
+
+            public static double TempMasterVolume { get; set; }
+            public static double TempMusicVolume { get; set; }
+            public static double TempSfxVolume { get; set; }
+
+            private static bool Initialized = false;
+            private static bool VolumeChanged = false;
+
+            private static void InitializePlayer()
+            {
+                if (!Initialized)
+                {
+                    MusicPlayer = new MediaPlayer();
+                    MusicPlayer.MediaEnded += RestartMusic;
+                    TempMasterVolume = MasterVolume;
+                    TempMusicVolume = MusicVolume;
+                    TempSfxVolume = SfxVolume;
+                    MusicPlayer.Volume = MusicVolume;
+                    Initialized = true;
+                }
+                if (VolumeChanged)
+                {
+                    VolumeChanged = false;
+                }
+            }
+
+            /// <summary>
+            /// Play music or a sound effect.
+            /// </summary>
+            /// <param name="sfx">The EnumSoundFile you want to play. The Enum contains a file path.</param>
+            public static void PlaySound(EnumSoundFiles sound, EnumMediaPlayers player)
+            {
+                InitializePlayer();
+                string soundPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SOUND_FILES[(int)sound]);
+                if (player == EnumMediaPlayers.MusicPlayer)
+                    PlaySound(soundPath, MusicPlayer);
+                if (player == EnumMediaPlayers.SfxPlayer)
+                    PlaySound(soundPath, new MediaPlayer() { Volume = SfxVolume * MasterVolume });
+
+
+            }
+
+            private static void PlaySound(string path, MediaPlayer player)
+            {
+                bool openedFile = false;
+                try
+                {
+                    player.Open(new Uri(path));
+                    openedFile = true;
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex, "An error has occured while trying to open the sound effect file in path: " + path);
+                }
+                if (openedFile)
+                {
+                    try
+                    {
+                        player.Position = new TimeSpan(0, 3, 10);
+                        player.Play();
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorLog.Log(ex, "An error has occured while attempting to play the sound effect file in path: " + path);
+                    }
+                }
+                if (player != MusicPlayer)
+                    player = null;
+            }
+
+            public static void StopMusic(EnumMediaPlayers player)
+            {
+                MusicPlayer.Stop();
+            }
+
+            public static void ChangeSoundVolume()
+            {
+                MasterVolume = TempMasterVolume;
+                MusicVolume = TempMusicVolume;
+                SfxVolume = TempSfxVolume;
+                MusicPlayer.Volume = MasterVolume * MusicVolume;
+                VolumeChanged = true;
+                InitializePlayer();
+            }
+
+            public static void ResetTempVolumes()
+            {
+                TempMasterVolume = MasterVolume;
+                TempMusicVolume = MusicVolume;
+                TempSfxVolume = SfxVolume;
+            }
+
+            private static void RestartMusic(object sender, EventArgs e)
+            {
+                MusicPlayer.Position = new TimeSpan(0);
+            }
+
+        }
     }
 }

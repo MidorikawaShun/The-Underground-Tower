@@ -17,9 +17,9 @@ namespace TheUndergroundTower.Windows.MetaMenus
     /// <summary>
     /// Interaction logic for MessagePrompt.xaml
     /// </summary>
-    public partial class MessagePrompt : Window
+    public partial class windowMessage : Window
     {
-        public MessagePrompt(string message)
+        public windowMessage(string message)
         {
             InitializeComponent();
             this.DataContext = new { message = message };
