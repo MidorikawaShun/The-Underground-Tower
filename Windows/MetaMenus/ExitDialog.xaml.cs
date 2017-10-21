@@ -24,8 +24,8 @@ namespace WpfApp1.Windows
             InitializeComponent();
             SizeToContent = SizeToContent.WidthAndHeight;
             Window mainWindow = Application.Current.MainWindow;
-            this.Left = mainWindow.Left + (mainWindow.Width - this.Width) / 2;
-            this.Top = mainWindow.Top + (mainWindow.Height - this.Height) / 2;
+            Owner = mainWindow;
+            ShowDialog();
         }
         
 

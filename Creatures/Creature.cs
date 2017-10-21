@@ -8,6 +8,22 @@ namespace WpfApp1.Creatures
 {
     public abstract class Creature
     {
+        #region Properties
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        private string _description;
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
         /// <summary>
         /// The number representing how much damage the creature can take before being destroyed.
         /// </summary>
@@ -21,6 +37,7 @@ namespace WpfApp1.Creatures
                     _hp = value;
             }
         }
+
         /// <summary>
         /// The number representing how quickly a creature can move.
         /// </summary>
@@ -34,6 +51,7 @@ namespace WpfApp1.Creatures
                     _movement = value;
             }
         }
+
         /// <summary>
         /// The number representing how quickly a creature can perform actions that do not involve movement.
         /// </summary>
@@ -48,7 +66,7 @@ namespace WpfApp1.Creatures
             }
         }
 
-        public string Name { get; set; }
+        #endregion
 
         /// <summary>
         /// Constructor for the Creature class.
@@ -60,5 +78,6 @@ namespace WpfApp1.Creatures
             _speed = 100;
             GameStatus.CREATURES.Add(this);
         }
+
     }
 }

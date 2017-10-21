@@ -28,10 +28,8 @@ namespace WpfApp1.Pages
 
         private void Exit_Game_Click(object sender, RoutedEventArgs e)
         {
-            ExitDialog popup = new ExitDialog();
-            popup.ShowDialog();
+            new ExitDialog();
         }
-
 
         private void New_Game_Click(object sender, RoutedEventArgs e)
         {

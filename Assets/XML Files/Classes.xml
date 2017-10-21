@@ -1,18 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Classes>
-  <Class Name="Fighter">
+  <Class Name="Warrior">
     <Public>
-      <Description>A melee fighter who loves to get up close and fight with a sword.</Description>
+      <Description>A melee fighter who loves to get up close and fight with a weapon.</Description>
+      <IsCaster>False</IsCaster>
+      <MeleeSkill>1.5</MeleeSkill>
+      <RangedSkill>0.7</RangedSkill>
+      <MagicSkill>0.3</MagicSkill>
+    </Public>
+    <Private>
       <StartingEquipment>
         <Weapon Name="Rusty Sword">
           <Description>An old-looking, rusty sword. It's almost useless, but the best you could bring with you.</Description>
           <Speed>1</Speed>
-          <HitChance>1</HitChance>
+          <HitBonus>3</HitBonus>
           <DamageRange>3-5</DamageRange>
           <Two-Handed>False</Two-Handed>
           <Weight>2</Weight>
           <Value>1</Value>
-          <UnsellableItem>True</UnsellableItem>
+          <UnsellableItem>False</UnsellableItem>
         </Weapon>
         <Armor Name="Rusty Shield">
           <Description>An old-looking, rusty shield. Hardly any better than not carrying it, at all.</Description>
@@ -20,14 +26,9 @@
           <HeldInHand>True</HeldInHand>
           <Weight>3</Weight>
           <Value>1</Value>
+          <UnsellableItem>False</UnsellableItem>
         </Armor>
       </StartingEquipment>
-    </Public>
-    <Private>
-      <Caster>False</Caster>
-      <MeleeSkill>1.5</MeleeSkill>
-      <RangedSkill>0.7</RangedSkill>
-      <MagicSkill>0.3</MagicSkill>
     </Private>
   </Class>
 </Classes>

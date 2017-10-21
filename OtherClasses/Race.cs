@@ -1,15 +1,18 @@
-﻿namespace WpfApp1
+﻿using System;
+using System.Xml;
+using TheUndergroundTower.OtherClasses;
+
+namespace WpfApp1
 {
     /// <summary>
     /// Describes the Races a player character can belong to. They change player stats 
     /// for better or worse.
     /// </summary>
-    public class Race
+    public class Race : GameObject
     {
 
-        public string RaceName { get; set; }
-        public string RaceDescription { get; set; }
-
+        #region Properties
+        
         //Shortcut to access each stat individually.
         private int[] _stats = new int[6];
         public int this[int number]
@@ -51,7 +54,7 @@
         public int Charisma
         {
             get { return _stats[5]; }
-            set { _stats[5]= value; }
+            set { _stats[5] = value; }
         }
 
         private int _movement;
@@ -74,5 +77,37 @@
             get { return _survival; }
             set { _survival = value; }
         }
+
+        #endregion
+        #region Constructors
+        /// <summary>
+        /// Create a Race from an XmlNode and add it to GameData.RACES
+        /// </summary>
+        /// <param name="race">The XmlNode for the race to be created.</param>
+        public Race(XmlNode race)
+        {
+            Name = race.Attributes["Name"].Value;
+            foreach (XmlNode privacyType in race)
+            {
+                if (privacyType.Name.Equals("Public"))
+                {
+                    Description = privacyType.ChildNodes[0].FirstChild.Value;
+                    for (int i = 1; i <= Definitions.NUMBER_OF_CHARACTER_STATS; i++)
+                    {
+                        string stringVal = privacyType.ChildNodes[i].FirstChild.Value;
+                        this[i - 1] = Convert.ToInt32(stringVal);
+                    }
+                }
+                else
+                {
+                    Movement = Convert.ToInt32(privacyType.ChildNodes[0].Value);
+                    Speed = Convert.ToInt32(privacyType.ChildNodes[1].Value);
+                }
+            }
+            GameData.RACES.Add(this);
+        }
+
+        public Race() { }
+        #endregion
     }
 }

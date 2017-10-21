@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
+using TheUndergroundTower.OtherClasses;
 using WpfApp1.Windows.MetaMenus;
 using static WpfApp1.Definitions;
 
@@ -37,37 +38,29 @@ namespace WpfApp1
                 {
                     XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileRaces));
                     XmlNode races = doc.ChildNodes[1];
-                    Console.WriteLine(races);
                     foreach (XmlNode race in races)
-                    {
-                        Race newRace = new Race();
-                        newRace.RaceName = race.Attributes["Name"].Value;
-                        foreach (XmlNode privacyType in race)
-                        {
-                            if (privacyType.Name.Equals("Public"))
-                            {
-                                newRace.RaceDescription = privacyType.ChildNodes[0].FirstChild.Value;
-                                for (int i = 1; i <= NUMBER_OF_CHARACTER_STATS; i++)
-                                {
-                                    string stringVal = privacyType.ChildNodes[i].FirstChild.Value;
-                                    int val = stringVal[0].Equals('+') ?Convert.ToInt32(stringVal.Substring(1)): (Convert.ToInt32(stringVal.Substring(1))*-1);
-                                    newRace[i-1] = val;
-                                }
-                            }
-                            else
-                            {
-                                newRace.Movement = Convert.ToInt32(privacyType.ChildNodes[0].Value);
-                                newRace.Speed = Convert.ToInt32(privacyType.ChildNodes[1].Value);
-                            }
-                        }
-                        GameData.RACES.Add(newRace);
-                    }
+                        new Race(race);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    ErrorLog.Log(ex, "An error has occured while attempting to populate races from XML");
-                    ErrorPrompt prompt = new ErrorPrompt();
-                    prompt.ShowDialog();
+                    ErrorLog.Log(ex, "An error has occured while attempting to populate races from XML.");
+                    new ErrorPrompt();
+                }
+            }
+
+            public static void PopulateClasses()
+            {
+                try
+                {
+                    XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileClasses));
+                    XmlNode classes = doc.ChildNodes[1];
+                    foreach (XmlNode newClass in classes)
+                        new Class(newClass);
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex, "An error has occured while attempting to populate classes from XML.");
+                    new ErrorPrompt();
                 }
             }
 
@@ -108,7 +101,7 @@ namespace WpfApp1
             /// </summary>
             /// <param name="ex">The exception details that will be written to the file.</param>
             /// <param name="details">(Optional) A custom message to further elaborate on what the error is.</param>
-            public static void Log(Exception ex,string details=null)
+            public static void Log(Exception ex, string details = null)
             {
                 FileInfo logFile = GetLogFile();
                 using (System.IO.StreamWriter file =
@@ -128,7 +121,7 @@ namespace WpfApp1
             {
                 string path = AppDomain.CurrentDomain.BaseDirectory;
                 string[] directories = Directory.GetDirectories(Directory.GetCurrentDirectory());
-                path = directories.Where(x => x.Equals("Logs")).FirstOrDefault();
+                path = directories.Where(x => x.Equals(path + "Logs")).FirstOrDefault();
                 DirectoryInfo logsDirectory = String.IsNullOrEmpty(path) ? Directory.CreateDirectory("Logs") : new DirectoryInfo(path);
                 Directory.SetCurrentDirectory(logsDirectory.FullName);
                 FileInfo[] logFiles = logsDirectory.GetFiles();
@@ -155,6 +148,7 @@ namespace WpfApp1
             GetLogicalChildCollection(parent as DependencyObject, logicalCollection);
             return logicalCollection;
         }
+
         /// <summary>
         ///Taken from: https://stackoverflow.com/questions/7153248/wpf-getting-a-collection-of-all-controls-for-a-given-type-on-a-page
         /// These two methods return all the objects of the specified type.
@@ -186,10 +180,10 @@ namespace WpfApp1
         /// <param name="parent">The requested object's parent. (Grid, Canvas, Window, Page..)</param>
         /// <param name="name">The requested object's x:name.</param>
         /// <returns>The object.</returns>
-        public static T GetObjectByName<T>(DependencyObject parent,string name)
+        public static T GetObjectByName<T>(DependencyObject parent, string name)
         {
             T result = default(T);
-            FindObjectByName(parent, name,ref result);
+            FindObjectByName(parent, name, ref result);
             return result;
         }
 
@@ -200,7 +194,7 @@ namespace WpfApp1
         /// <param name="parent">The requested object's parent. (Grid, Canvas, Window, Page..)</param>
         /// <param name="name">The requested object's x:name.</param>
         /// <param name="result">Where the result reference is saved.</param>
-        private static void FindObjectByName<T>(DependencyObject parent,string name,ref T result)
+        private static void FindObjectByName<T>(DependencyObject parent, string name, ref T result)
         {
             IEnumerable children = LogicalTreeHelper.GetChildren(parent);
             foreach (object child in children)
@@ -214,9 +208,16 @@ namespace WpfApp1
                         return;
                     }
                     if (result != null) return;
-                    FindObjectByName<T>(depChild, name,ref result);
+                    FindObjectByName<T>(depChild, name, ref result);
                 }
             }
         }
+        
+
+        public static void PlaySFX(EnumSfxFiles sfx)
+        {
+
+        }
+
     }
 }

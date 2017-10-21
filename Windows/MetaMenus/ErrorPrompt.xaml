@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="ErrorPrompt" Height="117.195" Width="298.519"
         SizeToContent="Width"
+        WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize" MinHeight="135" Closing="ErrorPromptWindow_Closing">
     <StackPanel>
         <TextBlock Height="48" Margin="15,10,15,0" TextWrapping="Wrap" Text="{Binding message}"/>

@@ -24,6 +24,11 @@ namespace WpfApp1.Windows.MetaMenus
             InitializeComponent();
             string errorMessage = "An error has occured: Detailed information can be found" + Environment.NewLine +  "in the Log file named \"Error Log - " + DateTime.Now.Date.ToString("dd/MM/yyyy") +"\"";
             this.DataContext = new { message = errorMessage };
+            SizeToContent = SizeToContent.WidthAndHeight;
+            Window mainWindow = Application.Current.MainWindow;
+            this.Left = mainWindow.Left + (mainWindow.Width - this.Width) / 2;
+            this.Top = mainWindow.Top + (mainWindow.Height - this.Height) / 2;
+            ShowDialog();
         }
 
         private void ErrorPromptExit_Click(object sender, RoutedEventArgs e)

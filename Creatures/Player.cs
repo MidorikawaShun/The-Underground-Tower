@@ -8,7 +8,7 @@ namespace WpfApp1.Creatures
 {
     public class Player : Creature
     {
-
+        #region Properties
         private Race _playerRace;
         public Race PlayerRace
         {
@@ -16,12 +16,9 @@ namespace WpfApp1.Creatures
             set { if (value != null) _playerRace = value; }
         }
 
-        /// <summary>
-        /// Creates the player instance.
-        /// </summary>
-        public Player() : base()
-        {
+        #endregion
 
-        }
+
+
     }
 }

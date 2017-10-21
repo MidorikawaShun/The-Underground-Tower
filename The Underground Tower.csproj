@@ -68,6 +68,7 @@
     <Compile Include="OtherClasses\Class.cs" />
     <Compile Include="OtherClasses\Definitions.cs" />
     <Compile Include="OtherClasses\GameData.cs" />
+    <Compile Include="OtherClasses\GameObject.cs" />
     <Compile Include="OtherClasses\GameStatus.cs" />
     <Compile Include="OtherClasses\Item.cs" />
     <Compile Include="OtherClasses\ObjectBase.cs" />
@@ -85,6 +86,9 @@
     </Compile>
     <Compile Include="Windows\MetaMenus\ExitDialog.xaml.cs">
       <DependentUpon>ExitDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MetaMenus\MessagePrompt.xaml.cs">
+      <DependentUpon>MessagePrompt.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -111,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MetaMenus\ExitDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MetaMenus\MessagePrompt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

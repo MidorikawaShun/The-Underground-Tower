@@ -6,17 +6,10 @@ using System.Threading.Tasks;
 
 namespace TheUndergroundTower.OtherClasses
 {
-    class Item
+    public class Item : GameObject
     {
-        private string _name;
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
 
-            }
-        }
+        #region Properties
 
         private double _weight;
         public double Weight
@@ -46,6 +39,8 @@ namespace TheUndergroundTower.OtherClasses
             get { return _unsellableItem; }
             set { _unsellableItem = value; }
         }
+
+        #endregion
 
     }
 }

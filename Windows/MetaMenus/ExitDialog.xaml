@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1.Windows"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="Exit Game" Height="88" Width="298.042" ScrollViewer.VerticalScrollBarVisibility="Disabled" ResizeMode="NoResize">
     <StackPanel VerticalAlignment="Bottom">
         <TextBlock Height="24" TextWrapping="Wrap" Text="Are you sure you want to exit the game?" Width="218" Margin="37,0,37.667,0"/>

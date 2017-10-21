@@ -10,21 +10,23 @@
 
     <Canvas x:Name="CanvasCharacterCreation">
         <Image Source="/Assets/Images/Scroll-Background.png" x:Name="imgCharacterCreationBackground" Height="600" Width="800"/>
-        <Canvas x:Name="CanvasNameChoice" >
+        <Canvas x:Name="CanvasNameChoice" Visibility="Hidden" >
             <Label x:Name="lblCharacterCreationNameChoice" Content="What would you like to be known as?" Canvas.Left="296" Canvas.Top="243"/>
             <TextBox x:Name="txtCharacterCreationNameChoice" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="335" TextWrapping="Wrap" Text="" Canvas.Top="274" Height="31" Width="135"/>
             <Button x:Name="btnCharacterCreationNameChoice" Content="Confirm" Canvas.Left="366" Canvas.Top="310" Width="75" Click="btnCharacterCreationNameChoice_Click"/>
         </Canvas>
         <Canvas x:Name="CanvasRaceChoice" Visibility="Hidden" >
             <ScrollViewer Canvas.Left="132" Canvas.Top="124" Height="345" Width="557" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
-                <WrapPanel x:Name="RaceWrapPanel">
-                </WrapPanel>
+                <WrapPanel x:Name="RaceWrapPanel"/>
             </ScrollViewer>
         </Canvas>
-        <Canvas x:Name="CanvasClassChoice" Visibility="Hidden" >
+        <Canvas x:Name="CanvasClassChoice">
             <ScrollViewer Canvas.Left="132" Canvas.Top="124" Height="345" Width="557" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
-                <WrapPanel x:Name="ClassWrapPanel" />
+                <WrapPanel x:Name="ClassWrapPanel"/>
             </ScrollViewer>
+        </Canvas>
+        <Canvas x:Name="ChoiceDisplay">
+            
         </Canvas>
     </Canvas>
 </Page>
