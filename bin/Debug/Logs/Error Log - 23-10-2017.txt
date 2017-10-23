@@ -1,0 +1,36 @@
+
+
+23-Oct-17 21:31:10 - An error has occured while attempting ot populate difficulties from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.TowerDepth..ctor(XmlNode towerDepth) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\TowerDepth.cs:line 23
+   at WpfApp1.Utilities.Xml.PopulateTowerDifficulties() in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 88
+
+
+23-Oct-17 21:33:00 - An error has occured while attempting to populate Tower Depths from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.TowerDepth..ctor(XmlNode towerDepth) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\TowerDepth.cs:line 24
+   at WpfApp1.Utilities.Xml.PopulateTowerDifficulties() in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 88
+
+
+23-Oct-17 21:34:06 - An error has occured while attempting to populate Tower Depths from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.TowerDepth..ctor(XmlNode towerDepth) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\TowerDepth.cs:line 24
+   at WpfApp1.Utilities.Xml.PopulateTowerDifficulties() in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 88
+
+
+23-Oct-17 21:34:46 - An error has occured while attempting to populate Tower Depths from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.TowerDepth..ctor(XmlNode towerDepth)
+   at WpfApp1.Utilities.Xml.PopulateTowerDifficulties()
+
+
+23-Oct-17 21:35:48 - An error has occured while attempting to populate Tower Depths from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.TowerDepth..ctor(XmlNode towerDepth) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\TowerDepth.cs:line 24
+   at WpfApp1.Utilities.Xml.PopulateTowerDifficulties() in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 88
+
+
+23-Oct-17 21:36:16 - An error has occured while attempting to populate Tower Depths from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.TowerDepth..ctor(XmlNode towerDepth) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\TowerDepth.cs:line 24
+   at WpfApp1.Utilities.Xml.PopulateTowerDifficulties() in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 88

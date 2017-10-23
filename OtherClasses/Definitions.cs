@@ -22,11 +22,14 @@ namespace WpfApp1
             Charisma=5
         };
 
-        public static string[] XML_FILES = { @"../../Assets/XML Files/Races.xml", @"../../Assets/XML Files/Classes.xml" };
+        public static string[] XML_FILES = { @"../../Assets/XML Files/Races.xml", @"../../Assets/XML Files/Classes.xml" ,
+            @"../../Assets/XML Files/Difficulties.xml",@"../../Assets/XML Files/TowerDepths.xml" };
         public enum EnumXmlFiles
         {
             XmlFileRaces=0,
-            XmlFileClasses=1
+            XmlFileClasses=1,
+            XmlFileDifficulties=2,
+            XmlFileTowerDepths=3
         };
 
         public static string[] SOUND_FILES = { @"../../Assets/Sounds/Nonstop.mp3", @"../../Assets/Sounds/Sword Slash.mp3" };

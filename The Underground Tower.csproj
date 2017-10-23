@@ -67,11 +67,13 @@
     <Compile Include="OtherClasses\Armor.cs" />
     <Compile Include="OtherClasses\Class.cs" />
     <Compile Include="OtherClasses\Definitions.cs" />
+    <Compile Include="OtherClasses\Difficulty.cs" />
     <Compile Include="OtherClasses\GameData.cs" />
     <Compile Include="OtherClasses\GameObject.cs" />
     <Compile Include="OtherClasses\GameStatus.cs" />
     <Compile Include="OtherClasses\Item.cs" />
     <Compile Include="OtherClasses\ObjectBase.cs" />
+    <Compile Include="OtherClasses\TowerDepth.cs" />
     <Compile Include="OtherClasses\Weapon.cs" />
     <Compile Include="Pages\pageCharacterCreation.xaml.cs">
       <DependentUpon>pageCharacterCreation.xaml</DependentUpon>
@@ -175,6 +177,8 @@
   <ItemGroup>
     <Content Include="Assets\Sounds\Nonstop.mp3" />
     <Content Include="Assets\Sounds\Sword Slash.mp3" />
+    <Resource Include="Assets\XML Files\TowerDepths.xml" />
+    <Resource Include="Assets\XML Files\Difficulties.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

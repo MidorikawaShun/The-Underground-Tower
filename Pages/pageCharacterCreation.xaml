@@ -10,23 +10,68 @@
 
     <Canvas x:Name="CanvasCharacterCreation">
         <Image Source="/Assets/Images/Scroll-Background.png" x:Name="imgCharacterCreationBackground" Height="600" Width="800"/>
-        <Canvas x:Name="CanvasNameChoice" Visibility="Hidden" >
+        <Canvas x:Name="CanvasNameChoice" >
             <Label x:Name="lblCharacterCreationNameChoice" Content="What would you like to be known as?" Canvas.Left="296" Canvas.Top="243"/>
             <TextBox x:Name="txtCharacterCreationNameChoice" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="335" TextWrapping="Wrap" Text="" Canvas.Top="274" Height="31" Width="135"/>
             <Button x:Name="btnCharacterCreationNameChoice" Content="Confirm" Canvas.Left="366" Canvas.Top="310" Width="75" Click="btnCharacterCreationNameChoice_Click"/>
         </Canvas>
-        <Canvas x:Name="CanvasRaceChoice" Visibility="Hidden" >
+        <Canvas x:Name="CanvasRaceChoice" Visibility="Hidden">
             <ScrollViewer Canvas.Left="132" Canvas.Top="124" Height="345" Width="557" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
                 <WrapPanel x:Name="RaceWrapPanel"/>
             </ScrollViewer>
         </Canvas>
-        <Canvas x:Name="CanvasClassChoice">
+        <Canvas x:Name="CanvasClassChoice" Visibility="Hidden">
             <ScrollViewer Canvas.Left="132" Canvas.Top="124" Height="345" Width="557" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
                 <WrapPanel x:Name="ClassWrapPanel"/>
             </ScrollViewer>
         </Canvas>
-        <Canvas x:Name="ChoiceDisplay">
-            
+        <Canvas x:Name="CanvasCharacterFinalization" Visibility="Hidden">
+            <Label Content="Name: " Canvas.Left="134" Canvas.Top="178" Height="28" Width="45"></Label>
+            <Label x:Name="lblName" Canvas.Left="179" Canvas.Top="178" Height="28" Width="109"/>
+            <Label Content="Race: " Canvas.Left="134" Canvas.Top="207" Height="28" Width="163"></Label>
+            <Label x:Name="lblRace" Canvas.Left="179" Canvas.Top="207" Height="28" Width="109"/>
+            <Label Content="Class: " Canvas.Left="134" Canvas.Top="235" Height="28" Width="163"></Label>
+            <Label x:Name="lblClass" Canvas.Left="179" Canvas.Top="235" Height="28" Width="109"/>
+            <Border Canvas.Left="293" Canvas.Top="116" BorderBrush="Black" BorderThickness="1">
+                <Grid Height="250" Width="199">
+                    <StackPanel Margin="0,0,100,53">
+                        <Label Content="Physical"  HorizontalAlignment="Center" FontWeight="Bold" Height="47"/>
+                        <Label VerticalContentAlignment="Center" Content="Strength " Height="50"/>
+                        <Label VerticalContentAlignment="Center" Content="Dexterity " Height="50"/>
+                        <Label VerticalContentAlignment="Center" Content="Constitution " Height="50"/>
+                    </StackPanel>
+                    <StackPanel Margin="99,0,0,53">
+                        <Label Content="Mental" HorizontalAlignment="Center" FontWeight="Bold" Height="47"/>
+                        <Label VerticalContentAlignment="Center" Content="Intelligence " Height="50"  Margin="10,0,0,0"/>
+                        <Label VerticalContentAlignment="Center" Content="Wisdom " Height="50"  Margin="10,0,0,0"/>
+                        <Label VerticalContentAlignment="Center" Content="Charisma " Height="50"  Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <Button x:Name="btnReroll" Margin="51,198,53,5" Content="Reroll" Click="btnReroll_Click"/>
+                </Grid>
+            </Border>
+            <Label x:Name="lblStrength" Height="29" Width="24" Canvas.Left="371" Canvas.Top="279" />
+            <Label x:Name="lblDexterity"  Height="29" Width="24" Canvas.Left="371" Canvas.Top="232" />
+            <Label x:Name="lblConstitution" Height="29" Width="24" Canvas.Left="371" Canvas.Top="178" />
+            <Label x:Name="lblIntelligence" Height="29" Width="24" Canvas.Left="472" Canvas.Top="179" />
+            <Label x:Name="lblWisdom" Height="29" Width="24" Canvas.Left="472" Canvas.Top="232" />
+            <Label x:Name="lblCharisma" Height="29" Width="24" Canvas.Left="472" Canvas.Top="279" />
+
+            <Button x:Name="btnBack" Content="Back" Height="35" Width="99" Canvas.Left="293" Canvas.Top="420" Click="btnBack_Click"/>
+            <Button x:Name="btnProceed" Content="Proceed" Height="35" Width="99" Canvas.Left="397" Canvas.Top="420" Click="btnProceed_Click"/>
+            <StackPanel Canvas.Left="523" Canvas.Top="120" Height="161">
+                <WrapPanel Canvas.Left="517" Canvas.Top="120" Height="22">
+                    <TextBlock Text="Difficulty" Width="53" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cmbDifficulties" Width="120" SelectionChanged="cmbDifficulties_SelectionChanged"/>
+                </WrapPanel>
+                <TextBlock x:Name="txtDifficulties" FontWeight="DemiBold" Width="170" Height="135" Margin="0,10,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Canvas.Left="523" Canvas.Top="286" Height="167">
+                <WrapPanel Canvas.Left="517" Canvas.Top="303">
+                    <TextBlock Text="Tower Depth" Width="69" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cmbTowerDepth" Width="120" SelectionChanged="cmbTowerDepth_SelectionChanged"/>
+                </WrapPanel>
+                <TextBlock x:Name="txtTowerDepth" FontWeight="DemiBold" Width="170" Height="135" Margin="0,10,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
         </Canvas>
     </Canvas>
 </Page>

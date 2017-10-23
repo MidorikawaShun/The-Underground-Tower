@@ -63,6 +63,36 @@ namespace WpfApp1
                 }
             }
 
+            public static void PopulateDifficulties()
+            {
+                try
+                {
+                    XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileDifficulties));
+                    XmlNode difficulties = doc.ChildNodes[1];
+                    foreach (XmlNode newDifficulty in difficulties)
+                        new Difficulty(newDifficulty);
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex, "An error has occured while attempting to populate difficulties from XML.");
+                }
+            }
+
+            public static void PopulateTowerDifficulties()
+            {
+                try
+                {
+                    XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileTowerDepths));
+                    XmlNode difficulties = doc.ChildNodes[1];
+                    foreach (XmlNode newTowerDepth in difficulties)
+                        new TowerDepth(newTowerDepth);
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex, "An error has occured while attempting to populate Tower Depths from XML.");
+                }
+            }
+
         }
 
         /// <summary>
@@ -219,6 +249,20 @@ namespace WpfApp1
                     FindObjectByName<T>(depChild, name, ref result);
                 }
             }
+        }
+
+        public static bool IfObjectHasChild(DependencyObject parent, object target)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                if (child != null && child == target)
+                    return true;
+                else
+                    if (IfObjectHasChild(child, target))
+                        return true;
+            }
+            return false;
         }
 
         public static class Sound

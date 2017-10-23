@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,18 +25,23 @@ namespace WpfApp1.Pages
     public partial class pageCharacterCreation : Page
     {
 
+        private List<Border> RaceElements { get; set; }
+        private List<Border> ClassElements { get; set; }
+        private Race ChosenRace { get; set; }
+
         /// <summary>
         /// Initialize the Character Creation page.
         /// </summary>
         public pageCharacterCreation()
         {
-            GameData.RACES = new List<Race>();
-            Utilities.Xml.PopulateRaces();
-            GameData.CLASSES = new List<Class>();
-            Utilities.Xml.PopulateClasses();
+            GameData.InitializeRaces();
+            GameData.InitializeClasses();
+            GameData.InitializeDifficulties();
+            GameData.InitializeTowerDepths();
             InitializeComponent();
             CreateRaceChoiceStack();
             CreateClassChoiceStack();
+            InitCharacterFinalization();
         }
 
         #region General Initializations Functions
@@ -92,9 +98,12 @@ namespace WpfApp1.Pages
         /// </summary>
         private void CreateRaceChoiceStack()
         {
+            RaceElements = new List<Border>();
             foreach (Race race in GameData.RACES)
             {
                 Border raceBorder = CreateBorderAndStack(race);
+                raceBorder.Name = race.ID;
+                RaceElements.Add(raceBorder);
                 StackPanel descPanel = CreateTitleAndDescription(race);
                 WrapPanel wrapPanel = CreateRaceStatDisplay(race);
                 Button raceSelectButton = new Button();
@@ -190,6 +199,16 @@ namespace WpfApp1.Pages
         }
 
         #endregion
+        #region Character Creation Finalization
+        public void InitCharacterFinalization()
+        {
+
+            cmbDifficulties.ItemsSource = GameData.DIFFICULTIES.Select(x => x.Name);
+            cmbDifficulties.SelectedItem = cmbDifficulties.Items[0];
+            cmbTowerDepth.ItemsSource = GameData.TOWER_DEPTHS.Select(x => x.Name);
+            cmbTowerDepth.SelectedItem = cmbTowerDepth.Items[0];
+        }
+        #endregion
         #region Events
 
         /// <summary>
@@ -203,6 +222,7 @@ namespace WpfApp1.Pages
                 new windowMessage("You must enter a name to proceed");
             else
             {
+                lblName.Content = txtCharacterCreationNameChoice.Text;
                 CanvasNameChoice.Visibility = Visibility.Hidden;
                 CanvasRaceChoice.Visibility = Visibility.Visible;
             }
@@ -210,7 +230,10 @@ namespace WpfApp1.Pages
 
         private void btnSelectRace_Click(object sender, RoutedEventArgs e)
         {
-            //CanvasNameChoice = Utilities.GetObjectByName<Canvas>(this, "NameChoice");
+            foreach (Border border in RaceElements)
+                if (Utilities.IfObjectHasChild(border, sender))
+                    ChosenRace = GameObject.GetByID(border.Name) as Race;
+            lblRace.Content = ChosenRace.Name;
             CanvasRaceChoice.Visibility = Visibility.Hidden;
             CanvasClassChoice.Visibility = Visibility.Visible;
         }
@@ -219,7 +242,35 @@ namespace WpfApp1.Pages
         {
             //CanvasNameChoice = Utilities.GetObjectByName<Canvas>(this, "NameChoice");
             CanvasClassChoice.Visibility = Visibility.Hidden;
-            //CanvasConfirmChoice.Visibility = Visibility.Visible;
+            CanvasCharacterFinalization.Visibility = Visibility.Visible;
+
+        }
+
+        private void cmbDifficulties_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Difficulty selectedDifficulty = GameData.DIFFICULTIES.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
+            txtDifficulties.Text = selectedDifficulty.Description;
+        }
+
+        private void cmbTowerDepth_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TowerDepth selectedTowerDepth = GameData.TOWER_DEPTHS.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
+            txtTowerDepth.Text = selectedTowerDepth.Description;
+        }
+
+        private void btnProceed_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnReroll_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         #endregion

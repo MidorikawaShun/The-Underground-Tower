@@ -34,7 +34,7 @@ namespace WpfApp1
             GameStatus.CREATURES = new List<Creature>();
             Definitions.MAIN_WINDOW = this;
             Main.Content = new pageMainMenu();
-            PlaySound(EnumSoundFiles.MainMenuMusic,EnumMediaPlayers.MusicPlayer);
+            //PlaySound(EnumSoundFiles.MainMenuMusic,EnumMediaPlayers.MusicPlayer);
         }
     }
 }

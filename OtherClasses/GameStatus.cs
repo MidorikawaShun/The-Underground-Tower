@@ -13,6 +13,8 @@ namespace WpfApp1
         /// All the creatures that currently exist in the game world
         /// </summary>
         public static List<Creature> CREATURES { get; set; }
+        public static Player PLAYER { get; set; }
+        public static Random rand = new Random(DateTime.Now.Millisecond);
 
     }
 }

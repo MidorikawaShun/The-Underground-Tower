@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheUndergroundTower.OtherClasses;
 
 namespace WpfApp1.Creatures
 {
@@ -10,11 +11,12 @@ namespace WpfApp1.Creatures
     {
         #region Properties
         private Race _playerRace;
-        public Race PlayerRace
-        {
-            get { return _playerRace; }
-            set { if (value != null) _playerRace = value; }
-        }
+        public Race PlayerRace { get => _playerRace; set => _playerRace = value; }
+
+        private Class _playerClass;
+        public Class PlayerClass { get => _playerClass; set => _playerClass = value; }
+
+
 
         #endregion
 

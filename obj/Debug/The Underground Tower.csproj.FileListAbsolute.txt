@@ -48,3 +48,4 @@ C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Towe
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csproj.CoreCompileInputs.cache
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.exe
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.pdb
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csprojResolveAssemblyReference.cache
