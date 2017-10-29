@@ -37,7 +37,7 @@ namespace WpfApp1
         {
             MainMenuMusic=0,
             SwordSlash=1
-        }
+        };
 
         public static string SkillRating(double rating)
         {

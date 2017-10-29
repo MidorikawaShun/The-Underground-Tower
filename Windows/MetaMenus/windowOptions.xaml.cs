@@ -56,5 +56,6 @@ namespace TheUndergroundTower.Windows
             Sound.ResetTempVolumes();
             Close();
         }
+        
     }
 }

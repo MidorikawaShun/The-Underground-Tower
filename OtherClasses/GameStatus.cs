@@ -14,7 +14,7 @@ namespace WpfApp1
         /// </summary>
         public static List<Creature> CREATURES { get; set; }
         public static Player PLAYER { get; set; }
-        public static Random rand = new Random(DateTime.Now.Millisecond);
+        public static Random RANDOM = new Random(DateTime.Now.Millisecond);
 
     }
 }

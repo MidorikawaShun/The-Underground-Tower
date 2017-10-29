@@ -64,6 +64,7 @@
     </ApplicationDefinition>
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="Creatures\Player.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="OtherClasses\Armor.cs" />
     <Compile Include="OtherClasses\Class.cs" />
     <Compile Include="OtherClasses\Definitions.cs" />

@@ -1,0 +1,18 @@
+
+
+29-Oct-17 22:39:30 - An error has occured while attempting to populate races from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at WpfApp1.Race..ctor(XmlNode race) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Race.cs:line 98
+   at WpfApp1.Utilities.Xml.PopulateRaces() in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 43
+
+
+29-Oct-17 22:41:21 - An error has occured while attempting to populate races from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at WpfApp1.Race..ctor(XmlNode race) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Race.cs:line 98
+   at WpfApp1.Utilities.Xml.PopulateRaces() in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 43
+
+
+29-Oct-17 22:41:45 - An error has occured while attempting to populate races from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at WpfApp1.Race..ctor(XmlNode race) in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Race.cs:line 98
+   at WpfApp1.Utilities.Xml.PopulateRaces() in C:\Users\matan\Source\Repos\The-Underground-Tower\OtherClasses\Utilities.cs:line 43

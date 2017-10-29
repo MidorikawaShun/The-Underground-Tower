@@ -13,8 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TheUndergroundTower;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Windows.MetaMenus;
+using WpfApp1.Creatures;
 using WpfApp1.OtherClasses;
 
 namespace WpfApp1.Pages
@@ -28,6 +30,10 @@ namespace WpfApp1.Pages
         private List<Border> RaceElements { get; set; }
         private List<Border> ClassElements { get; set; }
         private Race ChosenRace { get; set; }
+        private Class ChosenClass { get; set; }
+        private TowerDepth ChosenDepth { get; set; }
+        private Difficulty ChosenDifficulty { get; set; }
+        private int[] PlayerStats { get; set; }
 
         /// <summary>
         /// Initialize the Character Creation page.
@@ -151,9 +157,12 @@ namespace WpfApp1.Pages
         /// </summary>
         private void CreateClassChoiceStack()
         {
+            ClassElements = new List<Border>();
             foreach (Class CLASS in GameData.CLASSES)
             {
                 Border classBorder = CreateBorderAndStack(CLASS);
+                classBorder.Name = CLASS.ID;
+                ClassElements.Add(classBorder);
                 StackPanel descPanel = CreateTitleAndDescription(CLASS);
                 WrapPanel wrapPanel = CreateClassInformationDisplay(CLASS);
                 Button classSelectButton = new Button();
@@ -231,8 +240,11 @@ namespace WpfApp1.Pages
         private void btnSelectRace_Click(object sender, RoutedEventArgs e)
         {
             foreach (Border border in RaceElements)
-                if (Utilities.IfObjectHasChild(border, sender))
+                if (border.HasChild(border, sender))
+                {
                     ChosenRace = GameObject.GetByID(border.Name) as Race;
+                    break;
+                }
             lblRace.Content = ChosenRace.Name;
             CanvasRaceChoice.Visibility = Visibility.Hidden;
             CanvasClassChoice.Visibility = Visibility.Visible;
@@ -241,39 +253,72 @@ namespace WpfApp1.Pages
         private void btnSelectClass_Click(object sender, RoutedEventArgs e)
         {
             //CanvasNameChoice = Utilities.GetObjectByName<Canvas>(this, "NameChoice");
+            foreach (Border border in ClassElements)
+                if (border.HasChild(border, sender))
+                    ChosenClass = GameObject.GetByID(border.Name) as Class;
+            lblClass.Content = ChosenClass.Name;
+            PlayerStats = new int[6];
+            RollAndDisplayStats();
             CanvasClassChoice.Visibility = Visibility.Hidden;
             CanvasCharacterFinalization.Visibility = Visibility.Visible;
-
         }
 
         private void cmbDifficulties_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Difficulty selectedDifficulty = GameData.DIFFICULTIES.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
-            txtDifficulties.Text = selectedDifficulty.Description;
+            ChosenDifficulty = GameData.DIFFICULTIES.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
+            txtDifficulties.Text = ChosenDifficulty.Description;
         }
 
         private void cmbTowerDepth_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TowerDepth selectedTowerDepth = GameData.TOWER_DEPTHS.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
-            txtTowerDepth.Text = selectedTowerDepth.Description;
-        }
-
-        private void btnProceed_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-
+            ChosenDepth = GameData.TOWER_DEPTHS.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
+            txtTowerDepth.Text = ChosenDepth.Description;
         }
 
         private void btnReroll_Click(object sender, RoutedEventArgs e)
         {
+            RollAndDisplayStats();
+        }
+
+        private void btnRestart_Click(object sender, RoutedEventArgs e)
+        {
+            CanvasCharacterFinalization.Visibility = Visibility.Hidden;
+            CanvasNameChoice.Visibility = Visibility.Visible;
+        }
+
+        private void btnProceed_Click(object sender, RoutedEventArgs e)
+        {
+            Player player = GameStatus.PLAYER = new Creatures.Player();
+            for (int i = 0; i < Definitions.NUMBER_OF_CHARACTER_STATS; i++)
+                player[i] = PlayerStats[i];
+            player.PlayerRace = ChosenRace;
+            player.PlayerClass = ChosenClass;
+            player.Name = lblName.Content as string;
 
         }
 
         #endregion
+
+        /// <summary>
+        /// Determines starting stats for player character, adjusting for race selection.
+        /// </summary>
+        private void RollAndDisplayStats()
+        {
+            int sum;
+            for (int i = 0; i < Definitions.NUMBER_OF_CHARACTER_STATS; i++)
+            {
+                sum = 0;
+                for (int j = 0; j < 3; j++)
+                    sum += GameStatus.RANDOM.Next(1, 7);
+                PlayerStats[i] = sum + ChosenRace[i];
+            }
+            lblStrength.Content = PlayerStats[0];
+            lblDexterity.Content = PlayerStats[1];
+            lblConstitution.Content = PlayerStats[2];
+            lblIntelligence.Content = PlayerStats[3];
+            lblWisdom.Content = PlayerStats[4];
+            lblCharisma.Content = PlayerStats[5];
+        }
 
     }
 

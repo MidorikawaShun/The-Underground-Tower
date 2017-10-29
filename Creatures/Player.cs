@@ -16,11 +16,22 @@ namespace WpfApp1.Creatures
         private Class _playerClass;
         public Class PlayerClass { get => _playerClass; set => _playerClass = value; }
 
+        private int[] _playerStats;
+        public int this[int number]
+        {
+            get { return _playerStats[number]; }
+            set { _playerStats[number] = value; }
+        }
 
-
+        private List<Item> _inventory;
+        public List<Item> Inventory { get; private set; }
         #endregion
 
-
+        public Player()
+        {
+            _playerStats = new int[Definitions.NUMBER_OF_CHARACTER_STATS];
+            Inventory = new List<Item>();
+        }
 
     }
 }

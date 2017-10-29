@@ -14,7 +14,7 @@ namespace WpfApp1
         #region Properties
         
         //Shortcut to access each stat individually.
-        private int[] _stats = new int[6];
+        private int[] _stats = new int[Definitions.NUMBER_OF_CHARACTER_STATS];
         public int this[int number]
         {
             get { return _stats[number]; }
@@ -92,10 +92,11 @@ namespace WpfApp1
                 if (privacyType.Name.Equals("Public"))
                 {
                     Description = privacyType.ChildNodes[0].FirstChild.Value;
-                    for (int i = 1; i <= Definitions.NUMBER_OF_CHARACTER_STATS; i++)
+                    XmlNode stats = privacyType.ChildNodes[1];
+                    for (int i = 0; i < Definitions.NUMBER_OF_CHARACTER_STATS; i++)
                     {
-                        string stringVal = privacyType.ChildNodes[i].FirstChild.Value;
-                        this[i - 1] = Convert.ToInt32(stringVal);
+                        string stringVal = stats.ChildNodes[i].FirstChild.Value;
+                        this[i] = Convert.ToInt32(stringVal);
                     }
                 }
                 else

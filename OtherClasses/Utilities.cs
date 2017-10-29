@@ -251,20 +251,6 @@ namespace WpfApp1
             }
         }
 
-        public static bool IfObjectHasChild(DependencyObject parent, object target)
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                if (child != null && child == target)
-                    return true;
-                else
-                    if (IfObjectHasChild(child, target))
-                        return true;
-            }
-            return false;
-        }
-
         public static class Sound
         {
 

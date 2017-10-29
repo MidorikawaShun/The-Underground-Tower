@@ -10,7 +10,7 @@
 
     <Canvas x:Name="CanvasCharacterCreation">
         <Image Source="/Assets/Images/Scroll-Background.png" x:Name="imgCharacterCreationBackground" Height="600" Width="800"/>
-        <Canvas x:Name="CanvasNameChoice" >
+        <Canvas x:Name="CanvasNameChoice">
             <Label x:Name="lblCharacterCreationNameChoice" Content="What would you like to be known as?" Canvas.Left="296" Canvas.Top="243"/>
             <TextBox x:Name="txtCharacterCreationNameChoice" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="335" TextWrapping="Wrap" Text="" Canvas.Top="274" Height="31" Width="135"/>
             <Button x:Name="btnCharacterCreationNameChoice" Content="Confirm" Canvas.Left="366" Canvas.Top="310" Width="75" Click="btnCharacterCreationNameChoice_Click"/>
@@ -46,7 +46,7 @@
                         <Label VerticalContentAlignment="Center" Content="Wisdom " Height="50"  Margin="10,0,0,0"/>
                         <Label VerticalContentAlignment="Center" Content="Charisma " Height="50"  Margin="10,0,0,0"/>
                     </StackPanel>
-                    <Button x:Name="btnReroll" Margin="51,198,53,5" Content="Reroll" Click="btnReroll_Click"/>
+                    <Button x:Name="btnReroll" Margin="52,200,52,5" Content="Reroll" Click="btnReroll_Click"/>
                 </Grid>
             </Border>
             <Label x:Name="lblStrength" Height="29" Width="24" Canvas.Left="371" Canvas.Top="279" />
@@ -56,7 +56,7 @@
             <Label x:Name="lblWisdom" Height="29" Width="24" Canvas.Left="472" Canvas.Top="232" />
             <Label x:Name="lblCharisma" Height="29" Width="24" Canvas.Left="472" Canvas.Top="279" />
 
-            <Button x:Name="btnBack" Content="Back" Height="35" Width="99" Canvas.Left="293" Canvas.Top="420" Click="btnBack_Click"/>
+            <Button x:Name="btnRestart" Content="Restart" Height="35" Width="99" Canvas.Left="293" Canvas.Top="420" Click="btnRestart_Click"/>
             <Button x:Name="btnProceed" Content="Proceed" Height="35" Width="99" Canvas.Left="397" Canvas.Top="420" Click="btnProceed_Click"/>
             <StackPanel Canvas.Left="523" Canvas.Top="120" Height="161">
                 <WrapPanel Canvas.Left="517" Canvas.Top="120" Height="22">
