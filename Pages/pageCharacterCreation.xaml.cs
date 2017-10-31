@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TheUndergroundTower;
 using TheUndergroundTower.OtherClasses;
+using TheUndergroundTower.Pages;
 using TheUndergroundTower.Windows.MetaMenus;
 using WpfApp1.Creatures;
 using WpfApp1.OtherClasses;
@@ -291,10 +292,10 @@ namespace WpfApp1.Pages
             Player player = GameStatus.PLAYER = new Creatures.Player();
             for (int i = 0; i < Definitions.NUMBER_OF_CHARACTER_STATS; i++)
                 player[i] = PlayerStats[i];
-            player.PlayerRace = ChosenRace;
-            player.PlayerClass = ChosenClass;
+            player.SetRace(ChosenRace);
+            player.SetClass(ChosenClass);
             player.Name = lblName.Content as string;
-
+            Definitions.MAIN_WINDOW.Main.Content = new pageMainGame();
         }
 
         #endregion

@@ -12,7 +12,7 @@ namespace WpfApp1.Creatures
         #region Properties
 
         /// <summary>
-        /// The number representing how much damage the creature can take before being destroyed.
+        /// Determines how much damage the creature can take before being destroyed.
         /// </summary>
         private int _hp;
         public int HP
@@ -26,7 +26,7 @@ namespace WpfApp1.Creatures
         }
 
         /// <summary>
-        /// The number representing how quickly a creature can move.
+        /// Determines how quickly a creature can move.
         /// </summary>
         private int _movement;
         public int Movement
@@ -40,7 +40,7 @@ namespace WpfApp1.Creatures
         }
 
         /// <summary>
-        /// The number representing how quickly a creature can perform actions that do not involve movement.
+        /// Determines how quickly a creature can perform actions that do not involve movement.
         /// </summary>
         private int _speed;
         public int Speed
@@ -53,6 +53,81 @@ namespace WpfApp1.Creatures
             }
         }
 
+        /// <summary>
+        /// Determines how far a creature can see.
+        /// </summary>
+        private int _sightRadius;
+        public int SightRadius
+        {
+            get { return _speed; }
+            set
+            {
+                if (value >= 0)
+                    _sightRadius = value;
+            }
+        }
+
+        /// <summary>
+        /// Determines if, and how far a creature can see without a light source.
+        /// </summary>
+        private int _darkVision;
+        public int DarkVision
+        {
+            get { return _darkVision; }
+            set
+            {
+                if (value >= 0)
+                    _darkVision = value;
+            }
+        }
+
+        /// <summary>
+        /// Determines how proficient the user is with melee attacks. The higher this stat, the likelier
+        /// the user is to hit his opponent.
+        /// </summary>
+        private double _meleeSkill;
+        public double MeleeSkill
+        {
+            get { return _meleeSkill; }
+            set
+            {
+                if (value > 0)
+                    _meleeSkill = value;
+            }
+        }
+
+        /// <summary>
+        /// Determines how proficient the user is with ranged, non-magical attacks. The higher this stat, the 
+        /// likelier the user is to hit his opponent.
+        /// </summary>
+        private double _rangedSkill;
+        public double RangedSkill
+        {
+            get { return _rangedSkill; }
+            set
+            {
+                if (value > 0)
+                    _rangedSkill = value;
+            }
+        }
+
+        /// <summary>
+        /// Determines how proficient the user is with magic. The higher the stat, the likelier the user is
+        /// in succeeding to cast the spell.
+        /// </summary>
+        private double _magicSkill;
+        public double MagicSkill
+        {
+            get { return _magicSkill; }
+            set
+            {
+                if (value > 0)
+                    _magicSkill = value;
+            }
+        }
+
+        private bool _isCaster;
+        public bool IsCaster { get; set; }
         #endregion
 
         /// <summary>

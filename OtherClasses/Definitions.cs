@@ -55,5 +55,13 @@ namespace WpfApp1
                 return "Excellent";
         }
 
+        //Hat, Amulet, Shirt, Gloves, Hands x2, Ring x2, Pants, Boots
+        public const int NUM_OF_EQUIPMENT_SLOTS = 10;
+        public enum EnumBodyParts
+        {
+            Hat, Amulet, Shirt, Gloves, LeftHand,
+            RightHand, LeftRing, RightRing, Pants, Boots
+        };
+
     }
 }

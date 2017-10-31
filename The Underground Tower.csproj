@@ -79,6 +79,9 @@
     <Compile Include="Pages\pageCharacterCreation.xaml.cs">
       <DependentUpon>pageCharacterCreation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\pageMainGame.xaml.cs">
+      <DependentUpon>pageMainGame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\pageMainMenu.xaml.cs">
       <DependentUpon>pageMainMenu.xaml</DependentUpon>
     </Compile>
@@ -109,6 +112,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\pageCharacterCreation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\pageMainGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,6 +185,7 @@
   <ItemGroup>
     <Content Include="Assets\Sounds\Nonstop.mp3" />
     <Content Include="Assets\Sounds\Sword Slash.mp3" />
+    <Resource Include="Assets\XML Files\Monsters.xml" />
     <Resource Include="Assets\XML Files\TowerDepths.xml" />
     <Resource Include="Assets\XML Files\Difficulties.xml" />
   </ItemGroup>

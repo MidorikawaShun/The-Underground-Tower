@@ -78,6 +78,34 @@ namespace WpfApp1
             set { _survival = value; }
         }
 
+        /// <summary>
+        /// Determines how far a creature can see.
+        /// </summary>
+        private int _sightRadius;
+        public int SightRadius
+        {
+            get { return _speed; }
+            set
+            {
+                if (value >= 0)
+                    _sightRadius = value;
+            }
+        }
+
+        /// <summary>
+        /// Determines if, and how far a creature can see without a light source.
+        /// </summary>
+        private int _darkVision;
+        public int DarkVision
+        {
+            get { return _darkVision; }
+            set
+            {
+                if (value >= 0)
+                    _darkVision = value;
+            }
+        }
+
         #endregion
         #region Constructors
         /// <summary>
@@ -103,6 +131,8 @@ namespace WpfApp1
                 {
                     Movement = Convert.ToInt32(privacyType.ChildNodes[0].Value);
                     Speed = Convert.ToInt32(privacyType.ChildNodes[1].Value);
+                    SightRadius = Convert.ToInt32(privacyType.ChildNodes[2].Value);
+                    DarkVision = Convert.ToInt32(privacyType.ChildNodes[3].Value);
                 }
             }
             GameData.RACES.Add(this);
