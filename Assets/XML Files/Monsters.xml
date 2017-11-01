@@ -3,6 +3,6 @@
   <Monster Name="">
     <Description></Description>
     <HP></HP>
-    
+    <RangedAttacker>True</RangedAttacker>
   </Monster>
 </Monsters>
