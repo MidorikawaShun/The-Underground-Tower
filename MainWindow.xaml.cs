@@ -19,7 +19,7 @@ using WpfApp1.Windows;
 using WpfApp1.Pages;
 using WpfApp1.Windows.MetaMenus;
 using static WpfApp1.Definitions;
-using static WpfApp1.Utilities.Sound;
+using static TheUndergroundTower.Options.Sound;
 
 namespace WpfApp1
 {

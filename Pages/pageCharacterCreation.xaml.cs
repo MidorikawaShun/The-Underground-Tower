@@ -31,7 +31,7 @@ namespace WpfApp1.Pages
         private List<Border> RaceElements { get; set; }
         private List<Border> ClassElements { get; set; }
         private Race ChosenRace { get; set; }
-        private Class ChosenClass { get; set; }
+        private Career ChosenClass { get; set; }
         private TowerDepth ChosenDepth { get; set; }
         private Difficulty ChosenDifficulty { get; set; }
         private int[] PlayerStats { get; set; }
@@ -42,7 +42,7 @@ namespace WpfApp1.Pages
         public pageCharacterCreation()
         {
             GameData.InitializeRaces();
-            GameData.InitializeClasses();
+            GameData.InitializeCareer();
             GameData.InitializeDifficulties();
             GameData.InitializeTowerDepths();
             InitializeComponent();
@@ -159,7 +159,7 @@ namespace WpfApp1.Pages
         private void CreateClassChoiceStack()
         {
             ClassElements = new List<Border>();
-            foreach (Class CLASS in GameData.CLASSES)
+            foreach (Career CLASS in GameData.CAREERS)
             {
                 Border classBorder = CreateBorderAndStack(CLASS);
                 classBorder.Name = CLASS.ID;
@@ -179,7 +179,7 @@ namespace WpfApp1.Pages
             }
         }
 
-        private WrapPanel CreateClassInformationDisplay(Class CLASS)
+        private WrapPanel CreateClassInformationDisplay(Career CLASS)
         {
             WrapPanel wrapPanel = new WrapPanel();
             wrapPanel.Margin = new Thickness(0, 15, 0, -15);
@@ -256,7 +256,7 @@ namespace WpfApp1.Pages
             //CanvasNameChoice = Utilities.GetObjectByName<Canvas>(this, "NameChoice");
             foreach (Border border in ClassElements)
                 if (border.HasChild(border, sender))
-                    ChosenClass = GameObject.GetByID(border.Name) as Class;
+                    ChosenClass = GameObject.GetByID(border.Name) as Career;
             lblClass.Content = ChosenClass.Name;
             PlayerStats = new int[6];
             RollAndDisplayStats();

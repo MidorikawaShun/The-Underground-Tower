@@ -9,7 +9,7 @@
       
       Title="pageMainGame">
 
-    <Grid>
-        
-    </Grid>
+    <UniformGrid>
+        <Image Source=""></Image>
+    </UniformGrid>
 </Page>

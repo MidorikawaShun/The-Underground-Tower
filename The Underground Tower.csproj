@@ -44,6 +44,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Drawing.Primitives.4.3.0\lib\net45\System.Drawing.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -65,17 +69,19 @@
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="Creatures\Player.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="OtherClasses\Armor.cs" />
-    <Compile Include="OtherClasses\Class.cs" />
-    <Compile Include="OtherClasses\Definitions.cs" />
-    <Compile Include="OtherClasses\Difficulty.cs" />
-    <Compile Include="OtherClasses\GameData.cs" />
-    <Compile Include="OtherClasses\GameObject.cs" />
-    <Compile Include="OtherClasses\GameStatus.cs" />
-    <Compile Include="OtherClasses\Item.cs" />
-    <Compile Include="OtherClasses\ObjectBase.cs" />
-    <Compile Include="OtherClasses\TowerDepth.cs" />
-    <Compile Include="OtherClasses\Weapon.cs" />
+    <Compile Include="Items\Armor.cs" />
+    <Compile Include="Character\Career.cs" />
+    <Compile Include="GameProperties\Definitions.cs" />
+    <Compile Include="Options\Difficulty.cs" />
+    <Compile Include="GameProperties\GameData.cs" />
+    <Compile Include="GameProperties\GameObject.cs" />
+    <Compile Include="GameProperties\GameStatus.cs" />
+    <Compile Include="Items\Item.cs" />
+    <Compile Include="Pathfinding\Map.cs" />
+    <Compile Include="Pathfinding\Tile.cs" />
+    <Compile Include="Utilities\ObjectBase.cs" />
+    <Compile Include="Options\TowerDepth.cs" />
+    <Compile Include="Items\Weapon.cs" />
     <Compile Include="Pages\pageCharacterCreation.xaml.cs">
       <DependentUpon>pageCharacterCreation.xaml</DependentUpon>
     </Compile>
@@ -85,8 +91,9 @@
     <Compile Include="Pages\pageMainMenu.xaml.cs">
       <DependentUpon>pageMainMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OtherClasses\Race.cs" />
-    <Compile Include="OtherClasses\Utilities.cs" />
+    <Compile Include="Character\Race.cs" />
+    <Compile Include="Options\Sound.cs" />
+    <Compile Include="Utilities\Utilities.cs" />
     <Compile Include="Windows\MetaMenus\ErrorPrompt.xaml.cs">
       <DependentUpon>ErrorPrompt.xaml</DependentUpon>
     </Compile>
@@ -159,6 +166,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.manifest" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -183,8 +191,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Resource Include="Assets\Images\rltiles-2d.png" />
     <Content Include="Assets\Sounds\Nonstop.mp3" />
     <Content Include="Assets\Sounds\Sword Slash.mp3" />
+    <Resource Include="Assets\XML Files\Tiles.xml" />
     <Resource Include="Assets\XML Files\Monsters.xml" />
     <Resource Include="Assets\XML Files\TowerDepths.xml" />
     <Resource Include="Assets\XML Files\Difficulties.xml" />

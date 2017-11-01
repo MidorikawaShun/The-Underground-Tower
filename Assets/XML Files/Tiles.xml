@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tiles>
+  <Tile Name="Ordinary Wall">
+    <Description>This is just an ordinary wall.</Description>
+    <Seethrough>False</Seethrough>
+    <Walkable>False</Walkable>
+    <Index>1365</Index>
+  </Tile>
+  
+</Tiles>

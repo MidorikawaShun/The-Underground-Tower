@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using WpfApp1.Windows.MetaMenus;
-using static WpfApp1.Utilities;
+using static WpfApp1.Options;
 
 namespace TheUndergroundTower.OtherClasses
 {

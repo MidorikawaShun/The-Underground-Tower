@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static WpfApp1.Utilities.ErrorLog;
+using static WpfApp1.Options.ErrorLog;
 
 namespace WpfApp1.Windows.MetaMenus
 {

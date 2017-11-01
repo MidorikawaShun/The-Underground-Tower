@@ -11,7 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static WpfApp1.Utilities;
+using TheUndergroundTower.Options;
+using static WpfApp1.Options;
 
 namespace TheUndergroundTower.Windows
 {

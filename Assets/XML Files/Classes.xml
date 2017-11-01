@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Classes>
-  <Class Name="Warrior">
+<Careers>
+  <Career Name="Warrior">
     <Public>
       <Description>A melee fighter who loves to get up close and fight with a weapon.</Description>
       <IsCaster>False</IsCaster>
@@ -30,5 +30,5 @@
         </Armor>
       </StartingEquipment>
     </Private>
-  </Class>
-</Classes>
+  </Career>
+</Careers>

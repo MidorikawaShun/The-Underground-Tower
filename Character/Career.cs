@@ -8,7 +8,7 @@ using WpfApp1;
 
 namespace TheUndergroundTower.OtherClasses
 {
-    public class Class : GameObject
+    public class Career : GameObject
     {
 
         #region Properties
@@ -65,10 +65,10 @@ namespace TheUndergroundTower.OtherClasses
         }
         #endregion
 
-        public Class(XmlNode newClass)
+        public Career(XmlNode newCareer)
         {
-            Name = newClass.Attributes["Name"].Value;
-            foreach (XmlNode privacyType in newClass)
+            Name = newCareer.Attributes["Name"].Value;
+            foreach (XmlNode privacyType in newCareer)
             {
                 if (privacyType.Name.Equals("Public"))
                 {
@@ -94,7 +94,7 @@ namespace TheUndergroundTower.OtherClasses
                     }
                 }
             }
-            GameData.CLASSES.Add(this);
+            GameData.CAREERS.Add(this);
         }
     }
 

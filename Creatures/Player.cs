@@ -13,8 +13,8 @@ namespace WpfApp1.Creatures
         private Race _playerRace;
         public Race PlayerRace { get => _playerRace; set => _playerRace = value; }
 
-        private Class _playerClass;
-        public Class PlayerClass { get => _playerClass; set => _playerClass = value; }
+        private Career _playerClass;
+        public Career PlayerClass { get => _playerClass; set => _playerClass = value; }
 
         private int[] _playerStats;
         public int this[int number]
@@ -73,7 +73,7 @@ namespace WpfApp1.Creatures
             DarkVision = chosenRace.DarkVision;
         }
 
-        public void SetClass(Class chosenClass)
+        public void SetClass(Career chosenClass)
         {
             Inventory = chosenClass.StartingInventory;
             MeleeSkill = chosenClass.MeleeSkill;

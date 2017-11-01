@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static WpfApp1.Utilities;
+using static WpfApp1.Options;
 
 namespace TheUndergroundTower.OtherClasses
 {
