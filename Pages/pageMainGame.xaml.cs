@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1;
 
 namespace TheUndergroundTower.Pages
 {
@@ -23,6 +24,8 @@ namespace TheUndergroundTower.Pages
         public pageMainGame()
         {
             InitializeComponent();
+            GameData.InitializeTiles();
+            zeroZero.Source = GameData.TILES.FirstOrDefault().Image;
         }
     }
 }

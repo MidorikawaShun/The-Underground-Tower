@@ -54,7 +54,6 @@ C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainGame.b
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\bin\Debug\TheUndergroundTower.exe.config
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\bin\Debug\TheUndergroundTower.exe
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\bin\Debug\TheUndergroundTower.pdb
-C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\The Underground Tower.csprojResolveAssemblyReference.cache
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\MainWindow.g.cs
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Pages\pageCharacterCreation.g.cs
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Pages\pageMainGame.g.cs
@@ -80,3 +79,5 @@ C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\TheUndergroundT
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\The Underground Tower.csproj.GenerateResource.Cache
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\TheUndergroundTower.exe
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\TheUndergroundTower.pdb
+C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\bin\Debug\System.Drawing.Primitives.dll
+C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\The Underground Tower.csprojResolveAssemblyReference.cache

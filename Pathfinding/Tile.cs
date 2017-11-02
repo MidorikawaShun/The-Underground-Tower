@@ -7,6 +7,7 @@ using TheUndergroundTower.OtherClasses;
 using System.Drawing;
 using System.Xml;
 using WpfApp1;
+using System.Windows.Media;
 
 namespace TheUndergroundTower.Pathfinding
 {
@@ -17,7 +18,7 @@ namespace TheUndergroundTower.Pathfinding
     {
         private bool _walkable, _visible, _seethrough;
         private List<GameObject> _gameObjects;
-        private Bitmap _image;
+        private ImageSource _image;
         private int _index;
         
         /// <summary>
@@ -34,12 +35,14 @@ namespace TheUndergroundTower.Pathfinding
             _gameObjects = new List<GameObject>();
             _index = Convert.ToInt32(tile.ChildNodes[3].FirstChild.Value);
             _image = CreateTile.GetImageFromTileset(_index);
+            if (GameData.TILES == null) GameData.TILES = new List<Tile>();
+            GameData.TILES.Add(this);
         }
 
-       /// <summary>
-       /// copy constructor to multiply tiles
-       /// </summary>
-       /// <param name="tile"></param>
+        /// <summary>
+        /// copy constructor to multiply tiles
+        /// </summary>
+        /// <param name="tile"></param>
         public Tile(Tile tile)
         {
             Name = tile.Name;
@@ -49,12 +52,13 @@ namespace TheUndergroundTower.Pathfinding
             _seethrough = tile.Seethrough;
             _gameObjects = new List<GameObject>();
             _image = tile.Image;
+          
         }
 
         public bool Walkable { get => _walkable; set => _walkable = value; }
         public bool Visible { get => _visible; set => _visible = value; }
         public bool Seethrough { get => _seethrough; set => _seethrough = value; }
-        public Bitmap Image { get => _image; set => _image = value; }
+        public ImageSource Image { get => _image; set => _image = value; }
 
 
     }

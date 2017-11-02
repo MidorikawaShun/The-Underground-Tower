@@ -126,9 +126,7 @@ namespace WpfApp1.Creatures
             }
         }
 
-        private bool 
-            {
-            _isCaster;
+        private bool _isCaster;
         public bool IsCaster { get; set; }
         #endregion
 

@@ -8,7 +8,9 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Xml;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
@@ -282,7 +284,7 @@ namespace WpfApp1
             OrdinaryWall = 1365
         }
 
-        private const int TILESET_WIDTH = 29, TILE_WIDTH = 32, TILE_HEIGHT = 32;
+        private const int TILESET_WIDTH = 30, TILE_WIDTH = 32, TILE_HEIGHT = 30;
         private const string TILESET = "../../Assets/Images/rltiles-2d.png";
 
         /// <summary>
@@ -291,14 +293,22 @@ namespace WpfApp1
         /// <param name="index"></param>
         /// <param name="imagePath"></param>
         /// <returns></returns>
-        public static Bitmap GetImageFromTileset(int index)
+        public static ImageSource GetImageFromTileset(int index)
         {
-            int row = index / TILESET_WIDTH;
-            int col = index % TILESET_WIDTH;
+            int row = index / TILESET_WIDTH * TILE_HEIGHT;
+            int col = (index % TILESET_WIDTH) * TILE_WIDTH;
             Bitmap source = new Bitmap(TILESET);
 
-            return source.Clone(new System.Drawing.Rectangle(row, col, TILE_WIDTH, TILE_HEIGHT), source.PixelFormat);
+            Rectangle r = new Rectangle(row, col, TILE_WIDTH, TILE_HEIGHT);
+            Bitmap bmp = new Bitmap(r.Width, r.Height);
 
+            Graphics g = Graphics.FromImage(bmp);
+            g.DrawImage(source, -r.X, -r.Y);
+            
+            var handle = bmp.GetHbitmap();
+            return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
+
+        
     }
 }

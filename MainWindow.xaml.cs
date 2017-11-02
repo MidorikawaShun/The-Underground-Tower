@@ -20,6 +20,7 @@ using WpfApp1.Pages;
 using WpfApp1.Windows.MetaMenus;
 using static WpfApp1.Definitions;
 using static TheUndergroundTower.Options.Sound;
+using TheUndergroundTower.Pages;
 
 namespace WpfApp1
 {
@@ -33,8 +34,9 @@ namespace WpfApp1
             InitializeComponent();
             GameStatus.CREATURES = new List<Creature>();
             Definitions.MAIN_WINDOW = this;
-            Main.Content = new pageMainMenu();
+            //Main.Content = new pageMainMenu();
             //PlaySound(EnumSoundFiles.MainMenuMusic,EnumMediaPlayers.MusicPlayer);
+            Main.Content = new pageMainGame();
         }
     }
 }
