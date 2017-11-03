@@ -1,0 +1,44 @@
+
+
+03-Nov-17 01:36:09 - An error has occured while attempting to populate Tower Depths from XML.
+System.OutOfMemoryException: Out of memory.
+   at System.Drawing.Bitmap.Clone(Rectangle rect, PixelFormat format)
+   at WpfApp1.CreateTile.GetImageFromTileset(Int32 index) in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 305
+   at TheUndergroundTower.Pathfinding.Tile..ctor(XmlNode tile) in C:\Users\matan\Source\Repos\The-Underground-Tower\Pathfinding\Tile.cs:line 37
+   at WpfApp1.Options.Xml.PopulateTiles() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 107
+
+
+03-Nov-17 01:36:41 - An error has occured while attempting to populate Tower Depths from XML.
+System.OutOfMemoryException: Out of memory.
+   at System.Drawing.Bitmap.Clone(Rectangle rect, PixelFormat format)
+   at WpfApp1.CreateTile.GetImageFromTileset(Int32 index) in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 305
+   at TheUndergroundTower.Pathfinding.Tile..ctor(XmlNode tile) in C:\Users\matan\Source\Repos\The-Underground-Tower\Pathfinding\Tile.cs:line 37
+   at WpfApp1.Options.Xml.PopulateTiles() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 107
+
+
+03-Nov-17 01:45:22 - An error has occured while attempting to populate Tower Depths from XML.
+System.ArgumentException: Parameter is not valid.
+   at System.Drawing.Image.get_Width()
+   at System.Drawing.Bitmap.GetHbitmap(Color background)
+   at System.Drawing.Bitmap.GetHbitmap()
+   at WpfApp1.CreateTile.GetImageFromTileset(Int32 index) in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 324
+   at TheUndergroundTower.Pathfinding.Tile..ctor(XmlNode tile) in C:\Users\matan\Source\Repos\The-Underground-Tower\Pathfinding\Tile.cs:line 37
+   at WpfApp1.Options.Xml.PopulateTiles() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 107
+
+
+03-Nov-17 01:48:46 - An error has occured while attempting to populate Tower Depths from XML.
+System.ArgumentException: Parameter is not valid.
+   at System.Drawing.Image.get_Width()
+   at System.Drawing.Bitmap.GetHbitmap(Color background)
+   at System.Drawing.Bitmap.GetHbitmap()
+   at WpfApp1.CreateTile.GetImageFromTileset(Int32 index)
+   at TheUndergroundTower.Pathfinding.Tile..ctor(XmlNode tile)
+   at WpfApp1.Options.Xml.PopulateTiles()
+
+
+03-Nov-17 01:54:26 - An error has occured while attempting to populate Tower Depths from XML.
+System.OutOfMemoryException: Out of memory.
+   at System.Drawing.Bitmap.Clone(Rectangle rect, PixelFormat format)
+   at WpfApp1.CreateTile.GetImageFromTileset(Int32 index) in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 302
+   at TheUndergroundTower.Pathfinding.Tile..ctor(XmlNode tile) in C:\Users\matan\Source\Repos\The-Underground-Tower\Pathfinding\Tile.cs:line 37
+   at WpfApp1.Options.Xml.PopulateTiles() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 107

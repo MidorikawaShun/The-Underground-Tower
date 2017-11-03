@@ -270,7 +270,7 @@ namespace WpfApp1
             }
         }
 
-        
+
     }
 
     /// <summary>
@@ -284,7 +284,7 @@ namespace WpfApp1
             OrdinaryWall = 1365
         }
 
-        private const int TILESET_WIDTH = 30, TILE_WIDTH = 32, TILE_HEIGHT = 30;
+        private const int TILESET_WIDTH = 30, TILE_WIDTH = 32, TILE_HEIGHT = 32;
         private const string TILESET = "../../Assets/Images/rltiles-2d.png";
 
         /// <summary>
@@ -299,16 +299,16 @@ namespace WpfApp1
             int col = (index % TILESET_WIDTH) * TILE_WIDTH;
             Bitmap source = new Bitmap(TILESET);
 
-            Rectangle r = new Rectangle(row, col, TILE_WIDTH, TILE_HEIGHT);
-            Bitmap bmp = new Bitmap(r.Width, r.Height);
+            Bitmap bmp = source.Clone(new Rectangle(col,row,TILE_WIDTH,TILE_HEIGHT), source.PixelFormat);
 
-            Graphics g = Graphics.FromImage(bmp);
-            g.DrawImage(source, -r.X, -r.Y);
-            
             var handle = bmp.GetHbitmap();
             return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
 
-        
+
+
+
+
+
     }
 }
