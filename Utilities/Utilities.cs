@@ -131,7 +131,7 @@ namespace WpfApp1
                 }
                 catch (Exception ex)
                 {
-                    ErrorLog.Log(ex, "An error has occured while attempting to populate Tower Depths from XML.");
+                    ErrorLog.Log(ex, "An error has occured while attempting to populate Tiles from XML.");
                 }
             }
 
@@ -326,7 +326,9 @@ namespace WpfApp1
         /// </summary>
         public enum Tiles
         {
-            OrdinaryWall = 1365
+            OrdinaryWall = 1365,
+            OrdinaryFloor = 1434,
+            Jelly = 146
         }
 
         /// <summary>
@@ -354,6 +356,16 @@ namespace WpfApp1
             //convert bitmap into an imagesource and return it
             var handle = bmp.GetHbitmap();
             return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        }
+
+        public static ImageSource Overlay(ImageSource first, ImageSource second)
+        {
+            var group = new DrawingGroup();
+            group.Children.Add(new ImageDrawing(first, new Rect(0, 0, first.Width, first.Height)));
+            group.Children.Add(new ImageDrawing(second,new Rect(0, 0, first.Width, first.Height)));
+
+            return new DrawingImage(group);
+
         }
 
 

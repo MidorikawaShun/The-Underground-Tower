@@ -58,7 +58,6 @@ C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Pages\pageMainG
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Pages\pageMainMenu.g.cs
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ErrorPrompt.g.cs
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ExitDialog.g.cs
-C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\MessagePrompt.g.cs
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowOptions.g.cs
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\App.g.cs
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\TheUndergroundTower_Content.g.cs
@@ -70,7 +69,6 @@ C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Pages\pageMainG
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Pages\pageMainMenu.baml
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ErrorPrompt.baml
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ExitDialog.baml
-C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\MessagePrompt.baml
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowOptions.baml
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\TheUndergroundTower.g.resources
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\TheUndergroundTower.Properties.Resources.resources
@@ -82,3 +80,5 @@ C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\The Underground
 C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\System.Drawing.Primitives.dll
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.g.cs
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.baml
+C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.g.cs
+C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.baml

@@ -41,6 +41,9 @@ namespace TheUndergroundTower.Pathfinding
         private ImageSource _image;
         public ImageSource Image { get => _image; set => _image = value; }
 
+        private List<GameObject> _objects;
+        public List<GameObject> Objects { get => _objects;  set => _objects = value; }
+
         #endregion
 
         private int _index;

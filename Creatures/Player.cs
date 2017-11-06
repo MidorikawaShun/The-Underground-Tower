@@ -78,12 +78,15 @@ namespace WpfApp1.Creatures
             }
         }
 
+        public const int _imageIndex = 146;
+      
+       
         #endregion
         #region Constructors
         /// <summary>
         /// Constructor
         /// </summary>
-        public Player()
+        public Player() : base(_imageIndex)
         {
             _playerStats = new int[Definitions.NUMBER_OF_CHARACTER_STATS];
             _lightRadius = 5;

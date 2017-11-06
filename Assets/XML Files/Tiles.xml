@@ -6,5 +6,12 @@
     <Walkable>False</Walkable>
     <Index>1365</Index>
   </Tile>
+  <Tile Name="Ordinary Floor">
+    <Description>This is just an ordinary floor.</Description>
+    <Seethrough>True</Seethrough>
+    <Walkable>True</Walkable>
+    <Index>1434</Index>
+  </Tile>
+  
   
 </Tiles>

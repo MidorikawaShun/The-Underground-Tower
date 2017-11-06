@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using TheUndergroundTower.OtherClasses;
 
 namespace WpfApp1.Creatures
@@ -117,15 +118,26 @@ namespace WpfApp1.Creatures
         /// </summary>
         private bool _isCaster;
         public bool IsCaster { get; set; }
+
+        /// <summary>
+        /// The visual representation of the creature.
+        /// </summary>
+        private ImageSource _image;
+        public ImageSource Image { get => _image; set => _image = value; }
+        
+        private int _index;
+        public int Index { get => _index; set => _index = value; }
+
         #endregion
 
         /// <summary>
         /// Constructor for the Creature class.
         /// </summary>
-        public Creature()
+        public Creature(int index)
         {
             _hp = 1;
             _speed = 100;
+            Image = CreateTile.GetImageFromTileset(index);
             GameStatus.CREATURES.Add(this);
         }
 

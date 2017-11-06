@@ -4,3 +4,9 @@
 System.NullReferenceException: Object reference not set to an instance of an object.
    at WpfApp1.Race..ctor(XmlNode race) in C:\Users\matan\Source\Repos\The-Underground-Tower\Character\Race.cs:line 164
    at WpfApp1.Utilities.Xml.PopulateRaces() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 51
+
+
+06/11/2017 21:10:17 - An error has occured while attempting to populate Tower Depths from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.Pathfinding.Tile..ctor(XmlNode tile) in C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\Pathfinding\Tile.cs:line 57
+   at WpfApp1.Utilities.Xml.PopulateTiles() in C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\Utilities\Utilities.cs:line 130
