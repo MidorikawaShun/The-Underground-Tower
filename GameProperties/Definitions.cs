@@ -4,14 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApp1
+namespace WpfApp1.GameProperties
 {
+    /// <summary>
+    /// Static definitions and constants we will use for the game.
+    /// </summary>
     public static class Definitions
     {
-
+        /// <summary>
+        /// The main WPF window that everything happens on.
+        /// We will use smaller windows but only as prompts.
+        /// </summary>
         public static MainWindow MAIN_WINDOW { get; set; }
 
+        /// <summary>
+        /// The number of stats that the player has.
+        /// </summary>
         public const int NUMBER_OF_CHARACTER_STATS = 6;
+
+        /// <summary>
+        /// An enum for easy access to the stats.
+        /// </summary>
         public enum EnumCharacterStats
         {
             Strength=0,
@@ -22,9 +35,16 @@ namespace WpfApp1
             Charisma=5
         };
 
+        /// <summary>
+        /// The XML files that the game uses.
+        /// </summary>
         public static string[] XML_FILES = { @"../../Assets/XML Files/Races.xml", @"../../Assets/XML Files/Careers.xml" ,
             @"../../Assets/XML Files/Difficulties.xml",@"../../Assets/XML Files/TowerDepths.xml",
             @"../../Assets/XML Files/Tiles.xml" };
+
+        /// <summary>
+        /// Easy access to the XML files.
+        /// </summary>
         public enum EnumXmlFiles
         {
             XmlFileRaces=0,
@@ -34,13 +54,24 @@ namespace WpfApp1
             XmlFileTiles=4
         };
 
+        /// <summary>
+        /// The sound files we use.
+        /// </summary>
         public static string[] SOUND_FILES = { @"../../Assets/Sounds/Nonstop.mp3", @"../../Assets/Sounds/Sword Slash.mp3" };
+        /// <summary>
+        /// Enum for easy access to the sound files.
+        /// </summary>
         public enum EnumSoundFiles
         {
             MainMenuMusic=0,
             SwordSlash=1
         };
 
+        /// <summary>
+        /// Used instead of showing the player raw stats.
+        /// </summary>
+        /// <param name="rating">The player stats.</param>
+        /// <returns>A nicely-shown string</returns>
         public static string SkillRating(double rating)
         {
             if (rating == 0)
@@ -57,8 +88,15 @@ namespace WpfApp1
                 return "Excellent";
         }
 
-        //Hat, Amulet, Shirt, Gloves, Hands x2, Ring x2, Pants, Boots
+        /// <summary>
+        /// Hat, Amulet, Shirt, Gloves, Hands x2, Ring x2, Pants, Boots.
+        /// Hands are what the player is holding.
+        /// </summary>
         public const int NUM_OF_EQUIPMENT_SLOTS = 10;
+        
+        /// <summary>
+        /// Enum for easy access.
+        /// </summary>
         public enum EnumBodyParts
         {
             Hat, Amulet, Shirt, Gloves, LeftHand,

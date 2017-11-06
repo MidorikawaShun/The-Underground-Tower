@@ -1,41 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using WpfApp1.Windows.MetaMenus;
-using static WpfApp1.Options;
+using static WpfApp1.Utilities;
 
 namespace TheUndergroundTower.OtherClasses
 {
+    /// <summary>
+    /// Represents a weapon object that the player can wield.
+    /// </summary>
     public class Weapon : Item
     {
 
         #region Properties
 
-        private double _speed;
-        public double Speed
-        {
-            get { return _speed; }
-            set
-            {
-                if (value > 0)
-                    _speed = value;
-            }
-        }
-
+        /// <summary>
+        /// The weapon's bonus to helping the player hit enemies.
+        /// </summary>
         private double _hitBonus;
         public double HitBonus
         {
             get { return _hitBonus; }
             set
             {
-                if (value > 0)
+                if (value >= 0)
                     _hitBonus = value;
             }
         }
 
+        /// <summary>
+        /// The minimum and maximum damage the weapon can deal, before adjustments
+        /// according to player stats.
+        /// </summary>
         private string _damageRange;
         public string DamageRange
         {
@@ -60,6 +54,9 @@ namespace TheUndergroundTower.OtherClasses
             }
         }
 
+        /// <summary>
+        /// Does the weapon require the use of two hands?
+        /// </summary>
         private bool _twoHanded;
         public bool TwoHanded
         {
@@ -83,7 +80,6 @@ namespace TheUndergroundTower.OtherClasses
         {
             Name = weapon.Attributes["Name"].Value;
             Description = weapon.ChildNodes[0].FirstChild.Value;
-            Speed = Convert.ToDouble(weapon.ChildNodes[1].FirstChild.Value);
             HitBonus = Convert.ToDouble(weapon.ChildNodes[2].FirstChild.Value);
             DamageRange = weapon.ChildNodes[3].FirstChild.Value;
             TwoHanded = Convert.ToBoolean(weapon.ChildNodes[4].FirstChild.Value);

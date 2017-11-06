@@ -26,20 +26,6 @@ namespace WpfApp1.Creatures
         }
 
         /// <summary>
-        /// Determines how quickly a creature can move.
-        /// </summary>
-        private int _movement;
-        public int Movement
-        {
-            get { return _movement; }
-            set
-            {
-                if (value >= 0)
-                    _movement = value;
-            }
-        }
-
-        /// <summary>
         /// Determines how quickly a creature can perform actions that do not involve movement.
         /// </summary>
         private int _speed;
@@ -126,6 +112,9 @@ namespace WpfApp1.Creatures
             }
         }
 
+        /// <summary>
+        /// Determines if a creature can cast spells.
+        /// </summary>
         private bool _isCaster;
         public bool IsCaster { get; set; }
         #endregion
@@ -136,7 +125,6 @@ namespace WpfApp1.Creatures
         public Creature()
         {
             _hp = 1;
-            _movement = 100;
             _speed = 100;
             GameStatus.CREATURES.Add(this);
         }

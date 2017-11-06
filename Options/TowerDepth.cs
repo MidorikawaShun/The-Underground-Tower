@@ -8,6 +8,9 @@ using WpfApp1;
 
 namespace TheUndergroundTower.OtherClasses
 {
+    /// <summary>
+    /// The object describing the possible tower depths
+    /// </summary>
     public class TowerDepth : GameObject
     {
         private int _minimumFloors;
@@ -26,7 +29,7 @@ namespace TheUndergroundTower.OtherClasses
             MinimumFloors = Convert.ToInt32(towerDepth.ChildNodes[1].FirstChild.Value);
             MaximumFloors = Convert.ToInt32(towerDepth.ChildNodes[2].FirstChild.Value);
             FloorSizeMultiplier = Convert.ToDouble(towerDepth.ChildNodes[3].FirstChild.Value);
-            GameData.TOWER_DEPTHS.Add(this);
+            GameData.POSSIBLE_TOWER_DEPTHS.Add(this);
         }
 
     }

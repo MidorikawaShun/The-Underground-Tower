@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace TheUndergroundTower.OtherClasses
 {
+    /// <summary>
+    /// Represents items such as weapons, armours, jewelery, clothing.
+    /// </summary>
     public class Item : GameObject
     {
 
         #region Properties
 
+        /// <summary>
+        /// The weight of the item.
+        /// </summary>
         private double _weight;
         public double Weight
         {
@@ -22,6 +28,9 @@ namespace TheUndergroundTower.OtherClasses
             }
         }
 
+        /// <summary>
+        /// The worth of an item.
+        /// </summary>
         private double _value;
         public double Value
         {
@@ -33,6 +42,9 @@ namespace TheUndergroundTower.OtherClasses
             }
         }
 
+        /// <summary>
+        /// Can the user sell this item?
+        /// </summary>
         private bool _unsellableItem;
         public bool UnsellableItem
         {

@@ -1,26 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml;
 using WpfApp1.Creatures;
-using WpfApp1.Windows;
-using WpfApp1.Pages;
-using WpfApp1.Windows.MetaMenus;
-using static WpfApp1.Definitions;
-using static TheUndergroundTower.Options.Sound;
 using TheUndergroundTower.Pages;
+using WpfApp1.GameProperties;
+using TheUndergroundTower.Windows.MetaMenus;
+using WpfApp1.Pages;
 
 namespace WpfApp1
 {
@@ -34,9 +18,11 @@ namespace WpfApp1
             InitializeComponent();
             GameStatus.CREATURES = new List<Creature>();
             Definitions.MAIN_WINDOW = this;
-            //Main.Content = new pageMainMenu();
+            Main.Content = new pageMainMenu();
             //PlaySound(EnumSoundFiles.MainMenuMusic,EnumMediaPlayers.MusicPlayer);
-            Main.Content = new pageMainGame();
+            //Main.Content = new pageMainGame();
         }
+
+
     }
 }

@@ -8,18 +8,29 @@ using System.Windows.Media;
 
 namespace TheUndergroundTower
 {
+    /// <summary>
+    /// A class for all our extension methods.
+    /// </summary>
     public static class ExtensionMethods
     {
-        public static bool HasChild(this DependencyObject me, DependencyObject parent, object target)
+        /// <summary>
+        /// Checks if a WPF object has a certain child
+        /// </summary>
+        /// <param name="me">the object that this method acts on.</param>
+        /// <param name="target">The object we want to see if it exists.</param>
+        /// <returns>True</returns>
+        public static bool HasChild(this DependencyObject me, object target)
         {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(me); i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                if (child != null && child == target)
-                    return true;
+                DependencyObject child = VisualTreeHelper.GetChild(me, i);
+                if (child == null) return false;
+                if (child == target) return true;
                 else
-                    if (HasChild(me,child, target))
-                    return true;
+                {
+                    if (HasChild(child, target))
+                        return true;
+                }
             }
             return false;
         }

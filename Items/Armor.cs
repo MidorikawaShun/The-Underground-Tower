@@ -7,11 +7,17 @@ using System.Xml;
 
 namespace TheUndergroundTower.OtherClasses
 {
+    /// <summary>
+    /// Represents an armor object that the player can wear.
+    /// </summary>
     public class Armor : Item
     {
 
         #region Properties
 
+        /// <summary>
+        /// How harder to hit does this make the player.
+        /// </summary>
         private int _armorBonus;
         public int ArmorBonus
         {
@@ -19,6 +25,9 @@ namespace TheUndergroundTower.OtherClasses
             set { _armorBonus = value; }
         }
 
+        /// <summary>
+        /// If the armour is held in a hand. Like shields.
+        /// </summary>
         private bool _heldInHand;
         public bool HeldInHand
         {

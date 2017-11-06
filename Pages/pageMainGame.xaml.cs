@@ -25,7 +25,7 @@ namespace TheUndergroundTower.Pages
         {
             InitializeComponent();
             GameData.InitializeTiles();
-            zeroZero.Source = GameData.TILES.FirstOrDefault().Image;
+            zeroZero.Source = GameData.POSSIBLE_TILES.FirstOrDefault().Image;
         }
     }
 }

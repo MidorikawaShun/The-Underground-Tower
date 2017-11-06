@@ -22,9 +22,11 @@ namespace TheUndergroundTower.Windows.MetaMenus
         public windowMessage(string message)
         {
             InitializeComponent();
+            //Sets the error message
             this.DataContext = new { message = message };
             SizeToContent = SizeToContent.WidthAndHeight;
             Window mainWindow = Application.Current.MainWindow;
+            //Centers this window on the parent window
             this.Owner = mainWindow;
             ShowDialog();
         }

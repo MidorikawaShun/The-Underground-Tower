@@ -100,8 +100,8 @@
     <Compile Include="Windows\MetaMenus\ExitDialog.xaml.cs">
       <DependentUpon>ExitDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MetaMenus\MessagePrompt.xaml.cs">
-      <DependentUpon>MessagePrompt.xaml</DependentUpon>
+    <Compile Include="Windows\MetaMenus\windowMessage.xaml.cs">
+      <DependentUpon>windowMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MetaMenus\windowOptions.xaml.cs">
       <DependentUpon>windowOptions.xaml</DependentUpon>
@@ -138,7 +138,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MetaMenus\MessagePrompt.xaml">
+    <Page Include="Windows\MetaMenus\windowMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -187,9 +187,11 @@
     <Resource Include="Assets\Images\Scroll-Background.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\XML Files\Classes.xml" />
+    <Resource Include="Assets\XML Files\Careers.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="WpfApp1\" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Images\rltiles-2d.png" />
     <Content Include="Assets\Sounds\Nonstop.mp3" />

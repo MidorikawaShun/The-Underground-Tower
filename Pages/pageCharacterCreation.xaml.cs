@@ -18,6 +18,7 @@ using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pages;
 using TheUndergroundTower.Windows.MetaMenus;
 using WpfApp1.Creatures;
+using WpfApp1.GameProperties;
 using WpfApp1.OtherClasses;
 
 namespace WpfApp1.Pages
@@ -47,7 +48,7 @@ namespace WpfApp1.Pages
             GameData.InitializeTowerDepths();
             InitializeComponent();
             CreateRaceChoiceStack();
-            CreateClassChoiceStack();
+            CreateCareerChoiceStack();
             InitCharacterFinalization();
         }
 
@@ -106,7 +107,7 @@ namespace WpfApp1.Pages
         private void CreateRaceChoiceStack()
         {
             RaceElements = new List<Border>();
-            foreach (Race race in GameData.RACES)
+            foreach (Race race in GameData.POSSIBLE_RACES)
             {
                 Border raceBorder = CreateBorderAndStack(race);
                 raceBorder.Name = race.ID;
@@ -156,20 +157,20 @@ namespace WpfApp1.Pages
         /// <summary>
         /// Creates the visible race descriptions, information and "choose this race" button.
         /// </summary>
-        private void CreateClassChoiceStack()
+        private void CreateCareerChoiceStack()
         {
             ClassElements = new List<Border>();
-            foreach (Career CLASS in GameData.CAREERS)
+            foreach (Career career in GameData.POSSIBLE_CAREERS)
             {
-                Border classBorder = CreateBorderAndStack(CLASS);
-                classBorder.Name = CLASS.ID;
+                Border classBorder = CreateBorderAndStack(career);
+                classBorder.Name = career.ID;
                 ClassElements.Add(classBorder);
-                StackPanel descPanel = CreateTitleAndDescription(CLASS);
-                WrapPanel wrapPanel = CreateClassInformationDisplay(CLASS);
+                StackPanel descPanel = CreateTitleAndDescription(career);
+                WrapPanel wrapPanel = CreateCareerInformationDisplay(career);
                 Button classSelectButton = new Button();
                 classSelectButton.Height = 40;
                 classSelectButton.Margin = new Thickness { Left = 10, Top = 5, Right = 10, Bottom = 10 };
-                classSelectButton.Content = "Choose this class";
+                classSelectButton.Content = "Choose this career";
                 classSelectButton.Click += btnSelectClass_Click;
                 StackPanel stack = classBorder.Child as StackPanel;
                 stack.Children.Add(descPanel);
@@ -179,12 +180,19 @@ namespace WpfApp1.Pages
             }
         }
 
-        private WrapPanel CreateClassInformationDisplay(Career CLASS)
+        /// <summary>
+        /// Shows how good the career is at the skills.
+        /// </summary>
+        /// <param name="career">The career we want to display stuff</param>
+        /// <returns>A Wrappanel with the required WPF elements</returns>
+        private WrapPanel CreateCareerInformationDisplay(Career career)
         {
             WrapPanel wrapPanel = new WrapPanel();
             wrapPanel.Margin = new Thickness(0, 15, 0, -15);
             wrapPanel.Height = 78;
             wrapPanel.Width = 170;
+            //3 is the number of skills that exist for each career.
+            //Create a textblock displaying information about each skill.
             for (int i = 0; i < 3; i++)
             {
                 TextBlock skill = new TextBlock();
@@ -194,13 +202,13 @@ namespace WpfApp1.Pages
                 switch (i)
                 {
                     case 0:
-                        skill.Text = "Melee skill: " + Definitions.SkillRating(CLASS.MeleeSkill);
+                        skill.Text = "Melee skill: " + Definitions.SkillRating(career.MeleeSkill);
                         break;
                     case 1:
-                        skill.Text = "Ranged skill: " + Definitions.SkillRating(CLASS.RangedSkill);
+                        skill.Text = "Ranged skill: " + Definitions.SkillRating(career.RangedSkill);
                         break;
                     case 2:
-                        skill.Text = "Magic skill: " + Definitions.SkillRating(CLASS.MagicSkill);
+                        skill.Text = "Magic skill: " + Definitions.SkillRating(career.MagicSkill);
                         break;
                 }
                 wrapPanel.Children.Add(skill);
@@ -210,12 +218,17 @@ namespace WpfApp1.Pages
 
         #endregion
         #region Character Creation Finalization
+        /// <summary>
+        /// Creates the comboboxes at the final character creation screen.
+        /// </summary>
         public void InitCharacterFinalization()
         {
-
-            cmbDifficulties.ItemsSource = GameData.DIFFICULTIES.Select(x => x.Name);
+            //Gets a List<string> of all the Difficulty names in POSSIBLE_DIFFICULTIES list.
+            cmbDifficulties.ItemsSource = GameData.POSSIBLE_DIFFICULTIES.Select(x => x.Name);
+            //If the below line doesn't exist, the combobox will have an empty choice.
             cmbDifficulties.SelectedItem = cmbDifficulties.Items[0];
-            cmbTowerDepth.ItemsSource = GameData.TOWER_DEPTHS.Select(x => x.Name);
+            //Same as above.
+            cmbTowerDepth.ItemsSource = GameData.POSSIBLE_TOWER_DEPTHS.Select(x => x.Name);
             cmbTowerDepth.SelectedItem = cmbTowerDepth.Items[0];
         }
         #endregion
@@ -238,10 +251,21 @@ namespace WpfApp1.Pages
             }
         }
 
+        /// <summary>
+        /// Hides the canvas for race-choice and displays career choice canvas.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSelectRace_Click(object sender, RoutedEventArgs e)
         {
+            /*
+                The ID of the race exists on the border as it's name.
+                So iterate over every border and check whether or not
+                it has the button that was clicked. If it does, then
+                we know what race the user has selected.
+            */
             foreach (Border border in RaceElements)
-                if (border.HasChild(border, sender))
+                if (border.HasChild(sender))
                 {
                     ChosenRace = GameObject.GetByID(border.Name) as Race;
                     break;
@@ -251,49 +275,88 @@ namespace WpfApp1.Pages
             CanvasClassChoice.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Hides the canvas for career-choice and displays the character creation finalization canvas.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSelectClass_Click(object sender, RoutedEventArgs e)
         {
-            //CanvasNameChoice = Utilities.GetObjectByName<Canvas>(this, "NameChoice");
+            /*
+                The ID of the career exists on the border as it's name.
+                So iterate over every border and check whether or not
+                it has the button that was clicked. If it does, then
+                we know what career the user has selected.
+            */
             foreach (Border border in ClassElements)
-                if (border.HasChild(border, sender))
+                if (border.HasChild(sender))
+                {
                     ChosenClass = GameObject.GetByID(border.Name) as Career;
+                    break;
+                }
             lblClass.Content = ChosenClass.Name;
+            //Initialize the stats the player will have
             PlayerStats = new int[6];
             RollAndDisplayStats();
             CanvasClassChoice.Visibility = Visibility.Hidden;
             CanvasCharacterFinalization.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// An event for when the user chooses a different difficulty.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmbDifficulties_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ChosenDifficulty = GameData.DIFFICULTIES.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
+            ChosenDifficulty = GameData.POSSIBLE_DIFFICULTIES.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
             txtDifficulties.Text = ChosenDifficulty.Description;
         }
 
+        /// <summary>
+        /// An event for when the user chooses a different tower depth.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmbTowerDepth_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ChosenDepth = GameData.TOWER_DEPTHS.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
+            ChosenDepth = GameData.POSSIBLE_TOWER_DEPTHS.Where(x => x.Name.Equals(e.AddedItems[0])).FirstOrDefault();
             txtTowerDepth.Text = ChosenDepth.Description;
         }
 
+        /// <summary>
+        /// An event to change the stats the player will start with.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReroll_Click(object sender, RoutedEventArgs e)
         {
             RollAndDisplayStats();
         }
 
+        /// <summary>
+        /// Restart character creation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnRestart_Click(object sender, RoutedEventArgs e)
         {
             CanvasCharacterFinalization.Visibility = Visibility.Hidden;
             CanvasNameChoice.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Finishing character creation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnProceed_Click(object sender, RoutedEventArgs e)
         {
-            Player player = GameStatus.PLAYER = new Creatures.Player();
+            Player player = GameStatus.PLAYER = new Player();
             for (int i = 0; i < Definitions.NUMBER_OF_CHARACTER_STATS; i++)
                 player[i] = PlayerStats[i];
             player.SetRace(ChosenRace);
-            player.SetClass(ChosenClass);
+            player.SetCareer(ChosenClass);
             player.Name = lblName.Content as string;
             Definitions.MAIN_WINDOW.Main.Content = new pageMainGame();
         }

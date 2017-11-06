@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using TheUndergroundTower.OtherClasses;
+using WpfApp1.GameProperties;
 
 namespace WpfApp1
 {
@@ -12,8 +13,10 @@ namespace WpfApp1
     {
 
         #region Properties
-        
-        //Shortcut to access each stat individually.
+
+        /// <summary>
+        /// Shortcut to access each stat individually.
+        /// </summary>
         private int[] _stats = new int[Definitions.NUMBER_OF_CHARACTER_STATS];
         public int this[int number]
         {
@@ -21,56 +24,81 @@ namespace WpfApp1
             set { _stats[number] = value; }
         }
 
+        /// <summary>
+        /// Determines the amount of damage your character deals in melee combat.
+        /// The higher your strength, the more damage you deal.
+        /// </summary>
         public int Strength
         {
             get { return _stats[0]; }
             set { _stats[0] = value; }
         }
 
+        /// <summary>
+        /// Determines the amount of damage you deal in ranged combat.
+        /// The higher your dexterity, the more damage you deal. 
+        /// </summary>
         public int Dexterity
         {
             get { return _stats[1]; }
             set { _stats[1] = value; }
         }
 
+        /// <summary>
+        /// Increases your maximum HP (hit points).
+        /// The higher your constitution, the more HP you have.
+        /// </summary>
         public int Constitution
         {
             get { return _stats[2]; }
             set { _stats[2] = value; }
         }
 
+        /// <summary>
+        /// The higher this stat, the higher your damage with spells.
+        /// </summary>
         public int Intelligence
         {
             get { return _stats[3]; }
             set { _stats[3] = value; }
         }
 
-        public int Wisdom
+        /// <summary>
+        /// Increases your chance of finding traps and hidden doors.
+        /// </summary>
+        public int Perception
         {
             get { return _stats[4]; }
             set { _stats[4] = value; }
         }
 
+        /// <summary>
+        /// Affects the prices of items in shops.
+        /// The higher your charisma, the lower the price and the higher the price of things you sell.
+        /// </summary>
         public int Charisma
         {
             get { return _stats[5]; }
             set { _stats[5] = value; }
         }
 
-        private int _movement;
-        public int Movement
-        {
-            get { return _movement; }
-            set { _movement = value; }
-        }
-
+        /// <summary>
+        /// Determines when a character gets a turn.
+        /// </summary>
         private int _speed;
         public int Speed
         {
             get { return _speed; }
-            set { _speed = value; }
+            set
+            {
+                if (value>=0)
+                    _speed = value;
+            }
         }
 
+        /// <summary>
+        /// Determines how quickly your hunger meter drops.
+        /// </summary>
         private int _survival;
         public int Survival
         {
@@ -84,7 +112,7 @@ namespace WpfApp1
         private int _sightRadius;
         public int SightRadius
         {
-            get { return _speed; }
+            get { return _sightRadius; }
             set
             {
                 if (value >= 0)
@@ -117,6 +145,7 @@ namespace WpfApp1
             Name = race.Attributes["Name"].Value;
             foreach (XmlNode privacyType in race)
             {
+                //The public properties that the player can see when creating a character.
                 if (privacyType.Name.Equals("Public"))
                 {
                     Description = privacyType.ChildNodes[0].FirstChild.Value;
@@ -127,17 +156,20 @@ namespace WpfApp1
                         this[i] = Convert.ToInt32(stringVal);
                     }
                 }
+                //The private properties.
                 else
                 {
-                    Movement = Convert.ToInt32(privacyType.ChildNodes[0].Value);
-                    Speed = Convert.ToInt32(privacyType.ChildNodes[1].Value);
-                    SightRadius = Convert.ToInt32(privacyType.ChildNodes[2].Value);
-                    DarkVision = Convert.ToInt32(privacyType.ChildNodes[3].Value);
+                    Speed = Convert.ToInt32(privacyType.ChildNodes[0].Value);
+                    SightRadius = Convert.ToInt32(privacyType.ChildNodes[1].Value);
+                    DarkVision = Convert.ToInt32(privacyType.ChildNodes[2].Value);
                 }
             }
-            GameData.RACES.Add(this);
+            GameData.POSSIBLE_RACES.Add(this);
         }
 
+        /// <summary>
+        /// Regular constructor.
+        /// </summary>
         public Race() { }
         #endregion
     }

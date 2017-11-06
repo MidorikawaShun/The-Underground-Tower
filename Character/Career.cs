@@ -13,6 +13,9 @@ namespace TheUndergroundTower.OtherClasses
 
         #region Properties
 
+        /// <summary>
+        /// The items that the character will start with after picking this career
+        /// </summary>
         private List<Item> _startingInventory;
         public List<Item> StartingInventory
         {
@@ -24,6 +27,9 @@ namespace TheUndergroundTower.OtherClasses
             }
         }
 
+        /// <summary>
+        /// Can this career cast spells
+        /// </summary>
         private bool _isCaster;
         public bool IsCaster
         {
@@ -31,6 +37,10 @@ namespace TheUndergroundTower.OtherClasses
             set { _isCaster = value; }
         }
 
+        /// <summary>
+        /// Determines the chance to hit targets in close quarters combat.
+        /// Increases as you fight in close quarters combat.
+        /// </summary>
         private double _meleeSkill;
         public double MeleeSkill
         {
@@ -42,6 +52,10 @@ namespace TheUndergroundTower.OtherClasses
             }
         }
 
+        /// <summary>
+        /// Determines the chance to hit targets in ranged combat.
+        /// Increases as you fight in ranged combat.
+        /// </summary>
         private double _rangedSkill;
         public double RangedSkill
         {
@@ -53,23 +67,33 @@ namespace TheUndergroundTower.OtherClasses
             }
         }
 
+        /// <summary>
+        /// Determines the chance of successfully casting a spell.
+        /// Increases as you cast spells.
+        /// </summary>
         private double _magicSkill;
         public double MagicSkill
         {
             get { return _magicSkill; }
             set
             {
-                if (value > 0)
+                if (value >= 0)
                     _magicSkill = value;
             }
         }
         #endregion
 
+        /// <summary>
+        /// Constructor from XML of a career
+        /// </summary>
+        /// <param name="newCareer">The career we are trying to make</param>
         public Career(XmlNode newCareer)
         {
+            //Obtains the career name
             Name = newCareer.Attributes["Name"].Value;
             foreach (XmlNode privacyType in newCareer)
             {
+                //Public features are what the user can see during character creation
                 if (privacyType.Name.Equals("Public"))
                 {
                     Description = privacyType.ChildNodes[0].FirstChild.Value;
@@ -80,6 +104,7 @@ namespace TheUndergroundTower.OtherClasses
                 }
                 else
                 {
+                    //Private features which contain the starting inventory
                     foreach (XmlNode item in privacyType.ChildNodes[0])
                     {
                         switch (item.Name)
@@ -94,7 +119,8 @@ namespace TheUndergroundTower.OtherClasses
                     }
                 }
             }
-            GameData.CAREERS.Add(this);
+            //Adds this class to the list of classes we read from XML
+            GameData.POSSIBLE_CAREERS.Add(this);
         }
     }
 

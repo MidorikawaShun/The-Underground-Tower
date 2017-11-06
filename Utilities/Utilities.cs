@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -15,18 +12,23 @@ using System.Xml;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
 using WpfApp1.Windows.MetaMenus;
-using static WpfApp1.Definitions;
+using static WpfApp1.GameProperties.Definitions;
 
 namespace WpfApp1
 {
-    public static class Options
+    ///
+    public static class Utilities
     {
         /// <summary>
         /// This class handles XML-related actions.
         /// </summary>
         public static class Xml
         {
-
+            /// <summary>
+            /// Opens an Xml file.
+            /// </summary>
+            /// <param name="XmlFilePath">The path of the file</param>
+            /// <returns>The XmlDocument that we opened.</returns>
             public static XmlDocument ReadXml(string XmlFilePath)
             {
                 XmlDocument doc = new XmlDocument();
@@ -35,14 +37,16 @@ namespace WpfApp1
             }
 
             /// <summary>
-            /// Fill GameData.RACES list from XML file.
+            /// Fill GameData.POSSIBLE_RACES list from XML file.
             /// </summary>
             public static void PopulateRaces()
             {
                 try
                 {
+                    //Opens the Races XML file.
                     XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileRaces));
                     XmlNode races = doc.ChildNodes[1];
+                    //Creates the race objects and adds them to the list.
                     foreach (XmlNode race in races)
                         new Race(race);
                 }
@@ -52,12 +56,17 @@ namespace WpfApp1
                 }
             }
 
+            /// <summary>
+            /// Fill GameData.POSSIBLE_CAREERS list from XML file.
+            /// </summary>
             public static void PopulateCareers()
             {
                 try
                 {
+                    //Opens the Careers XML file.
                     XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileCareers));
                     XmlNode careers = doc.ChildNodes[1];
+                    //Creates the careers objects and adds them to the list.
                     foreach (XmlNode newCareer in careers)
                         new Career(newCareer);
                 }
@@ -67,12 +76,17 @@ namespace WpfApp1
                 }
             }
 
+            /// <summary>
+            /// Fill GameData.POSSIBLE_DIFFICULTIES list from XML file.
+            /// </summary>
             public static void PopulateDifficulties()
             {
                 try
                 {
+                    //Opens the Difficulties XML file.
                     XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileDifficulties));
                     XmlNode difficulties = doc.ChildNodes[1];
+                    //Creates the difficulties objects and adds them to the list.
                     foreach (XmlNode newDifficulty in difficulties)
                         new Difficulty(newDifficulty);
                 }
@@ -82,13 +96,18 @@ namespace WpfApp1
                 }
             }
 
-            public static void PopulateTowerDifficulties()
+            /// <summary>
+            /// Fill GameData.POSSIBLE_TOWER_DEPTHS list from XML file.
+            /// </summary>
+            public static void PopulateTowerDepths()
             {
                 try
                 {
+                    //Opens the Tower Depths XML file.
                     XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileTowerDepths));
-                    XmlNode difficulties = doc.ChildNodes[1];
-                    foreach (XmlNode newTowerDepth in difficulties)
+                    XmlNode towerDepths = doc.ChildNodes[1];
+                    //Creates the tower depths objects and adds them to the list.
+                    foreach (XmlNode newTowerDepth in towerDepths)
                         new TowerDepth(newTowerDepth);
                 }
                 catch (Exception ex)
@@ -96,13 +115,17 @@ namespace WpfApp1
                     ErrorLog.Log(ex, "An error has occured while attempting to populate Tower Depths from XML.");
                 }
             }
-
+            /// <summary>
+            /// Fill GameData.POSSIBLE_TILES list from XML file.
+            /// </summary>
             public static void PopulateTiles()
             {
                 try
                 {
+                    //Opens the Tiles XML file.
                     XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileTiles));
                     XmlNode tiles = doc.ChildNodes[1];
+                    //Creates the tiles objects and adds them to the list.
                     foreach (XmlNode tile in tiles)
                         new Tile(tile);
                 }
@@ -119,9 +142,16 @@ namespace WpfApp1
         /// </summary>
         public static class Files
         {
+            /// <summary>
+            /// Gets the full path of the parameter file.
+            /// </summary>
+            /// <param name="file">The file we want to get the path of.</param>
+            /// <returns>The full path.</returns>
             public static string GetDefinitionFilePath(EnumXmlFiles file)
             {
+                //Gets the path of the project.
                 string path = AppDomain.CurrentDomain.BaseDirectory;
+                //Combines the project path with the relative file path.
                 path = Path.Combine(path, XML_FILES[(int)file]);
                 return path;
             }
@@ -144,7 +174,9 @@ namespace WpfApp1
         /// </summary>
         public static class ErrorLog
         {
-
+            /// <summary>
+            /// If the error is fatal, stop running the game.
+            /// </summary>
             public enum EnumErrorSeverity
             {
                 Light = 0,
@@ -177,15 +209,26 @@ namespace WpfApp1
             private static FileInfo GetLogFile()
             {
                 string path = AppDomain.CurrentDomain.BaseDirectory;
+                //Find the directories that exist in the project folder
                 string[] directories = Directory.GetDirectories(Directory.GetCurrentDirectory());
+                //Find the Logs Directory
                 path = directories.Where(x => x.Equals(path + "Logs")).FirstOrDefault();
+                //If the Logs Directory exists, get it. If it doesn't, create it.
                 DirectoryInfo logsDirectory = String.IsNullOrEmpty(path) ? Directory.CreateDirectory("Logs") : new DirectoryInfo(path);
+                //Navigate to the Logs Directory.
                 Directory.SetCurrentDirectory(logsDirectory.FullName);
+                //Get all the log files that exist.
                 FileInfo[] logFiles = logsDirectory.GetFiles();
+                //Find the file that has a creation date for the current date.
                 FileInfo logFile = logFiles.Where(x => x.CreationTime.Date.Equals(DateTime.Now.Date)).FirstOrDefault();
+                //If the file doesn't exist, create it. If it does, return it.
                 logFile = logFile ?? new FileInfo("Error Log - " + DateTime.Now.Date.ToString("dd/MM/yyyy") + ".txt");
+                //Opens or creates the file
+                /* CHECK WHAT IT DOES
+                 * 
                 FileStream logFileStream = logFile.Open(FileMode.OpenOrCreate);
                 logFileStream.Close();
+                */
                 return logFile;
             }
 
@@ -278,29 +321,37 @@ namespace WpfApp1
     /// </summary>
     public static class CreateTile
     {
-
+        /// <summary>
+        /// The tile indices that we will use to extract the image from the spritesheet.
+        /// </summary>
         public enum Tiles
         {
             OrdinaryWall = 1365
         }
 
+        /// <summary>
+        /// Definitions for the size of each tile and the number of indices in the spritesheet
+        /// </summary>
         private const int TILESET_WIDTH = 30, TILE_WIDTH = 32, TILE_HEIGHT = 32;
         private const string TILESET = "../../Assets/Images/rltiles-2d.png";
 
         /// <summary>
-        /// get a cropped Bitmap image with a tile
+        /// get a cropped ImageSource of a tile
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="imagePath"></param>
+        /// <param name="index">The index of the image in the spritesheet</param>
         /// <returns></returns>
         public static ImageSource GetImageFromTileset(int index)
         {
-            int row = index / TILESET_WIDTH * TILE_HEIGHT;
+            int row = index / TILESET_WIDTH * TILE_HEIGHT; 
             int col = (index % TILESET_WIDTH) * TILE_WIDTH;
+
+            //create a bitmap image with the whole spritesheet
             Bitmap source = new Bitmap(TILESET);
 
+            //crop a bitmap image out of the spritesheet in accordance with the coordinates
             Bitmap bmp = source.Clone(new Rectangle(col,row,TILE_WIDTH,TILE_HEIGHT), source.PixelFormat);
 
+            //convert bitmap into an imagesource and return it
             var handle = bmp.GetHbitmap();
             return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }

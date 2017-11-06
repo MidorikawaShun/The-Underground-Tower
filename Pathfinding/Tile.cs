@@ -16,9 +16,33 @@ namespace TheUndergroundTower.Pathfinding
     /// </summary>
     public class Tile : GameObject
     {
-        private bool _walkable, _visible, _seethrough;
-        private List<GameObject> _gameObjects;
+        #region Properties
+        /// <summary>
+        /// Can you walk through this tile?
+        /// </summary>
+        private bool _walkable;
+        public bool Walkable { get => _walkable; set => _walkable = value; }
+
+        /// <summary>
+        /// Can you see this tile?
+        /// </summary>
+        private bool _visible;
+        public bool Visible { get => _visible; set => _visible = value; }
+
+        /// <summary>
+        /// Can you see through this tile?
+        /// </summary>
+        private bool _seethrough;
+        public bool Seethrough { get => _seethrough; set => _seethrough = value; }
+
+        /// <summary>
+        /// The visual representation of the tile.
+        /// </summary>
         private ImageSource _image;
+        public ImageSource Image { get => _image; set => _image = value; }
+
+        #endregion
+
         private int _index;
         
         /// <summary>
@@ -31,12 +55,12 @@ namespace TheUndergroundTower.Pathfinding
             Description = tile.ChildNodes[0].FirstChild.Value;
             _walkable = Convert.ToBoolean(tile.ChildNodes[2].FirstChild.Value); 
             _visible = true;
-            _seethrough = Convert.ToBoolean(tile.ChildNodes[1].FirstChild.Value); 
-            _gameObjects = new List<GameObject>();
+            _seethrough = Convert.ToBoolean(tile.ChildNodes[1].FirstChild.Value);
             _index = Convert.ToInt32(tile.ChildNodes[3].FirstChild.Value);
             _image = CreateTile.GetImageFromTileset(_index);
-            if (GameData.TILES == null) GameData.TILES = new List<Tile>();
-            GameData.TILES.Add(this);
+            if (GameData.POSSIBLE_TILES == null) GameData.POSSIBLE_TILES = new List<Tile>();
+            //save the created tile into the list of all tiles that can be created and put on a map
+            GameData.POSSIBLE_TILES.Add(this);
         }
 
         /// <summary>
@@ -50,16 +74,10 @@ namespace TheUndergroundTower.Pathfinding
             _walkable = tile.Walkable;
             _visible = tile.Visible;
             _seethrough = tile.Seethrough;
-            _gameObjects = new List<GameObject>();
             _image = tile.Image;
-          
+            //save the created tile in the list of actual tiles present in the game
+            GameStatus.TILES.Add(this); 
         }
-
-        public bool Walkable { get => _walkable; set => _walkable = value; }
-        public bool Visible { get => _visible; set => _visible = value; }
-        public bool Seethrough { get => _seethrough; set => _seethrough = value; }
-        public ImageSource Image { get => _image; set => _image = value; }
-
 
     }
 }

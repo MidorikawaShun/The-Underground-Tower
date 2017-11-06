@@ -19,11 +19,16 @@ namespace WpfApp1.Windows
     /// </summary>
     public partial class windowExit : Window
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public windowExit()
         {
             InitializeComponent();
+            //Sets the window to fit the content.
             SizeToContent = SizeToContent.WidthAndHeight;
             Window mainWindow = Application.Current.MainWindow;
+            //Owner = mainWindow means that this new window will appear within the mainWindow.
             Owner = mainWindow;
             ShowDialog();
         }
@@ -37,6 +42,11 @@ namespace WpfApp1.Windows
             Application.Current.Shutdown();
         }
 
+        /// <summary>
+        /// Return to what you were doing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Return_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

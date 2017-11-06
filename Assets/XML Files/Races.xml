@@ -8,12 +8,11 @@
         <Dexterity>+0</Dexterity>
         <Constitution>+0</Constitution>
         <Intelligence>+0</Intelligence>
-        <Wisdom>+0</Wisdom>
+        <Perception>+0</Perception>
         <Charisma>+0</Charisma>
       </Stats>
     </Public>
     <Private>
-      <Movement>+0</Movement>
       <Speed>+0</Speed>
       <SightRadius>+5</SightRadius>
       <DarkVision>+0</DarkVision>
@@ -27,12 +26,11 @@
         <Dexterity>+0</Dexterity>
         <Constitution>+2</Constitution>
         <Intelligence>+0</Intelligence>
-        <Wisdom>+1</Wisdom>
+        <Perception>+1</Perception>
         <Charisma>+0</Charisma>
       </Stats>
     </Public>
     <Private>
-      <Movement>-30</Movement>
       <Speed>+0</Speed>
       <SightRadius>+4</SightRadius>
       <DarkVision>+4</DarkVision>
@@ -46,12 +44,11 @@
         <Dexterity>+1</Dexterity>
         <Constitution>-2</Constitution>
         <Intelligence>+2</Intelligence>
-        <Wisdom>+0</Wisdom>
+        <Perception>+0</Perception>
         <Charisma>+2</Charisma>
       </Stats>
     </Public>
     <Private>
-      <Movement>+0</Movement>
       <Speed>+30</Speed>
       <SightRadius>+8</SightRadius>
       <DarkVision>+2</DarkVision>
@@ -65,12 +62,11 @@
         <Dexterity>+2</Dexterity>
         <Constitution>+4</Constitution>
         <Intelligence>-3</Intelligence>
-        <Wisdom>-3</Wisdom>
+        <Perception>-3</Perception>
         <Charisma>-3</Charisma>
       </Stats>
     </Public>
     <Private>
-      <Movement>+0</Movement>
       <Speed>+0</Speed>
       <SightRadius>+5</SightRadius>
       <DarkVision>+3</DarkVision>
@@ -84,12 +80,11 @@
         <Dexterity>+10</Dexterity>
         <Constitution>+10</Constitution>
         <Intelligence>+10</Intelligence>
-        <Wisdom>+10</Wisdom>
+        <Perception>+10</Perception>
         <Charisma>+10</Charisma>
       </Stats>
     </Public>
     <Private>
-      <Movement>+0</Movement>
       <Speed>+0</Speed>
       <SightRadius>+10</SightRadius>
       <DarkVision>+10</DarkVision>

@@ -43,6 +43,10 @@ namespace TheUndergroundTower.OtherClasses
         private double _scoreMultiplier;
         public double ScoreMultiplier { get => _scoreMultiplier; set => _scoreMultiplier = value; }
 
+        /// <summary>
+        /// Creates a difficulty object from XML.
+        /// </summary>
+        /// <param name="difficulty">The difficulty XmlNode.</param>
         public Difficulty(XmlNode difficulty)
         {
             Name = difficulty.Attributes["Name"].Value;
@@ -52,7 +56,7 @@ namespace TheUndergroundTower.OtherClasses
             PlayerHealth = Convert.ToDouble(difficulty.ChildNodes[3].FirstChild.Value);
             PlayerDamage = Convert.ToDouble(difficulty.ChildNodes[4].FirstChild.Value);
             ScoreMultiplier = Convert.ToDouble(difficulty.ChildNodes[5].FirstChild.Value);
-            GameData.DIFFICULTIES.Add(this);
+            GameData.POSSIBLE_DIFFICULTIES.Add(this);
         }
 
     }

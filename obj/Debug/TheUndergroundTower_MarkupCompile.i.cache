@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\matan\Source\Repos\The-Underground-Tower\App.xaml
-8-1884608904
+8420450914
 2-1580354251
-351832174580
+35-882631568
 151522055142
-MainWindow.xaml;Pages\pageCharacterCreation.xaml;Pages\pageMainGame.xaml;Pages\pageMainMenu.xaml;Windows\MetaMenus\ErrorPrompt.xaml;Windows\MetaMenus\ExitDialog.xaml;Windows\MetaMenus\MessagePrompt.xaml;Windows\MetaMenus\windowOptions.xaml;
+MainWindow.xaml;Pages\pageCharacterCreation.xaml;Pages\pageMainGame.xaml;Pages\pageMainMenu.xaml;Windows\MetaMenus\ErrorPrompt.xaml;Windows\MetaMenus\ExitDialog.xaml;Windows\MetaMenus\windowMessage.xaml;Windows\MetaMenus\windowOptions.xaml;
 
-True
+False
 
