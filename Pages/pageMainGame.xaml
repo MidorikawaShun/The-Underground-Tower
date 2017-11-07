@@ -9,9 +9,9 @@
       
       Title="pageMainGame">
     <Canvas>
-        <Rectangle Height="600" Width="160" Canvas.Left="640"/>
         <UniformGrid x:Name="XAMLMap">
-            
+
         </UniformGrid>
+        <Rectangle Height="600" Width="200" Canvas.Left="600" Fill="#FFEC1414"/>
     </Canvas>
 </Page>

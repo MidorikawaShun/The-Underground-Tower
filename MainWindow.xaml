@@ -5,6 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="The Underground Tower" Height="600" Width="800" ResizeMode="NoResize">
+        Title="The Underground Tower" Height="635" Width="800" ResizeMode="NoResize">
     <Frame x:Name="Main" NavigationUIVisibility="Hidden"/>
 </Window>
