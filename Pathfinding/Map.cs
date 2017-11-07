@@ -23,7 +23,8 @@ namespace TheUndergroundTower.Pathfinding
         private Tile[,] _tiles;
 
         private static double MAP_SIZE_MULTIPLIER = 1;
-        private const int MAP_DIMENSIONS = 5;
+        private const int MAP_DIMENSIONS = 12;
+
 
         /// <summary>
         /// Regular constructor.
