@@ -14,7 +14,7 @@ namespace WpfApp1
     public static class GameStatus
     {
         /// <summary>
-          /// All the creatures that currently exist in the game world.
+        /// All the creatures that currently exist in the game world.
         /// </summary>
         public static List<Creature> CREATURES { get; set; }
 
@@ -23,6 +23,16 @@ namespace WpfApp1
         /// </summary>
         public static Player PLAYER { get; set; }
 
+        /// <summary>
+        /// All the maps that have been created.
+        /// </summary>
+        public static List<Map> MAPS { get; set; }
+
+        /// <summary>
+        /// The map the player is currently on.
+        /// </summary>
+        public static Map CURRENT_MAP { get; set; }
+        
         /// <summary>
         /// All the Tiles that exist in the game.
         /// </summary>
