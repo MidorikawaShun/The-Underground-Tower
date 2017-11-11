@@ -358,6 +358,12 @@ namespace WpfApp1
             return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
 
+        /// <summary>
+        /// Overlays one image on top of the other
+        /// </summary>
+        /// <param name="first">The image at the background</param>
+        /// <param name="second">The image at the foreground</param>
+        /// <returns>The merged image</returns>
         public static ImageSource Overlay(ImageSource first, ImageSource second)
         {
             var group = new DrawingGroup();

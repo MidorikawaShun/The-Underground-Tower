@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace TheUndergroundTower.OtherClasses
 {
@@ -47,6 +50,14 @@ namespace TheUndergroundTower.OtherClasses
             private set { _id = value; }
         }
 
+        /// <summary>
+        /// Coordinates of the creature/item and map the creature/item is on.
+        /// first is X, second is Y, third is which map
+        /// </summary>
+        private Tuple<int, int, int> _location;
+        public Tuple<int, int, int> Location { get => _location; set => _location = value; }
+
+
         #endregion
         #region Constructors
         /// <summary>
@@ -71,16 +82,28 @@ namespace TheUndergroundTower.OtherClasses
             _gameObjects.Add(this);
         }
 
+
         #endregion
         
         /// <summary>
-        /// Gets a GameObject by it's ID.
+        /// Gets a GameObject by its ID.
         /// </summary>
         /// <param name="ID">The ID of the GameObject we want to find.</param>
         /// <returns>GameObject with the parameter ID.</returns>
         public static GameObject GetByID(string ID)
         {
             return _gameObjects.Where(x => x.ID.Equals(ID)).SingleOrDefault();
+        }
+
+        public virtual ImageSource GetImage()
+        {
+            return BitmapSource.Create(
+                                         32, 32,
+                                         96, 96,
+                                         PixelFormats.Indexed1,
+                                         new BitmapPalette(new List<System.Windows.Media.Color>() { System.Windows.Media.Colors.Transparent }),
+                                         new byte[512],
+                                         16);
         }
 
     }

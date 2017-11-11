@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace TheUndergroundTower.OtherClasses
 {
@@ -52,7 +53,19 @@ namespace TheUndergroundTower.OtherClasses
             set { _unsellableItem = value; }
         }
 
+        /// <summary>
+        /// The visual representation of the creature.
+        /// </summary>
+        private ImageSource _image;
+        public ImageSource Image { get => _image; set => _image = value; }
+
         #endregion
+
+        
+        public override ImageSource GetImage()
+        {
+            return Image;
+        }
 
     }
 }

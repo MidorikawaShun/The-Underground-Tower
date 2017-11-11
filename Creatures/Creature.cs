@@ -141,5 +141,10 @@ namespace WpfApp1.Creatures
             GameStatus.CREATURES.Add(this);
         }
 
+        public override ImageSource GetImage()
+        {
+            return Image;
+        }
+
     }
 }
