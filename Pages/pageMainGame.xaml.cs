@@ -86,10 +86,14 @@ namespace TheUndergroundTower.Pages
                         ImageSource overlayedImage = tile.Image;
                         if (tile.Objects != null && tile.Objects.Count > 0) //check whether there are items on the tile
                         {
-                            
-                            foreach (GameObject obj in tile.Objects)
+
+                            int n = tile.Objects.Count();
+                            for (int x = 0; x < n; x++)
+                            {
+                                GameObject obj = tile.Objects[x];
                                 overlayedImage = CreateTile.Overlay(overlayedImage, obj.GetImage());
-                            
+                            }
+
                         }
                         (XAMLMap.Children[y] as Image).Source = overlayedImage;
                     }
@@ -129,6 +133,35 @@ namespace TheUndergroundTower.Pages
 
             GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2].Objects.Remove(p);
             Tile tile=null;
+            string str = e.Key.ToString(); //get the string value of pressed key
+            switch (str)
+            {
+                case "Up" :
+                    {
+                        p.Location = new Tuple<int, int, int>(p.Location.Item1 - 1, p.Location.Item2, p.Location.Item3);
+                        tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
+                        break;
+                    }
+                case "Down":
+                    {
+                        p.Location = new Tuple<int, int, int>(p.Location.Item1 + 1, p.Location.Item2, p.Location.Item3);
+                        tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
+                        break;
+                    }
+                case "Left":
+                    {
+                        p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2 - 1, p.Location.Item3);
+                        tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
+                        break;
+                    }
+                case "Right":
+                    {
+                        p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2 + 1, p.Location.Item3);
+                        tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
+                        break;
+                    }
+            }
+            /*
             if (e.Key.Equals(Key.Up)) //if the user presses up arrow, we want to take the player's position and decrement Y coordinate
             {
                 p.Location = new Tuple<int, int, int>(p.Location.Item1-1, p.Location.Item2, p.Location.Item3);
@@ -141,17 +174,18 @@ namespace TheUndergroundTower.Pages
             }
             if (e.Key.Equals(Key.Right)) //increment X coordinate
             {
-                p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2-1, p.Location.Item3);
+                p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2+1, p.Location.Item3);
                 tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
             }
             if (e.Key.Equals(Key.Left)) //decrement X coordinate
             {
-                p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2+1, p.Location.Item3);
+                p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2-1, p.Location.Item3);
                 tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
             }
+            */
             if (tile.Objects == null) tile.Objects = new List<GameObject>();
-            tile.Objects.Add(p);
-            RefreshScreen();
+            tile.Objects.Add(p); 
+            RefreshScreen(); 
         }
 
         private void MainGamePage_KeyDown(object sender, KeyEventArgs e)
