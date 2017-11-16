@@ -23,6 +23,16 @@ namespace WpfApp1.GameProperties
         public const int NUMBER_OF_CHARACTER_STATS = 6;
 
         /// <summary>
+        /// The number of tiles displayed along the screen's width
+        /// </summary>
+        public const int WINDOW_X_SIZE = 12;
+
+        /// <summary>
+        /// The number of tiels displayed along the screen's height
+        /// </summary>
+        public const int WINDOW_Y_SIZE = 12;
+
+        /// <summary>
         /// An enum for easy access to the stats.
         /// </summary>
         public enum EnumCharacterStats

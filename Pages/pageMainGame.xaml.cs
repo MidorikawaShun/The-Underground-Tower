@@ -18,6 +18,7 @@ using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
 using WpfApp1;
 using WpfApp1.Creatures;
+using WpfApp1.GameProperties;
 
 namespace TheUndergroundTower.Pages
 {
@@ -37,7 +38,7 @@ namespace TheUndergroundTower.Pages
             Player p = GameStatus.PLAYER = new Player();
             p.Location = new Tuple<int, int, int>(10, 10, 0);
             CreateDisplay();
-
+            
             GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2].Objects = new List<GameObject>();
             GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2].Objects.Add(p);
             RefreshScreen();
@@ -56,9 +57,9 @@ namespace TheUndergroundTower.Pages
             //add map to the list of maps
             GameStatus.MAPS.Add(map);
             //fill the map with empty images
-            for (int i = 0; i < map.XSize; i++)
+            for (int i = 0; i < Definitions.WINDOW_X_SIZE; i++)
             {
-                for (int j = 0; j < map.YSize; j++)
+                for (int j = 0; j < Definitions.WINDOW_Y_SIZE; j++)
                 {
                     Image img = new Image();
                     img.Width = img.Height = 50;

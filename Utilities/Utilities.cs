@@ -324,11 +324,18 @@ namespace WpfApp1
         /// <summary>
         /// The tile indices that we will use to extract the image from the spritesheet.
         /// </summary>
-        public enum Tiles
+        public enum XmlTileIndices
         {
             OrdinaryWall = 1365,
             OrdinaryFloor = 1434,
             Jelly = 146
+        }
+
+        public enum Tiles
+        {
+            OrdinaryWall = 0,
+            OrdinaryFloor = 1,
+            Jelly = 2
         }
 
         /// <summary>

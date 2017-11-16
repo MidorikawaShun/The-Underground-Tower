@@ -23,7 +23,7 @@ namespace TheUndergroundTower.Pathfinding
         private Tile[,] _tiles;
 
         private static double MAP_SIZE_MULTIPLIER = 1;
-        private const int MAP_DIMENSIONS = 12;
+        private const int MAP_DIMENSIONS = 15;
 
 
         /// <summary>
@@ -33,19 +33,23 @@ namespace TheUndergroundTower.Pathfinding
         public Map()
         {
             _xSize = _ySize = (MAP_DIMENSIONS*(int)MAP_SIZE_MULTIPLIER);
-            Tiles = new Tile[XSize, YSize]; 
-            for (int i = 0; i < XSize; i++)
+            Tiles = new Tile[_xSize, _ySize];
+            //Create top and bottom map boundaries
+            for (int i = 0; i < _xSize; i++)
             {
-                Tiles[i, 0] = new Tile(GameData.POSSIBLE_TILES[0]);
-                Tiles[i, XSize-1] = new Tile(GameData.POSSIBLE_TILES[0]);
-                Tiles[0, i] = new Tile(GameData.POSSIBLE_TILES[0]);
-                Tiles[XSize-1, i] = new Tile(GameData.POSSIBLE_TILES[0]);
-
-                for (int j = 0; j < YSize-1 && i< XSize-2; j++)
-                {
-                    Tiles[(i + 1), j] = new Tile(GameData.POSSIBLE_TILES[1]);
-                }
+                Tiles[i, 0] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+                Tiles[i, _ySize-1] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
             }
+            //Create right and left boundaries
+            for (int i = 1; i < _ySize-1; i++)
+            {
+                Tiles[0, i] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+                Tiles[_xSize-1, i] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+            }
+            //Create floors
+            for (int x = 1; x < _xSize-1; x++)
+                for (int y = 1; y < _ySize-1; y++)
+                    Tiles[x,y] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryFloor]);
 
         }
 
