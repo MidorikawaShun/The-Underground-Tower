@@ -120,7 +120,7 @@ namespace TheUndergroundTower.Pages
         private void RefreshScreen()
         {
             int xpos = GameStatus.PLAYER.Location.Item1 - 5;
-            int ypos = GameStatus.PLAYER.Location.Item2 + 6;
+            int ypos = GameStatus.PLAYER.Location.Item2 - 6;
             int z = 0;
             for (int y = Definitions.WINDOW_Y_SIZE - 1; y >= 0; y--)
             {
@@ -129,7 +129,7 @@ namespace TheUndergroundTower.Pages
                     bool tileExists = false;
                     if ((xpos + x) >= 0 && (ypos - y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos - y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
                     {
-                        Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + x, ypos - y];
+                        Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + x, ypos+y];
                         if (tile != null)
                         {
                             ImageSource overlayedImage = tile.Image;
@@ -179,27 +179,32 @@ namespace TheUndergroundTower.Pages
             Player p = GameStatus.PLAYER;
             Map map = GameStatus.CURRENT_MAP;
             map.Tiles[p.Location.Item1, p.Location.Item2].Objects.Remove(p);
+            Tile oldTile = map.Tiles[p.Location.Item1, p.Location.Item2];
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
             {
                 case "Up":
                     {
                         p.MoveTo(new Tuple<int, int>(p.Location.Item1, p.Location.Item2 + 1), map);
+                        oldTile.Objects = null;
                         break;
                     }
                 case "Down":
                     {
                         p.MoveTo(new Tuple<int, int>(p.Location.Item1, p.Location.Item2 - 1), map);
+                        oldTile.Objects = null;
                         break;
                     }
                 case "Left":
                     {
                         p.MoveTo(new Tuple<int, int>(p.Location.Item1 - 1, p.Location.Item2), map);
+                        oldTile.Objects = null;
                         break;
                     }
                 case "Right":
                     {
                         p.MoveTo(new Tuple<int, int>(p.Location.Item1 + 1, p.Location.Item2), map);
+                        oldTile.Objects = null;
                         break;
                     }
                 default:
@@ -230,9 +235,9 @@ namespace TheUndergroundTower.Pages
             }
             */
             Tile tile = GetTileFromCoordinate(p.Location);
-            Console.WriteLine(p.Location.ToString());
             if (tile.Objects == null) tile.Objects = new List<GameObject>();
             tile.Objects.Add(p);
+            map.DrawMapToConsole();
             RefreshScreen();
         }
 

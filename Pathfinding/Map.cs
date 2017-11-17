@@ -96,7 +96,7 @@ namespace TheUndergroundTower.Pathfinding
                 if (_tiles[baseX + room.XSize, baseY + i] == null)
                     _tiles[baseX + room.XSize, baseY + i] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
             }
-            _tiles[baseX+room.XSize,baseY+room.YSize] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+            _tiles[baseX + room.XSize, baseY + room.YSize] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
         }
 
         /// <summary>
@@ -150,9 +150,12 @@ namespace TheUndergroundTower.Pathfinding
                 for (int x = 0; x < XSize; x++)
                 {
                     string s = " ";
-                    if (_tiles[x, y]!=null)
+                    if (_tiles[x, y] != null)
+                    {
                         if (_tiles[x, y].Walkable == false) s = "X";
-                        else s = "O";
+                        if (_tiles[x, y].Walkable == true) s = "O";
+                        if (_tiles[x, y].Objects != null) s = "P";
+                    }
                     Console.Write(s);
                 }
                 Console.WriteLine();
