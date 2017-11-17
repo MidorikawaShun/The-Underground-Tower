@@ -23,6 +23,11 @@ namespace TheUndergroundTower.Pathfinding
         private Tuple<int, int> _topLeft;
 
         /// <summary>
+        /// Object for random number generation.
+        /// </summary>
+        private static Random _rand;
+
+        /// <summary>
         /// The max width of any given room in tiles.
         /// </summary>
         private const int MAX_ROOM_X_SIZE = 9;
@@ -94,9 +99,9 @@ namespace TheUndergroundTower.Pathfinding
 
         public void DetermineRoomDimensions()
         {
-            Random rand = new Random(DateTime.Now.Millisecond);
-            _xSize = rand.Next(MIN_ROOM_SIZE, MAX_ROOM_X_SIZE);
-            _ySize = rand.Next(MIN_ROOM_SIZE, MAX_ROOM_Y_SIZE);
+            _rand = _rand ?? new Random(DateTime.Now.Millisecond);
+            _xSize = _rand.Next(MIN_ROOM_SIZE, MAX_ROOM_X_SIZE);
+            _ySize = _rand.Next(MIN_ROOM_SIZE, MAX_ROOM_Y_SIZE);
         }
     }
 }

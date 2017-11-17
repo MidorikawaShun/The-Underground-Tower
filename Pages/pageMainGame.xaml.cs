@@ -37,7 +37,7 @@ namespace TheUndergroundTower.Pages
             CreateDisplay();
             Player p = GameStatus.PLAYER = new Player();
             p.Location = GetCreatureStartLocation();
-
+            Room r = GameStatus.CURRENT_MAP.FindRoomByCoordinate(p.Location);
             GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2].Objects = new List<GameObject>();
             GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2].Objects.Add(p);
             RefreshScreen();
@@ -54,17 +54,23 @@ namespace TheUndergroundTower.Pages
             GameStatus.CURRENT_MAP = map;
             //add map to the list of maps
             GameStatus.MAPS.Add(map);
+            List<List<Image>> imageLists = new List<List<Image>>();
             //fill the map with empty images
             for (int i = 0; i < Definitions.WINDOW_X_SIZE; i++)
             {
+                imageLists.Add(new List<Image>());
                 for (int j = 0; j < Definitions.WINDOW_Y_SIZE; j++)
                 {
                     Image img = new Image();
                     img.Width = img.Height = 50;
-                    XAMLMap.Children.Add(img);
+                    imageLists.Last().Add(img);
+                    //XAMLMap.Children.Add(img);
                 }
-
             }
+            imageLists.Reverse();
+            foreach (List<Image> list in imageLists)
+                foreach (Image img in list)
+                    XAMLMap.Children.Add(img);
         }
 
         /// <summary>
@@ -92,7 +98,7 @@ namespace TheUndergroundTower.Pages
                 for (int j = 0; j < 12; j++)
                 {
                     bool tileExists = false;
-                    if ((xpos + i) >= 0 && (ypos + j) >= 0) //if indices are negative, exception when attempting to access array
+                    if ((xpos + i) >= 0 && (ypos + j) >= 0 && (xpos + i) < GameStatus.CURRENT_MAP.XSize && (ypos + j) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
                     {
                         Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + i, ypos + j];
                         if (tile != null)
@@ -173,6 +179,10 @@ namespace TheUndergroundTower.Pages
                         p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2 + 1, p.Location.Item3);
                         tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
                         break;
+                    }
+                default:
+                    {
+                        return;
                     }
             }
             /*
