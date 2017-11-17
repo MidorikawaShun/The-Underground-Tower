@@ -52,25 +52,14 @@ namespace TheUndergroundTower.Pages
         {
             Map map = new Map();
             GameStatus.CURRENT_MAP = map;
-            //add map to the list of maps
             GameStatus.MAPS.Add(map);
-            List<List<Image>> imageLists = new List<List<Image>>();
-            //fill the map with empty images
-            for (int i = 0; i < Definitions.WINDOW_X_SIZE; i++)
-            {
-                imageLists.Add(new List<Image>());
-                for (int j = 0; j < Definitions.WINDOW_Y_SIZE; j++)
+            for (int x = 0; x < Definitions.WINDOW_X_SIZE; x++)
+                for (int y = 0; y < Definitions.WINDOW_Y_SIZE; y++)
                 {
                     Image img = new Image();
-                    img.Width = img.Height = 50;
-                    imageLists.Last().Add(img);
-                    //XAMLMap.Children.Add(img);
-                }
-            }
-            imageLists.Reverse();
-            foreach (List<Image> list in imageLists)
-                foreach (Image img in list)
+                    img.Height = img.Width = 50;
                     XAMLMap.Children.Add(img);
+                }
         }
 
         /// <summary>
@@ -87,58 +76,96 @@ namespace TheUndergroundTower.Pages
             return new Tuple<int, int, int>(xPos, yPos, GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP));
         }
 
+        ////Move the map in accordance with player's movement.
+        //private void RefreshScreen()
+        //{
+        //    int xpos = GameStatus.PLAYER.Location.Item1 - 5;
+        //    int ypos = GameStatus.PLAYER.Location.Item2 - 5;
+        //    int y = 0;
+        //    for (int i = 0; i < Definitions.WINDOW_X_SIZE; i++)
+        //    {
+        //        for (int j = 0; j < Definitions.WINDOW_Y_SIZE; j++)
+        //        {
+        //            bool tileExists = false;
+        //            if ((xpos + i) >= 0 && (ypos + j) >= 0 && (xpos + i) < GameStatus.CURRENT_MAP.XSize && (ypos + j) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
+        //            {
+        //                Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + i, ypos + j];
+        //                if (tile != null)
+        //                {
+        //                    ImageSource overlayedImage = tile.Image;
+        //                    if (tile.Objects != null && tile.Objects.Count > 0) //check whether there are items on the tile
+        //                    {
+
+        //                        int n = tile.Objects.Count();
+        //                        for (int x = 0; x < n; x++)
+        //                        {
+        //                            GameObject obj = tile.Objects[x];
+        //                            overlayedImage = CreateTile.Overlay(overlayedImage, obj.GetImage());
+        //                        }
+
+        //                    }
+        //                    (XAMLMap.Children[y++] as Image).Source = overlayedImage;
+        //                    tileExists = true;
+        //                }
+        //            }
+        //            if (!tileExists)//if tile doesn't exist, create black image instead
+        //            {
+        //                (XAMLMap.Children[y++] as Image).Source = CreateBlackImage();
+        //            }
+        //        }
+        //    }
+        //}
+
         //Move the map in accordance with player's movement.
         private void RefreshScreen()
         {
             int xpos = GameStatus.PLAYER.Location.Item1 - 5;
-            int ypos = GameStatus.PLAYER.Location.Item2 - 5;
-            int y = 0;
-            for (int i = 0; i < 12; i++)
+            int ypos = GameStatus.PLAYER.Location.Item2 + 6;
+            int z = 0;
+            for (int y = Definitions.WINDOW_Y_SIZE - 1; y >= 0; y--)
             {
-                for (int j = 0; j < 12; j++)
+                for (int x = 0; x < Definitions.WINDOW_X_SIZE; x++)
                 {
                     bool tileExists = false;
-                    if ((xpos + i) >= 0 && (ypos + j) >= 0 && (xpos + i) < GameStatus.CURRENT_MAP.XSize && (ypos + j) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
+                    if ((xpos + x) >= 0 && (ypos - y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos - y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
                     {
-                        Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + i, ypos + j];
+                        Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + x, ypos - y];
                         if (tile != null)
                         {
                             ImageSource overlayedImage = tile.Image;
-                            if (tile.Objects != null && tile.Objects.Count > 0) //check whether there are items on the tile
-                            {
-
-                                int n = tile.Objects.Count();
-                                for (int x = 0; x < n; x++)
-                                {
-                                    GameObject obj = tile.Objects[x];
-                                    overlayedImage = CreateTile.Overlay(overlayedImage, obj.GetImage());
-                                }
-
-                            }
-                            (XAMLMap.Children[y] as Image).Source = overlayedImage;
+                            if (tile.Objects != null && tile.Objects.Count > 0)
+                                for (int i = 0; i < tile.Objects.Count; i++)
+                                    overlayedImage = CreateTile.Overlay(overlayedImage, tile.Objects[i].GetImage());
+                            (XAMLMap.Children[z++] as Image).Source = overlayedImage;
                             tileExists = true;
                         }
                     }
-                    if (!tileExists)//if tile doesn't exist, create black image instead
-                    {
-                        (XAMLMap.Children[y] as Image).Source = CreateBlackImage();
-                    }
+                    if (!tileExists)
+                        (XAMLMap.Children[z++] as Image).Source = CreateBlackImage();
                 }
             }
-
-            //((Image)XAMLMap.Children[XSize + 1]).Source = CreateTile.Overlay(map.Tiles[5, 5].Image, p.Image);
-
         }
 
         private BitmapSource CreateBlackImage()
         {
             return BitmapSource.Create(
-                                         32, 32,
-                                         96, 96,
-                                         PixelFormats.Indexed1,
-                                         new BitmapPalette(new List<System.Windows.Media.Color>() { System.Windows.Media.Colors.Black }),
-                                         new byte[512],
-                                         16);
+                                   32, 32,
+                                   96, 96,
+                                   PixelFormats.Indexed1,
+                                   new BitmapPalette(new List<System.Windows.Media.Color>() { System.Windows.Media.Colors.Black }),
+                                   new byte[512],
+                                   16);
+        }
+
+        private Tile GetTileFromCoordinate(Tuple<int, int, int> coord)
+        {
+            return GetTileFromCoordinate(new Tuple<int, int>(coord.Item1, coord.Item2), GameStatus.MAPS[coord.Item3]);
+        }
+
+        private Tile GetTileFromCoordinate(Tuple<int, int> coord, Map map = null)
+        {
+            Map targetMap = map ?? GameStatus.CURRENT_MAP;
+            return targetMap.Tiles[coord.Item1, coord.Item2];
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -150,34 +177,29 @@ namespace TheUndergroundTower.Pages
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             Player p = GameStatus.PLAYER;
-
-            GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2].Objects.Remove(p);
-            Tile tile = null;
+            Map map = GameStatus.CURRENT_MAP;
+            map.Tiles[p.Location.Item1, p.Location.Item2].Objects.Remove(p);
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
             {
                 case "Up":
                     {
-                        p.Location = new Tuple<int, int, int>(p.Location.Item1 - 1, p.Location.Item2, p.Location.Item3);
-                        tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
+                        p.MoveTo(new Tuple<int, int>(p.Location.Item1, p.Location.Item2 + 1), map);
                         break;
                     }
                 case "Down":
                     {
-                        p.Location = new Tuple<int, int, int>(p.Location.Item1 + 1, p.Location.Item2, p.Location.Item3);
-                        tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
+                        p.MoveTo(new Tuple<int, int>(p.Location.Item1, p.Location.Item2 - 1), map);
                         break;
                     }
                 case "Left":
                     {
-                        p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2 - 1, p.Location.Item3);
-                        tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
+                        p.MoveTo(new Tuple<int, int>(p.Location.Item1 - 1, p.Location.Item2), map);
                         break;
                     }
                 case "Right":
                     {
-                        p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2 + 1, p.Location.Item3);
-                        tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
+                        p.MoveTo(new Tuple<int, int>(p.Location.Item1 + 1, p.Location.Item2), map);
                         break;
                     }
                 default:
@@ -207,6 +229,8 @@ namespace TheUndergroundTower.Pages
                 tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
             }
             */
+            Tile tile = GetTileFromCoordinate(p.Location);
+            Console.WriteLine(p.Location.ToString());
             if (tile.Objects == null) tile.Objects = new List<GameObject>();
             tile.Objects.Add(p);
             RefreshScreen();

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using TheUndergroundTower.OtherClasses;
+using TheUndergroundTower.Pathfinding;
 
 namespace WpfApp1.Creatures
 {
@@ -139,6 +140,18 @@ namespace WpfApp1.Creatures
             _speed = 100;
             Image = CreateTile.GetImageFromTileset(index);
             GameStatus.CREATURES.Add(this);
+        }
+
+        /// <summary>
+        /// Check if a creature is able to move into the supplied coordinate, and move if possible.
+        /// </summary>
+        /// <param name="coord">The coordinate you want the creature to move to.</param>
+        public void MoveTo(Tuple<int,int> coord,Map map)
+        {
+            if (map.Tiles[coord.Item1, coord.Item2].Walkable == false)
+                return;
+            else
+                Location = new Tuple<int, int, int>(coord.Item1, coord.Item2, Location.Item3);
         }
 
         public override ImageSource GetImage()

@@ -13,7 +13,7 @@
     <Canvas>
         <UserControl Loaded="UserControl_Loaded">
         </UserControl>
-        <UniformGrid x:Name="XAMLMap">
+        <UniformGrid x:Name="XAMLMap" >
 
         </UniformGrid>
         <Rectangle Height="600" Width="200" Canvas.Left="600" Fill="#FFEC1414"/>
