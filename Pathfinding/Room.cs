@@ -27,6 +27,8 @@ namespace TheUndergroundTower.Pathfinding
         /// </summary>
         private static Random _rand;
 
+        private int _numOfExits;
+
         /// <summary>
         /// The max width of any given room in tiles.
         /// </summary>
@@ -44,6 +46,8 @@ namespace TheUndergroundTower.Pathfinding
         #region Properties
         public int XSize { get => _xSize; private set => _xSize = value; }
         public int YSize { get => _ySize; private set => _ySize = value; }
+        public int NumOfExits { get => _numOfExits; set => _numOfExits = value; }
+
         public Tuple<int, int> TopLeft
         {
             get => _topLeft;

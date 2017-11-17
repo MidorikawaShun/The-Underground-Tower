@@ -31,6 +31,11 @@ namespace TheUndergroundTower.Pathfinding
         private Tile[,] _tiles;
 
         /// <summary>
+        /// The generic tiles used for this map.
+        /// </summary>
+        private Tile Floor, Wall, Door;
+
+        /// <summary>
         /// The rooms that are present on this map.
         /// </summary>
         private List<Room> _rooms;
@@ -51,6 +56,8 @@ namespace TheUndergroundTower.Pathfinding
         /// </summary>
         public Map()
         {
+            Floor = GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryFloor];
+            Wall = GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall];
             _xSize = _ySize = MAP_DIMENSIONS * (int)MAP_SIZE_MULTIPLIER;
             _tiles = new Tile[_xSize, _ySize];
             _rand = _rand ?? new Random(DateTime.Now.Millisecond);
@@ -63,17 +70,28 @@ namespace TheUndergroundTower.Pathfinding
                 room.TopLeft = new Tuple<int, int>(_rand.Next(room.XSize, _xSize) - room.XSize, _rand.Next(room.YSize, _ySize) - room.YSize);
                 if (room.TopLeft != null && room.TopLeft.Item1 >= 0 && room.TopLeft.Item2 >= 0) //If room is in bounds of the map
                 {
-                    CreateWalls(room);
-                    CreateFloors(room);
                     attemptedRoomPlacements = 0;
-                    Rooms.Add(room);
+                    CreateRoom(room);
                 }
             }
+            CreateCorridors();
             DrawMapToConsole();
         }
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Creates the room tiles and adds it to the list of rooms on this map.
+        /// </summary>
+        /// <param name="room">The room to generate.</param>
+        private void CreateRoom(Room room)
+        {
+            CreateWalls(room);
+            CreateFloors(room);
+            Rooms.Add(room);
+        }
+
         /// <summary>
         /// Creates the walls of the room according to its size, but only if they don't overwrite existing floors.
         /// </summary>
@@ -85,18 +103,18 @@ namespace TheUndergroundTower.Pathfinding
             for (int i = 0; i < room.XSize; i++) //Create horizontal walls
             {
                 if (_tiles[baseX + i, baseY] == null)
-                    _tiles[baseX + i, baseY] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+                    _tiles[baseX + i, baseY] = new Tile(Wall);
                 if (_tiles[baseX + i, baseY + room.YSize] == null)
-                    _tiles[baseX + i, baseY + room.YSize] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+                    _tiles[baseX + i, baseY + room.YSize] = new Tile(Wall);
             }
             for (int i = 0; i < room.YSize; i++) //Create vertical walls
             {
                 if (_tiles[baseX, baseY + i] == null)
-                    _tiles[baseX, baseY + i] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+                    _tiles[baseX, baseY + i] = new Tile(Wall);
                 if (_tiles[baseX + room.XSize, baseY + i] == null)
-                    _tiles[baseX + room.XSize, baseY + i] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+                    _tiles[baseX + room.XSize, baseY + i] = new Tile(Wall);
             }
-            _tiles[baseX + room.XSize, baseY + room.YSize] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall]);
+            _tiles[baseX + room.XSize, baseY + room.YSize] = new Tile(Wall);
         }
 
         /// <summary>
@@ -111,7 +129,53 @@ namespace TheUndergroundTower.Pathfinding
             for (int x = 1; x < room.XSize; x++)
                 for (int y = 1; y < room.YSize; y++)
                     if (_tiles[baseX + x, baseY + y] == null || _tiles[baseX + x, baseY + y].Walkable == false)
-                        _tiles[baseX + x, baseY + y] = new Tile(GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryFloor]);
+                        _tiles[baseX + x, baseY + y] = new Tile(Floor);
+        }
+
+        /// <summary>
+        /// Create corridors between all existing rooms on this map.
+        /// </summary>
+        public void CreateCorridors()
+        {
+            List<Room> roomsWithNoExits = Rooms;
+            //While there are rooms with no exits.
+            while (roomsWithNoExits.Count() > 0)
+            {
+                Room firstRoom = roomsWithNoExits.FirstOrDefault(); //get a room with no exit
+                Room secondRoom = Rooms.Where(x => x != firstRoom).FirstOrDefault(); //get a room that is not firstRoom
+                if (secondRoom == null) return;
+                Tuple<int, int> firstRoomCorridorOrigin = new Tuple<int, int>(_rand.Next(firstRoom.TopLeft.Item1, firstRoom.TopRight.Item1), _rand.Next(firstRoom.BottomLeft.Item2, firstRoom.TopLeft.Item2));
+                Tuple<int, int> secondRoomCorridorOrigin = new Tuple<int, int>(_rand.Next(secondRoom.TopLeft.Item1, secondRoom.TopRight.Item1), _rand.Next(secondRoom.BottomLeft.Item2, secondRoom.TopLeft.Item2));
+                CreateCorridor(firstRoomCorridorOrigin, secondRoomCorridorOrigin);
+                roomsWithNoExits.Remove(firstRoom);
+            }
+        }
+
+        /// <summary>
+        /// Creates a corridor between two coordinates unless they are both located in the same room (room in a room).
+        /// </summary>
+        /// <param name="firstOrigin">The random spot in the first room you want to create a corridor to.</param>
+        /// <param name="secondOrigin">The random spot in the second room you want to create a corridor to.</param>
+        public void CreateCorridor(Tuple<int, int> firstOrigin, Tuple<int, int> secondOrigin)
+        {
+            //Check if rooms are contained within each other.
+            if (CheckIfRoomsAreContained(firstOrigin, secondOrigin))
+            {
+
+            }
+        }
+
+        public bool CheckIfRoomsAreContained(Tuple<int, int> firstOrigin, Tuple<int, int> secondOrigin)
+        {
+            Room firstRoom = FindRoomByCoordinate(firstOrigin);
+            Room secondRoom = FindRoomByCoordinate(secondOrigin);
+            if (firstRoom.TopLeft.Item1 <= secondRoom.TopLeft.Item1 && secondRoom.TopRight.Item1 <= firstRoom.TopRight.Item1)
+                if (firstRoom.BottomLeft.Item2 <= secondRoom.BottomLeft.Item2 && secondRoom.TopLeft.Item2 <= firstRoom.TopLeft.Item2)
+                    return false;
+            if (secondRoom.TopLeft.Item1 <= firstRoom.TopLeft.Item1 && firstRoom.TopRight.Item1 <= secondRoom.TopRight.Item1)
+                if (secondRoom.BottomLeft.Item2 <= firstRoom.BottomLeft.Item2 && firstRoom.TopLeft.Item2 <= secondRoom.TopLeft.Item2)
+                    return false;
+            return true;
         }
 
         /// <summary>
