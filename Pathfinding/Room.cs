@@ -101,7 +101,7 @@ namespace TheUndergroundTower.Pathfinding
             DetermineRoomDimensions();
         }
 
-        public void DetermineRoomDimensions()
+        private void DetermineRoomDimensions()
         {
             _rand = _rand ?? new Random(DateTime.Now.Millisecond);
             _xSize = _rand.Next(MIN_ROOM_SIZE, MAX_ROOM_X_SIZE);

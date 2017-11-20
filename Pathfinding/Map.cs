@@ -40,8 +40,13 @@ namespace TheUndergroundTower.Pathfinding
         /// </summary>
         private List<Room> _rooms;
 
+        /// <summary>
+        /// The rooms that are connected to other rooms. Used in corridor-creation
+        /// </summary>
+        private List<Room> ConnectedRooms;
+
         private static double MAP_SIZE_MULTIPLIER = 1;
-        private const int MAP_DIMENSIONS = 40;
+        private const int MAP_DIMENSIONS = 100;
         #endregion
         #region Properties
         public int XSize { get => _xSize; set => _xSize = value; }
@@ -61,15 +66,18 @@ namespace TheUndergroundTower.Pathfinding
             _xSize = _ySize = MAP_DIMENSIONS * (int)MAP_SIZE_MULTIPLIER;
             _tiles = new Tile[_xSize, _ySize];
             _rand = _rand ?? new Random(DateTime.Now.Millisecond);
+            int mapSize = _xSize * YSize; //The total number of possible tiles for this map.
+            int sumOfTiles = 0;
             Rooms = new List<Room>();
             int attemptedRoomPlacements = 0;
             while (attemptedRoomPlacements++ < MAX_PLACEMENT_ATTEMPTS &&
-                   Rooms.Count < 5)
+                   sumOfTiles <= mapSize/10) //don't fill the map with too many rooms
             {
                 Room room = new Room();
                 room.TopLeft = new Tuple<int, int>(_rand.Next(room.XSize, _xSize) - room.XSize, _rand.Next(room.YSize, _ySize) - room.YSize);
-                if (room.TopLeft != null && room.TopLeft.Item1 >= 0 && room.TopLeft.Item2 >= 0) //If room is in bounds of the map
+                if (room.TopLeft!=null && IsRoomInBoundsOfMap(room))
                 {
+                    sumOfTiles += room.YSize * room.XSize;
                     attemptedRoomPlacements = 0;
                     CreateRoom(room);
                 }
@@ -137,17 +145,25 @@ namespace TheUndergroundTower.Pathfinding
         /// </summary>
         public void CreateCorridors()
         {
-            List<Room> roomsWithNoExits = Rooms;
+            List<Room> roomsWithNoExits = Rooms.ToList();
+            ConnectedRooms = new List<Room>();
             //While there are rooms with no exits.
             while (roomsWithNoExits.Count() > 0)
             {
                 Room firstRoom = roomsWithNoExits.FirstOrDefault(); //get a room with no exit
-                Room secondRoom = Rooms.Where(x => x != firstRoom).FirstOrDefault(); //get a room that is not firstRoom
+                Room secondRoom = null;
+                if (ConnectedRooms.Count > 0) secondRoom = ConnectedRooms[_rand.Next(ConnectedRooms.Count)];
+                else secondRoom = Rooms.Where(x => x != firstRoom).FirstOrDefault();
                 if (secondRoom == null) return;
-                Tuple<int, int> firstRoomCorridorOrigin = new Tuple<int, int>(_rand.Next(firstRoom.TopLeft.Item1, firstRoom.TopRight.Item1), _rand.Next(firstRoom.BottomLeft.Item2, firstRoom.TopLeft.Item2));
-                Tuple<int, int> secondRoomCorridorOrigin = new Tuple<int, int>(_rand.Next(secondRoom.TopLeft.Item1, secondRoom.TopRight.Item1), _rand.Next(secondRoom.BottomLeft.Item2, secondRoom.TopLeft.Item2));
+                Tuple<int, int> firstRoomCorridorOrigin = new Tuple<int, int>(_rand.Next(firstRoom.TopLeft.Item1+1, firstRoom.TopRight.Item1), _rand.Next(firstRoom.BottomLeft.Item2+1, firstRoom.TopLeft.Item2));
+                Tuple<int, int> secondRoomCorridorOrigin = new Tuple<int, int>(_rand.Next(secondRoom.TopLeft.Item1+1, secondRoom.TopRight.Item1), _rand.Next(secondRoom.BottomLeft.Item2+1, secondRoom.TopLeft.Item2));
                 CreateCorridor(firstRoomCorridorOrigin, secondRoomCorridorOrigin);
+                firstRoom.NumOfExits++;
+                secondRoom.NumOfExits++;
+                ConnectedRooms.Add(firstRoom);
+                if (!ConnectedRooms.Contains(secondRoom)) ConnectedRooms.Add(secondRoom);
                 roomsWithNoExits.Remove(firstRoom);
+                roomsWithNoExits.Remove(secondRoom);
             }
         }
 
@@ -158,14 +174,31 @@ namespace TheUndergroundTower.Pathfinding
         /// <param name="secondOrigin">The random spot in the second room you want to create a corridor to.</param>
         public void CreateCorridor(Tuple<int, int> firstOrigin, Tuple<int, int> secondOrigin)
         {
-            //Check if rooms are contained within each other.
-            if (CheckIfRoomsAreContained(firstOrigin, secondOrigin))
+            //if (DoRoomsContainEachOther(firstOrigin, secondOrigin)) return;
+            int rightOrLeft = firstOrigin.Item1 > secondOrigin.Item1 ? -1 : 1; //if first origin is to the right of second origin
+            int upOrDown = firstOrigin.Item2 > secondOrigin.Item2 ? -1 : 1; //if first origin is above second origin
+            for (int createdTiles = 0; firstOrigin.Item1 +(createdTiles*rightOrLeft) != secondOrigin.Item1+rightOrLeft ; createdTiles++)
             {
-
+                _tiles[firstOrigin.Item1 + (createdTiles * rightOrLeft), firstOrigin.Item2] = new Tile(Floor);
+                if (_tiles[firstOrigin.Item1 + (createdTiles * rightOrLeft), firstOrigin.Item2 + 1] == null)
+                    _tiles[firstOrigin.Item1 + (createdTiles * rightOrLeft), firstOrigin.Item2 + 1] = new Tile(Wall);
+                if (_tiles[firstOrigin.Item1 + (createdTiles * rightOrLeft), firstOrigin.Item2 - 1] == null)
+                    _tiles[firstOrigin.Item1 + (createdTiles * rightOrLeft), firstOrigin.Item2 - 1] = new Tile(Wall);
             }
+            if (_tiles[secondOrigin.Item1 + rightOrLeft, firstOrigin.Item2 - upOrDown] == null)
+                _tiles[secondOrigin.Item1 + rightOrLeft, firstOrigin.Item2 - upOrDown] = new Tile(Wall);
+            for (int createdTiles = 0; firstOrigin.Item2 + (createdTiles*upOrDown) != secondOrigin.Item2 + upOrDown; createdTiles++)
+            {
+                _tiles[secondOrigin.Item1, firstOrigin.Item2 + (createdTiles * upOrDown)] = new Tile(Floor);
+                if (_tiles[secondOrigin.Item1 + 1, firstOrigin.Item2 + (createdTiles * upOrDown)] == null)
+                    _tiles[secondOrigin.Item1 + 1, firstOrigin.Item2 + (createdTiles * upOrDown)] = new Tile(Wall);
+                if (_tiles[secondOrigin.Item1 - 1, firstOrigin.Item2 + (createdTiles * upOrDown)] == null)
+                    _tiles[secondOrigin.Item1 - 1, firstOrigin.Item2 + (createdTiles * upOrDown)] = new Tile(Wall);
+            }
+            DrawMapToConsole();
         }
 
-        public bool CheckIfRoomsAreContained(Tuple<int, int> firstOrigin, Tuple<int, int> secondOrigin)
+        public bool DoRoomsContainEachOther(Tuple<int, int> firstOrigin, Tuple<int, int> secondOrigin)
         {
             Room firstRoom = FindRoomByCoordinate(firstOrigin);
             Room secondRoom = FindRoomByCoordinate(secondOrigin);
@@ -207,6 +240,15 @@ namespace TheUndergroundTower.Pathfinding
             return FindRoomByCoordinate(new Tuple<int, int>(coord.Item1, coord.Item2));
         }
 
+        public bool IsRoomInBoundsOfMap(Room room)
+        {
+            if (room.TopLeft.Item1 < 0 || room.TopLeft.Item2 < 0) return false;
+            if (room.TopLeft.Item1 >= _xSize || room.TopLeft.Item2 >= _ySize) return false;
+            if (room.BottomRight.Item1 < 0 || room.BottomRight.Item2 < 0) return false;
+            if (room.BottomRight.Item1 >= _xSize || room.BottomRight.Item2 >= _ySize) return false;
+            return true;
+        }
+
         public void DrawMapToConsole()
         {
             for (int y = YSize - 1; y >= 0; y--)
@@ -218,7 +260,7 @@ namespace TheUndergroundTower.Pathfinding
                     {
                         if (_tiles[x, y].Walkable == false) s = "X";
                         if (_tiles[x, y].Walkable == true) s = "O";
-                        if (_tiles[x, y].Objects != null) s = "P";
+                        if (_tiles[x, y].Objects != null) s = "@";
                     }
                     Console.Write(s);
                 }

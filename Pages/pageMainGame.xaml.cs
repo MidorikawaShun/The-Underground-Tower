@@ -76,46 +76,6 @@ namespace TheUndergroundTower.Pages
             return new Tuple<int, int, int>(xPos, yPos, GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP));
         }
 
-        ////Move the map in accordance with player's movement.
-        //private void RefreshScreen()
-        //{
-        //    int xpos = GameStatus.PLAYER.Location.Item1 - 5;
-        //    int ypos = GameStatus.PLAYER.Location.Item2 - 5;
-        //    int y = 0;
-        //    for (int i = 0; i < Definitions.WINDOW_X_SIZE; i++)
-        //    {
-        //        for (int j = 0; j < Definitions.WINDOW_Y_SIZE; j++)
-        //        {
-        //            bool tileExists = false;
-        //            if ((xpos + i) >= 0 && (ypos + j) >= 0 && (xpos + i) < GameStatus.CURRENT_MAP.XSize && (ypos + j) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
-        //            {
-        //                Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + i, ypos + j];
-        //                if (tile != null)
-        //                {
-        //                    ImageSource overlayedImage = tile.Image;
-        //                    if (tile.Objects != null && tile.Objects.Count > 0) //check whether there are items on the tile
-        //                    {
-
-        //                        int n = tile.Objects.Count();
-        //                        for (int x = 0; x < n; x++)
-        //                        {
-        //                            GameObject obj = tile.Objects[x];
-        //                            overlayedImage = CreateTile.Overlay(overlayedImage, obj.GetImage());
-        //                        }
-
-        //                    }
-        //                    (XAMLMap.Children[y++] as Image).Source = overlayedImage;
-        //                    tileExists = true;
-        //                }
-        //            }
-        //            if (!tileExists)//if tile doesn't exist, create black image instead
-        //            {
-        //                (XAMLMap.Children[y++] as Image).Source = CreateBlackImage();
-        //            }
-        //        }
-        //    }
-        //}
-
         //Move the map in accordance with player's movement.
         private void RefreshScreen()
         {
@@ -127,7 +87,7 @@ namespace TheUndergroundTower.Pages
                 for (int x = 0; x < Definitions.WINDOW_X_SIZE; x++)
                 {
                     bool tileExists = false;
-                    if ((xpos + x) >= 0 && (ypos - y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos - y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
+                    if ((xpos + x) >= 0 && (ypos + y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos - y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
                     {
                         Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + x, ypos+y];
                         if (tile != null)
