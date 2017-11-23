@@ -20,12 +20,17 @@ namespace TheUndergroundTower.Pathfinding
         /// <summary>
         /// The coordinate of this room's top-left tile on the map it belongs to.
         /// </summary>
-        private Tuple<int, int> _topLeft;
+        private MapCoord _topLeft;
 
         /// <summary>
         /// Object for random number generation.
         /// </summary>
         private static Random _rand;
+
+        /// <summary>
+        /// The room that the corridor-generating algorithm pairs this room with.
+        /// </summary>
+        private Room _basicConnectedRoom;
 
         private int _numOfExits;
 
@@ -47,14 +52,15 @@ namespace TheUndergroundTower.Pathfinding
         public int XSize { get => _xSize; private set => _xSize = value; }
         public int YSize { get => _ySize; private set => _ySize = value; }
         public int NumOfExits { get => _numOfExits; set => _numOfExits = value; }
+        public Room BasicConnectedRoom { get => _basicConnectedRoom; set => _basicConnectedRoom = value; }
 
-        public Tuple<int, int> TopLeft
+        public MapCoord TopLeft
         {
             get => _topLeft;
             set
             {
                 int numOfAttempts = 0;
-                while ((value.Item1-XSize<0 || value.Item2-YSize<0) && numOfAttempts<10)
+                while ((value.X-XSize<0 || value.Y-YSize<0) && numOfAttempts<10)
                 {
                     DetermineRoomDimensions();
                     numOfAttempts++;
@@ -64,31 +70,31 @@ namespace TheUndergroundTower.Pathfinding
                 _topLeft = value;
             }
         }
-        public Tuple<int, int> TopRight
+        public MapCoord TopRight
         {
             get
             {
                 if (_topLeft == null)
                     return null;
-                return new Tuple<int, int>(_topLeft.Item1 + _xSize, _topLeft.Item2);
+                return new MapCoord(_topLeft.X + _xSize, _topLeft.Y);
             }
         }
-        public Tuple<int, int> BottomLeft
+        public MapCoord BottomLeft
         {
             get
             {
                 if (_topLeft == null)
                     return null;
-                return new Tuple<int, int>(_topLeft.Item1, _topLeft.Item2 - _ySize);
+                return new MapCoord(_topLeft.X, _topLeft.Y - _ySize);
             }
         }
-        public Tuple<int, int> BottomRight
+        public MapCoord BottomRight
         {
             get
             {
                 if (_topLeft == null)
                     return null;
-                return new Tuple<int, int>(_topLeft.Item1 + _xSize, _topLeft.Item2 - _ySize);
+                return new MapCoord(_topLeft.X + _xSize, _topLeft.Y - _ySize);
             }
         }
         #endregion

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TheUndergroundTower.Pathfinding;
 
 namespace TheUndergroundTower.OtherClasses
 {
@@ -54,8 +55,8 @@ namespace TheUndergroundTower.OtherClasses
         /// Coordinates of the creature/item and map the creature/item is on.
         /// first is X, second is Y, third is which map
         /// </summary>
-        private Tuple<int, int, int> _location;
-        public Tuple<int, int, int> Location { get => _location; set => _location = value; }
+        private FullCoord _location;
+        public FullCoord Location { get => _location; set => _location = value; }
 
 
         #endregion

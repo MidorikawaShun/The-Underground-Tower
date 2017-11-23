@@ -38,8 +38,8 @@ namespace TheUndergroundTower.Pages
             Player p = GameStatus.PLAYER = new Player();
             p.Location = GetCreatureStartLocation();
             Room r = GameStatus.CURRENT_MAP.FindRoomByCoordinate(p.Location);
-            GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2].Objects = new List<GameObject>();
-            GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2].Objects.Add(p);
+            GameStatus.CURRENT_MAP.Tiles[p.Location.X, p.Location.Y].Objects = new List<GameObject>();
+            GameStatus.CURRENT_MAP.Tiles[p.Location.X, p.Location.Y].Objects.Add(p);
             RefreshScreen();
 
 
@@ -66,21 +66,21 @@ namespace TheUndergroundTower.Pages
         /// Returns a valid starting location for a creature.
         /// </summary>
         /// <returns>A tuple with the creatures starting location.</returns>
-        public Tuple<int, int, int> GetCreatureStartLocation()
+        public FullCoord GetCreatureStartLocation()
         {
             Random rand = new Random(DateTime.Now.Millisecond);
             //Choose a random room on the map
             Room startRoom = GameStatus.CURRENT_MAP.Rooms[rand.Next(GameStatus.CURRENT_MAP.Rooms.Count())];
-            int xPos = rand.Next(startRoom.TopLeft.Item1 + 1, startRoom.TopLeft.Item1 + startRoom.XSize);
-            int yPos = rand.Next(startRoom.BottomLeft.Item2 + 1, startRoom.BottomLeft.Item2 + startRoom.YSize);
-            return new Tuple<int, int, int>(xPos, yPos, GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP));
+            int xPos = rand.Next(startRoom.TopLeft.X + 1, startRoom.TopLeft.X + startRoom.XSize);
+            int yPos = rand.Next(startRoom.BottomLeft.Y + 1, startRoom.BottomLeft.Y + startRoom.YSize);
+            return new FullCoord(xPos, yPos, GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP));
         }
 
         //Move the map in accordance with player's movement.
         private void RefreshScreen()
         {
-            int xpos = GameStatus.PLAYER.Location.Item1 - 5;
-            int ypos = GameStatus.PLAYER.Location.Item2 - 6;
+            int xpos = GameStatus.PLAYER.Location.X - 5;
+            int ypos = GameStatus.PLAYER.Location.Y - 6;
             int z = 0;
             for (int y = Definitions.WINDOW_Y_SIZE - 1; y >= 0; y--)
             {
@@ -117,15 +117,15 @@ namespace TheUndergroundTower.Pages
                                    16);
         }
 
-        private Tile GetTileFromCoordinate(Tuple<int, int, int> coord)
+        private Tile GetTileFromCoordinate(FullCoord coord)
         {
-            return GetTileFromCoordinate(new Tuple<int, int>(coord.Item1, coord.Item2), GameStatus.MAPS[coord.Item3]);
+            return GetTileFromCoordinate(new MapCoord(coord.X, coord.Y), GameStatus.MAPS[coord.Z]);
         }
 
-        private Tile GetTileFromCoordinate(Tuple<int, int> coord, Map map = null)
+        private Tile GetTileFromCoordinate(MapCoord coord, Map map = null)
         {
             Map targetMap = map ?? GameStatus.CURRENT_MAP;
-            return targetMap.Tiles[coord.Item1, coord.Item2];
+            return targetMap.Tiles[coord.X, coord.Y];
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -138,32 +138,32 @@ namespace TheUndergroundTower.Pages
         {
             Player p = GameStatus.PLAYER;
             Map map = GameStatus.CURRENT_MAP;
-            map.Tiles[p.Location.Item1, p.Location.Item2].Objects.Remove(p);
-            Tile oldTile = map.Tiles[p.Location.Item1, p.Location.Item2];
+            map.Tiles[p.Location.X, p.Location.Y].Objects.Remove(p);
+            Tile oldTile = map.Tiles[p.Location.X, p.Location.Y];
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
             {
                 case "Up":
                     {
-                        p.MoveTo(new Tuple<int, int>(p.Location.Item1, p.Location.Item2 + 1), map);
+                        p.MoveTo(new MapCoord(p.Location.X, p.Location.Y + 1), map);
                         oldTile.Objects = null;
                         break;
                     }
                 case "Down":
                     {
-                        p.MoveTo(new Tuple<int, int>(p.Location.Item1, p.Location.Item2 - 1), map);
+                        p.MoveTo(new MapCoord(p.Location.X, p.Location.Y - 1), map);
                         oldTile.Objects = null;
                         break;
                     }
                 case "Left":
                     {
-                        p.MoveTo(new Tuple<int, int>(p.Location.Item1 - 1, p.Location.Item2), map);
+                        p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y), map);
                         oldTile.Objects = null;
                         break;
                     }
                 case "Right":
                     {
-                        p.MoveTo(new Tuple<int, int>(p.Location.Item1 + 1, p.Location.Item2), map);
+                        p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y), map);
                         oldTile.Objects = null;
                         break;
                     }

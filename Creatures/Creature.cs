@@ -146,12 +146,12 @@ namespace WpfApp1.Creatures
         /// Check if a creature is able to move into the supplied coordinate, and move if possible.
         /// </summary>
         /// <param name="coord">The coordinate you want the creature to move to.</param>
-        public void MoveTo(Tuple<int,int> coord,Map map)
+        public void MoveTo(MapCoord coord,Map map)
         {
-            if (map.Tiles[coord.Item1, coord.Item2].Walkable == false)
+            if (map.Tiles[coord.X, coord.Y].Walkable == false)
                 return;
             else
-                Location = new Tuple<int, int, int>(coord.Item1, coord.Item2, Location.Item3);
+                Location = new FullCoord(coord.X, coord.Y, Location.Z);
         }
 
         public override ImageSource GetImage()

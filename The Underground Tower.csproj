@@ -77,7 +77,9 @@
     <Compile Include="GameProperties\GameObject.cs" />
     <Compile Include="GameProperties\GameStatus.cs" />
     <Compile Include="Items\Item.cs" />
+    <Compile Include="Pathfinding\FullCoord.cs" />
     <Compile Include="Pathfinding\Map.cs" />
+    <Compile Include="Pathfinding\MapCoord.cs" />
     <Compile Include="Pathfinding\Room.cs" />
     <Compile Include="Pathfinding\Tile.cs" />
     <Compile Include="Utilities\ObjectBase.cs" />
