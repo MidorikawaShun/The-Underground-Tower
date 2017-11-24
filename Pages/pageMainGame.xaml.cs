@@ -197,7 +197,7 @@ namespace TheUndergroundTower.Pages
             Tile tile = GetTileFromCoordinate(p.Location);
             if (tile.Objects == null) tile.Objects = new List<GameObject>();
             tile.Objects.Add(p);
-            map.DrawMapToConsole();
+            //map.DrawMapToConsole();
             RefreshScreen();
         }
 

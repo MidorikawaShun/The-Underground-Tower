@@ -17,6 +17,10 @@ namespace TheUndergroundTower.Pathfinding
         /// </summary>
         private int _xSize, _ySize;
 
+        public int RoomNumber =0;
+
+        private static int RoomNumberer = 0;
+
         /// <summary>
         /// The coordinate of this room's top-left tile on the map it belongs to.
         /// </summary>
@@ -112,6 +116,12 @@ namespace TheUndergroundTower.Pathfinding
             _rand = _rand ?? new Random(DateTime.Now.Millisecond);
             _xSize = _rand.Next(MIN_ROOM_SIZE, MAX_ROOM_X_SIZE);
             _ySize = _rand.Next(MIN_ROOM_SIZE, MAX_ROOM_Y_SIZE);
+            RoomNumber = RoomNumberer++;
+        }
+
+        public override string ToString()
+        {
+            return $"TopLeft.X:{TopLeft.X} , TopLeft.Y:{TopLeft.Y}";
         }
     }
 }

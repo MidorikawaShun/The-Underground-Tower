@@ -39,12 +39,7 @@ namespace TheUndergroundTower.Pathfinding
         /// The rooms that are present on this map.
         /// </summary>
         private List<Room> _rooms;
-
-        /// <summary>
-        /// The rooms that are connected to other rooms. Used in corridor-creation
-        /// </summary>
-        private List<Room> ConnectedRooms;
-
+        
         private static double MAP_SIZE_MULTIPLIER = 1;
         private const int MAP_DIMENSIONS = 100;
         #endregion
@@ -68,10 +63,10 @@ namespace TheUndergroundTower.Pathfinding
             _rand = _rand ?? new Random(DateTime.Now.Millisecond);
             int mapSize = _xSize * YSize; //The total number of possible tiles for this map.
             int sumOfTiles = 0;
-            Rooms = new List<Room>();
+            _rooms = new List<Room>();
             int attemptedRoomPlacements = 0;
             while (attemptedRoomPlacements++ < MAX_PLACEMENT_ATTEMPTS &&
-                   sumOfTiles <= mapSize / 10) //don't fill the map with too many rooms
+                   sumOfTiles <= mapSize / 5) //don't fill the map with too many rooms
             {
                 Room room = new Room();
                 room.TopLeft = new MapCoord(_rand.Next(room.XSize, _xSize) - room.XSize, _rand.Next(room.YSize, _ySize) - room.YSize);
@@ -177,14 +172,25 @@ namespace TheUndergroundTower.Pathfinding
             {
                 Room chosenRoom = RoomsWithNoExit[_rand.Next(RoomsWithNoExit.Count)];
                 chosenRoom.BasicConnectedRoom = FindNearestDisconnectedRoom(chosenRoom);
+                if (chosenRoom.BasicConnectedRoom == null)
+                {
+                    List<Room> tempRooms = _rooms.Where(x => x!=chosenRoom && x.NumOfExits!=0).ToList();
+                    chosenRoom.BasicConnectedRoom = tempRooms[_rand.Next(tempRooms.Count())];
+                }
+                else
+                    Console.WriteLine($"Source = {chosenRoom.ToString()} ||| Target = {chosenRoom.BasicConnectedRoom.ToString()}");
+                chosenRoom.BasicConnectedRoom.BasicConnectedRoom = chosenRoom;
                 RoomsWithNoExit.Remove(chosenRoom);
+                RoomsWithNoExit.Remove(chosenRoom.BasicConnectedRoom);
             }
             foreach (Room room in _rooms)
             {
-                MapCoord firstRoomCorridorOrigin = new MapCoord(_rand.Next(room.TopLeft.X+1, room.TopRight.X), _rand.Next(room.BottomLeft.Y+1, room.TopLeft.Y));
-                MapCoord secondRoomCorridorOrigin = new MapCoord(_rand.Next(room.BasicConnectedRoom.TopLeft.X+1, room.BasicConnectedRoom.TopRight.X),
-                    _rand.Next(room.BasicConnectedRoom.BottomLeft.Y+1, room.BasicConnectedRoom.TopLeft.Y));
+                MapCoord firstRoomCorridorOrigin = new MapCoord(_rand.Next(room.XSize-1) + room.TopLeft.X+1, _rand.Next(room.YSize-1) + room.BottomLeft.Y+1);
+                Room sRoom = room.BasicConnectedRoom;
+                MapCoord secondRoomCorridorOrigin = new MapCoord(_rand.Next(sRoom.XSize-1) + sRoom.TopLeft.X+1, _rand.Next(sRoom.YSize-1) + sRoom.BottomLeft.Y+1);
                 CreateCorridor(firstRoomCorridorOrigin,secondRoomCorridorOrigin);
+                room.NumOfExits++;
+                sRoom.NumOfExits++;
             }
         }
 
@@ -199,24 +205,33 @@ namespace TheUndergroundTower.Pathfinding
             MapCoord startPoint = null;
             MapCoord iterator = null;
             Room resultRoom = null;
-            for (int i = 1; i <= MAP_DIMENSIONS/5; i++)
+            int multiplier = 5;
+            for (int i = 1; i <= MAP_DIMENSIONS/2 && i*multiplier<=MAP_DIMENSIONS; i++)
             {
-                startPoint = new MapCoord(room.TopLeft.X - i * 5, room.TopLeft.Y + i * 5);
+                multiplier = i * 5;
+                startPoint = new MapCoord(room.TopLeft.X - multiplier, room.TopLeft.Y + multiplier);
                 resultRoom = FindRoomForThisPoint(startPoint);
-                if (resultRoom != null && resultRoom.BasicConnectedRoom == null) return resultRoom; 
-                iterator = new MapCoord(room.TopLeft.X - i * 5 + 5, room.TopLeft.Y + i * 5);
-                while (true)
+                if (resultRoom != null && resultRoom.BasicConnectedRoom == null)
+                    return resultRoom; 
+                iterator = new MapCoord(room.TopLeft.X - multiplier + 5, room.TopLeft.Y + multiplier);
+                int j = 0;
+                while (iterator.X>0 && iterator.X<XSize && iterator.Y>0 && iterator.Y < YSize)
                 {
                     resultRoom = FindRoomByCoordinate(iterator);
-                    if (resultRoom != null && resultRoom.BasicConnectedRoom == null) return resultRoom;
-                    if (iterator.X == startPoint.X) iterator.Y = iterator.Y + 5 > startPoint.Y ? startPoint.Y : iterator.Y + 5;
-                    if (iterator.X == startPoint.X && iterator.Y == startPoint.Y) break;
-                    if (iterator.Y == room.BottomLeft.Y) iterator.X = iterator.X - 5 < startPoint.X ? startPoint.X : iterator.X - 5;
-                    if (iterator.X == room.TopRight.X) iterator.Y = iterator.Y - 5 < room.BottomLeft.Y ? startPoint.Y : iterator.Y - 5;
-                    if (iterator.Y == startPoint.Y) iterator.X = iterator.X + 5 > room.TopRight.X ? room.TopRight.X : iterator.X + 5; 
+                    if (resultRoom != null && resultRoom.BasicConnectedRoom == null && resultRoom!=room && !DoRoomsContainEachOther(room.TopLeft,iterator))
+                        return resultRoom;
+                    if (iterator.X == startPoint.X)
+                        if (iterator.Y == startPoint.Y) break;
+                        else iterator.Y = iterator.Y + 5 > startPoint.Y ? startPoint.Y : iterator.Y + 5;
+                    if (iterator.Y == room.BottomLeft.Y - multiplier)
+                        iterator.X = iterator.X - 5 < startPoint.X ? startPoint.X : iterator.X - 5;
+                    if (iterator.X == room.TopRight.X + multiplier) iterator.Y = iterator.Y - 5 < room.BottomRight.Y - multiplier ? room.BottomRight.Y - multiplier : iterator.Y - 5;
+                    if (iterator.Y == startPoint.Y && iterator.X!=startPoint.X) iterator.X = iterator.X + 5 > room.TopRight.X + multiplier ? room.TopRight.X + multiplier : iterator.X + 5;
+                    j++;
                 }
             }
-            return null;
+            List<Room> tempRooms = _rooms.Where(x => x != room).ToList();
+            return tempRooms[_rand.Next(tempRooms.Count())];
         }
 
         /// <summary>
@@ -249,17 +264,23 @@ namespace TheUndergroundTower.Pathfinding
             }
         }
 
+        /// <summary>
+        /// Check if two points on the maps are contained in rooms, and if those rooms contain each other.
+        /// </summary>
+        /// <param name="firstOrigin"></param>
+        /// <param name="secondOrigin"></param>
+        /// <returns></returns>
         public bool DoRoomsContainEachOther(MapCoord firstOrigin, MapCoord secondOrigin)
         {
             Room firstRoom = FindRoomByCoordinate(firstOrigin);
             Room secondRoom = FindRoomByCoordinate(secondOrigin);
-            if (firstRoom.TopLeft.X <= secondRoom.TopLeft.X && secondRoom.TopRight.X <= firstRoom.TopRight.X)
-                if (firstRoom.BottomLeft.Y <= secondRoom.BottomLeft.Y && secondRoom.TopLeft.Y <= firstRoom.TopLeft.Y)
-                    return false;
-            if (secondRoom.TopLeft.X <= firstRoom.TopLeft.X && firstRoom.TopRight.X <= secondRoom.TopRight.X)
-                if (secondRoom.BottomLeft.Y <= firstRoom.BottomLeft.Y && firstRoom.TopLeft.Y <= secondRoom.TopLeft.Y)
-                    return false;
-            return true;
+            if (firstRoom.TopLeft.X <= secondRoom.TopLeft.X && firstRoom.TopRight.X >= secondRoom.TopRight.X)
+                if (firstRoom.TopLeft.Y >= secondRoom.TopLeft.Y && firstRoom.BottomLeft.Y <= secondRoom.TopLeft.Y)
+                    return true;
+            if (secondRoom.TopLeft.X <= firstRoom.TopLeft.X && secondRoom.TopRight.X >= firstRoom.TopRight.X)
+                if (secondRoom.TopLeft.Y >= firstRoom.TopLeft.Y && secondRoom.BottomLeft.Y <= firstRoom.TopLeft.Y)
+                    return true;
+            return false;
         }
 
         /// <summary>
@@ -269,16 +290,14 @@ namespace TheUndergroundTower.Pathfinding
         /// <returns>A Room object where the coordinate is.</returns>
         public Room FindRoomByCoordinate(MapCoord coord)
         {
-            List<Room> matchingRooms = new List<Room>();
-            foreach (Room checkedRoom in Rooms)
-                //check if targets X-coordinate is inside the room.
-                if (coord.X >= checkedRoom.TopLeft.X && coord.X <= checkedRoom.TopRight.X)
-                    //check if targets Y-coordinate is inside the room.
-                    if (coord.Y >= checkedRoom.BottomLeft.Y && coord.Y <= checkedRoom.TopLeft.Y)
-                        matchingRooms.Add(checkedRoom);
+            IEnumerable<Room> matchingRooms = new List<Room>();
+            matchingRooms = _rooms.Where(x => x.TopLeft.X <= coord.X);
+            matchingRooms = matchingRooms.Where(x => x.TopRight.X >= coord.X);
+            matchingRooms = matchingRooms.Where(x => x.BottomLeft.Y <= coord.Y);
+            matchingRooms = matchingRooms.Where(x => x.TopLeft.Y >= coord.Y).ToList();
             //Now that we have a list of rooms this coord matches, find the smallest possible room.
             //Room size = X size * Y size, so look for the smallest one or return the first result if mutliple exist.
-            return matchingRooms.Where(x => (x.YSize * x.XSize) == matchingRooms.Select(y => y.XSize * y.YSize).Min()).FirstOrDefault();
+            return matchingRooms/*.Where(x => (x.YSize * x.XSize) == matchingRooms.Select(y => y.XSize * y.YSize).Min())*/.FirstOrDefault();
         }
 
         /// <summary>
@@ -293,10 +312,8 @@ namespace TheUndergroundTower.Pathfinding
 
         public bool IsRoomInBoundsOfMap(Room room)
         {
-            if (room.TopLeft.X < 0 || room.TopLeft.Y < 0) return false;
-            if (room.TopLeft.X >= _xSize || room.TopLeft.Y >= _ySize) return false;
-            if (room.BottomRight.X < 0 || room.BottomRight.Y < 0) return false;
-            if (room.BottomRight.X >= _xSize || room.BottomRight.Y >= _ySize) return false;
+            if (room.TopLeft.X < 1 || room.TopRight.X >= _xSize) return false;
+            if (room.BottomLeft.Y < 1 || room.TopLeft.Y >= _ySize) return false;
             return true;
         }
 
