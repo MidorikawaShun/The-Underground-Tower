@@ -143,27 +143,55 @@ namespace TheUndergroundTower.Pages
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
             {
+                case "NumPad8":
                 case "Up":
                     {
                         p.MoveTo(new MapCoord(p.Location.X, p.Location.Y + 1), map);
                         oldTile.Objects = null;
                         break;
                     }
+                case "NumPad2":
                 case "Down":
                     {
                         p.MoveTo(new MapCoord(p.Location.X, p.Location.Y - 1), map);
                         oldTile.Objects = null;
                         break;
                     }
+                case "NumPad4":
                 case "Left":
                     {
                         p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y), map);
                         oldTile.Objects = null;
                         break;
                     }
+                case "NumPad6":
                 case "Right":
                     {
                         p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y), map);
+                        oldTile.Objects = null;
+                        break;
+                    }
+                case "NumPad1":
+                    {
+                        p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y -1), map);
+                        oldTile.Objects = null;
+                        break;
+                    }
+                case "NumPad3":
+                    {
+                        p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y -1), map);
+                        oldTile.Objects = null;
+                        break;
+                    }
+                case "NumPad7":
+                    {
+                        p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y +1), map);
+                        oldTile.Objects = null;
+                        break;
+                    }
+                case "NumPad9":
+                    {
+                        p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y +1), map);
                         oldTile.Objects = null;
                         break;
                     }
@@ -172,28 +200,6 @@ namespace TheUndergroundTower.Pages
                         return;
                     }
             }
-            /*
-            if (e.Key.Equals(Key.Up)) //if the user presses up arrow, we want to take the player's position and decrement Y coordinate
-            {
-                p.Location = new Tuple<int, int, int>(p.Location.Item1-1, p.Location.Item2, p.Location.Item3);
-                tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
-            }
-            if (e.Key.Equals(Key.Down)) //increment Y coordinate
-            {
-                p.Location = new Tuple<int, int, int>(p.Location.Item1+1, p.Location.Item2, p.Location.Item3);
-                tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
-            }
-            if (e.Key.Equals(Key.Right)) //increment X coordinate
-            {
-                p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2+1, p.Location.Item3);
-                tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
-            }
-            if (e.Key.Equals(Key.Left)) //decrement X coordinate
-            {
-                p.Location = new Tuple<int, int, int>(p.Location.Item1, p.Location.Item2-1, p.Location.Item3);
-                tile = GameStatus.CURRENT_MAP.Tiles[p.Location.Item1, p.Location.Item2];
-            }
-            */
             Tile tile = GetTileFromCoordinate(p.Location);
             if (tile.Objects == null) tile.Objects = new List<GameObject>();
             tile.Objects.Add(p);
