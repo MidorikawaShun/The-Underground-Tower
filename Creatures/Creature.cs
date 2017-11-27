@@ -42,34 +42,6 @@ namespace WpfApp1.Creatures
         }
 
         /// <summary>
-        /// Determines how far a creature can see.
-        /// </summary>
-        private int _sightRadius;
-        public int SightRadius
-        {
-            get { return _speed; }
-            set
-            {
-                if (value >= 0)
-                    _sightRadius = value;
-            }
-        }
-
-        /// <summary>
-        /// Determines if, and how far a creature can see without a light source.
-        /// </summary>
-        private int _darkVision;
-        public int DarkVision
-        {
-            get { return _darkVision; }
-            set
-            {
-                if (value >= 0)
-                    _darkVision = value;
-            }
-        }
-
-        /// <summary>
         /// Determines how proficient the user is with melee attacks. The higher this stat, the likelier
         /// the user is to hit his opponent.
         /// </summary>
@@ -141,6 +113,11 @@ namespace WpfApp1.Creatures
             Image = CreateTile.GetImageFromTileset(index);
             GameStatus.CREATURES.Add(this);
         }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public Creature() { }
 
         /// <summary>
         /// Check if a creature is able to move into the supplied coordinate, and move if possible.

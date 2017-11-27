@@ -318,6 +318,22 @@ namespace TheUndergroundTower.Pathfinding
         }
 
         /// <summary>
+        /// Checks if a certain tile on the map is hiding those behind it.
+        /// </summary>
+        /// <param name="coord">The tile's coordinates</param>
+        /// <returns>True if yes, False if no.</returns>
+        public bool IsHiding(MapCoord coord)
+        {
+            try
+            {
+                if (_tiles[coord.X, coord.Y].Seethrough)
+                    return true;
+            }
+            catch (Exception ex) {}
+            return false;
+        }
+
+        /// <summary>
         /// Checks if 'point' is in 'room', returns true or false
         /// </summary>
         /// <param name="point"></param>

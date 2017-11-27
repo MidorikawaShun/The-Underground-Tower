@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
 
@@ -22,6 +23,7 @@ namespace WpfApp1
         public static List<Difficulty> POSSIBLE_DIFFICULTIES { get; set; }
         public static List<TowerDepth> POSSIBLE_TOWER_DEPTHS { get; set; }
         public static List<Tile> POSSIBLE_TILES { get; set; }
+        public static List<Monster> POSSIBLE_MONSTERS { get; set; }
 
         //Creates the lists above from XML files.
 
@@ -54,6 +56,12 @@ namespace WpfApp1
             POSSIBLE_TILES = new List<Tile>();
             Utilities.Xml.PopulateTiles();
             GameStatus.TILES = new List<Tile>();
+        }
+
+        public static void InitializeMonsters()
+        {
+            POSSIBLE_MONSTERS = new List<Monster>();
+            Utilities.Xml.PopulateMonsters();
         }
 
     }

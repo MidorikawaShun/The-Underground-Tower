@@ -100,8 +100,6 @@ namespace WpfApp1.Creatures
         public void SetRace(Race chosenRace)
         {
             Speed = chosenRace.Speed;
-            SightRadius = chosenRace.SightRadius;
-            DarkVision = chosenRace.DarkVision;
         }
 
         /// <summary>

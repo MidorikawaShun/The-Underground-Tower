@@ -67,6 +67,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Creatures\Creature.cs" />
+    <Compile Include="Creatures\Monster.cs" />
     <Compile Include="Creatures\Player.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Items\Armor.cs" />

@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Monsters>
-  <Monster Name="">
-    <Description></Description>
-    <HP></HP>
-    <RangedAttacker>True</RangedAttacker>
+  <Monster Name="Flame Elemental">
+    <Description>A creature made out of pure fire.</Description>
+    <HP>10</HP>
+    <RangedAttacker>False</RangedAttacker>
+    <MeleeSkill>5</MeleeSkill>
+    <MeleeDamage>1d10</MeleeDamage>
+    <ImageIndex>3</ImageIndex>
   </Monster>
 </Monsters>

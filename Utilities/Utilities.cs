@@ -135,6 +135,23 @@ namespace WpfApp1
                 }
             }
 
+            public static void PopulateMonsters()
+            {
+                try
+                {
+                    //Opens the Tiles XML file.
+                    XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileTiles));
+                    XmlNode monsters = doc.ChildNodes[1];
+                    //Creates the tiles objects and adds them to the list.
+                    foreach (XmlNode monster in monsters)
+                        new Tile(monster);
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex, "An error has occured while attempting to populate Tiles from XML.");
+                }
+            }
+
         }
 
         /// <summary>
@@ -380,11 +397,7 @@ namespace WpfApp1
             return new DrawingImage(group);
 
         }
-
-
-
-
-
-
+        
     }
+
 }

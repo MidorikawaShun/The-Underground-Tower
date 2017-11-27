@@ -14,8 +14,6 @@
     </Public>
     <Private>
       <Speed>+0</Speed>
-      <SightRadius>+5</SightRadius>
-      <DarkVision>+0</DarkVision>
     </Private>
   </Race>
   <Race Name="Dwarf">
@@ -32,8 +30,6 @@
     </Public>
     <Private>
       <Speed>+0</Speed>
-      <SightRadius>+4</SightRadius>
-      <DarkVision>+4</DarkVision>
     </Private>
   </Race>
   <Race Name="Elf">
@@ -50,8 +46,6 @@
     </Public>
     <Private>
       <Speed>+30</Speed>
-      <SightRadius>+8</SightRadius>
-      <DarkVision>+2</DarkVision>
     </Private>
   </Race>
   <Race Name="Orc">
@@ -68,8 +62,6 @@
     </Public>
     <Private>
       <Speed>+0</Speed>
-      <SightRadius>+5</SightRadius>
-      <DarkVision>+3</DarkVision>
     </Private>
   </Race>
   <Race Name="Demi-God">
@@ -86,8 +78,6 @@
     </Public>
     <Private>
       <Speed>+0</Speed>
-      <SightRadius>+10</SightRadius>
-      <DarkVision>+10</DarkVision>
     </Private>
   </Race>
 </Races>
