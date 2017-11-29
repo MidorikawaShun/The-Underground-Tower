@@ -6,6 +6,6 @@
     <RangedAttacker>False</RangedAttacker>
     <MeleeSkill>5</MeleeSkill>
     <MeleeDamage>1d10</MeleeDamage>
-    <ImageIndex>3</ImageIndex>
+    <ImageIndex>2</ImageIndex>
   </Monster>
 </Monsters>

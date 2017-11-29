@@ -8,6 +8,8 @@ using System.Drawing;
 using System.Xml;
 using WpfApp1;
 using System.Windows.Media;
+using TheUndergroundTower.Creatures;
+using WpfApp1.Creatures;
 
 namespace TheUndergroundTower.Pathfinding
 {
@@ -80,6 +82,11 @@ namespace TheUndergroundTower.Pathfinding
             _image = tile.Image;
             //save the created tile in the list of actual tiles present in the game
             GameStatus.TILES.Add(this); 
+        }
+
+        public bool IsWalkable()
+        {
+            return _walkable && (_objects == null || _objects != null && _objects.Where(x => x is Creature).Count() == 0);
         }
 
     }

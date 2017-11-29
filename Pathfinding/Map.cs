@@ -376,7 +376,9 @@ namespace TheUndergroundTower.Pathfinding
                 MapCoord coord = room.GetPointInRoom();
                 Tile tile = _tiles[coord.X, coord.Y];
                 tile.Objects = tile.Objects ?? new List<GameObject>();
-                tile.Objects.Add(new Monster(GameData.POSSIBLE_MONSTERS[_rand.Next(GameData.POSSIBLE_MONSTERS.Count)]));
+                Monster monster = new Monster(GameData.POSSIBLE_MONSTERS[_rand.Next(GameData.POSSIBLE_MONSTERS.Count)]);
+                monster.Location = new FullCoord(coord.X,coord.Y,GameStatus.MAPS.IndexOf(this));
+                tile.Objects.Add(monster);
             }
         }
 

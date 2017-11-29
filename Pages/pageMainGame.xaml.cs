@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
 using WpfApp1;
@@ -28,14 +29,18 @@ namespace TheUndergroundTower.Pages
     public partial class pageMainGame : Page
     {
 
+        private List<Monster> Monsters;
+        private Random _rand;
+
         public pageMainGame()
         {
             InitializeComponent();
             GameData.InitializeTiles();
             GameData.InitializeMonsters();
+            _rand = new Random(DateTime.Now.Millisecond);
             GameStatus.MAPS = new List<Map>();
-
             CreateDisplay();
+            Monsters = GameStatus.CREATURES.Where(x=>x is Monster && x.Location.Z==GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP)).Select(x=>x as Monster).ToList();
             Player p = GameStatus.PLAYER = new Player();
             p.Location = GetCreatureStartLocation();
             Room r = GameStatus.CURRENT_MAP.FindRoomByCoordinate(p.Location);
@@ -69,11 +74,10 @@ namespace TheUndergroundTower.Pages
         /// <returns>A tuple with the creatures starting location.</returns>
         public FullCoord GetCreatureStartLocation()
         {
-            Random rand = new Random(DateTime.Now.Millisecond);
             //Choose a random room on the map
-            Room startRoom = GameStatus.CURRENT_MAP.Rooms[rand.Next(GameStatus.CURRENT_MAP.Rooms.Count())];
-            int xPos = rand.Next(startRoom.TopLeft.X + 1, startRoom.TopLeft.X + startRoom.XSize);
-            int yPos = rand.Next(startRoom.BottomLeft.Y + 1, startRoom.BottomLeft.Y + startRoom.YSize);
+            Room startRoom = GameStatus.CURRENT_MAP.Rooms[_rand.Next(GameStatus.CURRENT_MAP.Rooms.Count())];
+            int xPos = _rand.Next(startRoom.TopLeft.X + 1, startRoom.TopLeft.X + startRoom.XSize);
+            int yPos = _rand.Next(startRoom.BottomLeft.Y + 1, startRoom.BottomLeft.Y + startRoom.YSize);
             return new FullCoord(xPos, yPos, GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP));
         }
 
@@ -196,6 +200,10 @@ namespace TheUndergroundTower.Pages
                         oldTile.Objects = oldTile.Objects.Count()==1 && oldTile.Objects.Contains(p)?null:oldTile.Objects;
                         break;
                     }
+                case "NumPad5":
+                    {
+                        break;
+                    }
                 default:
                     {
                         return;
@@ -204,8 +212,44 @@ namespace TheUndergroundTower.Pages
             Tile tile = GetTileFromCoordinate(p.Location);
             if (tile.Objects == null) tile.Objects = new List<GameObject>();
             tile.Objects.Add(p);
-            //map.DrawMapToConsole();
+            MoveMonsters();
             RefreshScreen();
+        }
+
+        public void MoveMonsters()
+        {
+            foreach (Monster monster in Monsters)
+            {
+                if (monster.AwareOfPlayer)  { }
+                else BrownianMotion(monster);
+            }
+        }
+
+        /// <summary>
+        /// Moves a creature around by one tile randomly.
+        /// </summary>
+        /// <param name="creature">The creature to be moved.</param>
+        public void BrownianMotion(Creature creature)
+        {
+            Tile currentTile = GetTileFromCoordinate(creature.Location);
+            List<MapCoord> coordsChecked = new List<MapCoord>();
+            while (currentTile.Objects!=null && currentTile.Objects.Contains(creature))
+            {
+                if (coordsChecked.Count() == 8) return; //No walkable tile to move to
+                int newX = _rand.Next(-1, 2) + creature.Location.X;
+                int newY = _rand.Next(-1, 2) + creature.Location.Y;
+                Tile newTile = GameStatus.CURRENT_MAP.Tiles[newX, newY];
+                if (coordsChecked.Where(coord => coord.X == newX && coord.Y == newY).Count()>0) continue;
+                if (newTile.IsWalkable())
+                {
+                    currentTile.Objects.Remove(creature);
+                    currentTile.Objects = currentTile.Objects.Count == 0 ? null : currentTile.Objects;
+                    newTile.Objects = newTile.Objects ?? new List<GameObject>();
+                    newTile.Objects.Add(creature);
+                    creature.Location = new FullCoord(newX, newY, creature.Location.Z);
+                }
+                else coordsChecked.Add(new MapCoord(newX, newY));
+            }
         }
 
         private void MainGamePage_KeyDown(object sender, KeyEventArgs e)

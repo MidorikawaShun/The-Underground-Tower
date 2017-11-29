@@ -126,10 +126,8 @@ namespace WpfApp1.Creatures
         /// <param name="coord">The coordinate you want the creature to move to.</param>
         public void MoveTo(MapCoord coord,Map map)
         {
-            if (map.Tiles[coord.X, coord.Y].Walkable == false)
-                return;
-            List<GameObject> objects = map.Tiles[coord.X, coord.Y].Objects;
-            if (objects != null && objects.Where(x => x is Monster).Count() > 0)
+            Tile tile = map.Tiles[coord.X, coord.Y];
+            if (tile.IsWalkable() == false)
                 return;
             else
                 Location = new FullCoord(coord.X, coord.Y, Location.Z);
