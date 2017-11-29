@@ -123,5 +123,12 @@ namespace TheUndergroundTower.Pathfinding
         {
             return $"TopLeft.X:{TopLeft.X} , TopLeft.Y:{TopLeft.Y}";
         }
+
+        public MapCoord GetPointInRoom()
+        {
+            int xPos = _rand.Next(TopLeft.X + 1, TopRight.X - 1); //don't include walls
+            int yPos = _rand.Next(BottomLeft.Y + 1, TopLeft.Y - 1);
+            return new MapCoord(xPos, yPos);
+        }
     }
 }

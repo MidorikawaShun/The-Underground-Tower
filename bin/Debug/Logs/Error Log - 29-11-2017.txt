@@ -1,0 +1,9 @@
+
+
+29-Nov-17 21:01:56 - An error has occured while attempting to populate Tiles from XML.
+System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Convert.ToInt32(String value)
+   at TheUndergroundTower.Creatures.Monster..ctor(XmlNode monster) in C:\Users\matan\Source\Repos\The-Underground-Tower\Creatures\Monster.cs:line 28
+   at WpfApp1.Utilities.Xml.PopulateMonsters() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 148

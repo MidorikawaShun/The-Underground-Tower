@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheUndergroundTower.Creatures;
+using TheUndergroundTower.OtherClasses;
 using WpfApp1;
 
 namespace TheUndergroundTower.Pathfinding
@@ -78,7 +80,8 @@ namespace TheUndergroundTower.Pathfinding
                 }
             }
             CreateCorridors();
-            DrawMapToConsole();
+            CreateMonsters();
+            //DrawMapToConsole();
         }
         #endregion
 
@@ -361,6 +364,22 @@ namespace TheUndergroundTower.Pathfinding
             return resultRooms.FirstOrDefault();
         }
 
+        /// <summary>
+        /// Creates a random number of monsters in this map.
+        /// </summary>
+        public void CreateMonsters()
+        {
+            int numOfMonstersForThisMap = (int)((_rand.NextDouble()*(2-0.5)+0.5)*_rooms.Count());
+            for (int monsterCount = 0; monsterCount < numOfMonstersForThisMap; monsterCount++)
+            {
+                Room room = _rooms[_rand.Next(_rooms.Count)];
+                MapCoord coord = room.GetPointInRoom();
+                Tile tile = _tiles[coord.X, coord.Y];
+                tile.Objects = tile.Objects ?? new List<GameObject>();
+                tile.Objects.Add(new Monster(GameData.POSSIBLE_MONSTERS[_rand.Next(GameData.POSSIBLE_MONSTERS.Count)]));
+            }
+        }
+
         public void DrawMapToConsole()
         {
             for (int y = YSize - 1; y >= 0; y--)
@@ -372,7 +391,8 @@ namespace TheUndergroundTower.Pathfinding
                     {
                         if (_tiles[x, y].Walkable == false) s = "X";
                         if (_tiles[x, y].Walkable == true) s = "O";
-                        if (_tiles[x, y].Objects != null) s = "@";
+                        if (_tiles[x, y].Objects.Contains(GameStatus.PLAYER)) s = "@";
+                        if (_tiles[x, y].Objects.Count != 0 && !_tiles[x, y].Objects.Contains(GameStatus.PLAYER)) s = "d";
                     }
                     Console.Write(s);
                 }

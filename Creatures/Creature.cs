@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
 
@@ -126,6 +127,9 @@ namespace WpfApp1.Creatures
         public void MoveTo(MapCoord coord,Map map)
         {
             if (map.Tiles[coord.X, coord.Y].Walkable == false)
+                return;
+            List<GameObject> objects = map.Tiles[coord.X, coord.Y].Objects;
+            if (objects != null && objects.Where(x => x is Monster).Count() > 0)
                 return;
             else
                 Location = new FullCoord(coord.X, coord.Y, Location.Z);

@@ -9,6 +9,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;
+using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
 using WpfApp1.Windows.MetaMenus;
@@ -140,15 +141,15 @@ namespace WpfApp1
                 try
                 {
                     //Opens the Tiles XML file.
-                    XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileTiles));
+                    XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileMonsters));
                     XmlNode monsters = doc.ChildNodes[1];
                     //Creates the tiles objects and adds them to the list.
                     foreach (XmlNode monster in monsters)
-                        new Tile(monster);
+                        new Monster(monster);
                 }
                 catch (Exception ex)
                 {
-                    ErrorLog.Log(ex, "An error has occured while attempting to populate Tiles from XML.");
+                    ErrorLog.Log(ex, "An error has occured while attempting to populate Monsters from XML.");
                 }
             }
 

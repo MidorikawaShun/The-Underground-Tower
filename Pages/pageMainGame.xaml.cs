@@ -32,6 +32,7 @@ namespace TheUndergroundTower.Pages
         {
             InitializeComponent();
             GameData.InitializeTiles();
+            GameData.InitializeMonsters();
             GameStatus.MAPS = new List<Map>();
 
             CreateDisplay();
@@ -147,52 +148,52 @@ namespace TheUndergroundTower.Pages
                 case "Up":
                     {
                         p.MoveTo(new MapCoord(p.Location.X, p.Location.Y + 1), map);
-                        oldTile.Objects = null;
+                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
                         break;
                     }
                 case "NumPad2":
                 case "Down":
                     {
                         p.MoveTo(new MapCoord(p.Location.X, p.Location.Y - 1), map);
-                        oldTile.Objects = null;
+                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
                         break;
                     }
                 case "NumPad4":
                 case "Left":
                     {
                         p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y), map);
-                        oldTile.Objects = null;
+                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
                         break;
                     }
                 case "NumPad6":
                 case "Right":
                     {
                         p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y), map);
-                        oldTile.Objects = null;
+                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
                         break;
                     }
                 case "NumPad1":
                     {
                         p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y -1), map);
-                        oldTile.Objects = null;
+                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
                         break;
                     }
                 case "NumPad3":
                     {
                         p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y -1), map);
-                        oldTile.Objects = null;
+                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
                         break;
                     }
                 case "NumPad7":
                     {
                         p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y +1), map);
-                        oldTile.Objects = null;
+                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
                         break;
                     }
                 case "NumPad9":
                     {
                         p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y +1), map);
-                        oldTile.Objects = null;
+                        oldTile.Objects = oldTile.Objects.Count()==1 && oldTile.Objects.Contains(p)?null:oldTile.Objects;
                         break;
                     }
                 default:
