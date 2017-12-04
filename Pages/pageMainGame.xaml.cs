@@ -220,9 +220,40 @@ namespace TheUndergroundTower.Pages
         {
             foreach (Monster monster in Monsters)
             {
-                if (monster.AwareOfPlayer)  { }
-                else BrownianMotion(monster);
+                //Get the line representing the tiles between monster and player
+                List<MapCoord> line = BersenhamLine.Line(monster.Location.Minified, GameStatus.PLAYER.Location.Minified, GameStatus.CURRENT_MAP, IsSeeThrough);
+                if (!monster.AwareOfPlayer)
+                {
+                    if (IsPlayerInSight(line))
+                        monster.AwareOfPlayer = true;
+                    else BrownianMotion(monster); //If monster is not aware of player, move randomly.
+                }
+                if (monster.AwareOfPlayer)
+                {
+                    if (!IsPlayerInSight(line)) monster.TurnsWithoutPlayerInSight++;
+                    if (monster.TurnsWithoutPlayerInSight == 5) monster.AwareOfPlayer = false;
+                    else
+                    {
+                        //TODO: Monster tries to get to player
+                    }
+                }
             }
+        }
+
+        //If the line is not null and player is also within sight range of the monster, monster is now aware of player.
+        public bool IsPlayerInSight(List<MapCoord> line)
+        {
+            return line != null && Monster.SIGHTRANGE > Math.Abs(line.First().X - line.Last().X) && Monster.SIGHTRANGE > Math.Abs(line.First().Y - line.Last().Y);
+        }
+
+        public bool IsWalkable(Tile tile)
+        {
+            return tile.Walkable && (tile.Objects == null || tile.Objects != null && tile.Objects.Where(x => x is Creature).Count() == 0);
+        }
+
+        public bool IsSeeThrough(Tile tile)
+        {
+            return tile.Seethrough;
         }
 
         /// <summary>
@@ -240,7 +271,7 @@ namespace TheUndergroundTower.Pages
                 int newY = _rand.Next(-1, 2) + creature.Location.Y;
                 Tile newTile = GameStatus.CURRENT_MAP.Tiles[newX, newY];
                 if (coordsChecked.Where(coord => coord.X == newX && coord.Y == newY).Count()>0) continue;
-                if (newTile.IsWalkable())
+                if (IsWalkable(newTile))
                 {
                     currentTile.Objects.Remove(creature);
                     currentTile.Objects = currentTile.Objects.Count == 0 ? null : currentTile.Objects;

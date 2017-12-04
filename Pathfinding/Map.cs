@@ -41,7 +41,7 @@ namespace TheUndergroundTower.Pathfinding
         /// The rooms that are present on this map.
         /// </summary>
         private List<Room> _rooms;
-        
+
         private static double MAP_SIZE_MULTIPLIER = 1;
         private const int MAP_DIMENSIONS = 100;
         #endregion
@@ -177,7 +177,7 @@ namespace TheUndergroundTower.Pathfinding
                 chosenRoom.BasicConnectedRoom = FindNearestDisconnectedRoom(chosenRoom);
                 if (chosenRoom.BasicConnectedRoom == null)
                 {
-                    List<Room> tempRooms = _rooms.Where(x => x!=chosenRoom && x.NumOfExits!=0).ToList();
+                    List<Room> tempRooms = _rooms.Where(x => x != chosenRoom && x.NumOfExits != 0).ToList();
                     chosenRoom.BasicConnectedRoom = tempRooms[_rand.Next(tempRooms.Count())];
                 }
                 else
@@ -188,10 +188,10 @@ namespace TheUndergroundTower.Pathfinding
             }
             foreach (Room room in _rooms)
             {
-                MapCoord firstRoomCorridorOrigin = new MapCoord(_rand.Next(room.XSize-1) + room.TopLeft.X+1, _rand.Next(room.YSize-1) + room.BottomLeft.Y+1);
+                MapCoord firstRoomCorridorOrigin = new MapCoord(_rand.Next(room.XSize - 1) + room.TopLeft.X + 1, _rand.Next(room.YSize - 1) + room.BottomLeft.Y + 1);
                 Room sRoom = room.BasicConnectedRoom;
-                MapCoord secondRoomCorridorOrigin = new MapCoord(_rand.Next(sRoom.XSize-1) + sRoom.TopLeft.X+1, _rand.Next(sRoom.YSize-1) + sRoom.BottomLeft.Y+1);
-                CreateCorridor(firstRoomCorridorOrigin,secondRoomCorridorOrigin);
+                MapCoord secondRoomCorridorOrigin = new MapCoord(_rand.Next(sRoom.XSize - 1) + sRoom.TopLeft.X + 1, _rand.Next(sRoom.YSize - 1) + sRoom.BottomLeft.Y + 1);
+                CreateCorridor(firstRoomCorridorOrigin, secondRoomCorridorOrigin);
                 room.NumOfExits++;
                 sRoom.NumOfExits++;
             }
@@ -209,19 +209,19 @@ namespace TheUndergroundTower.Pathfinding
             MapCoord iterator = null;
             Room resultRoom = null;
             int multiplier = 5;
-            for (int i = 1; i <= MAP_DIMENSIONS/2 && i*multiplier<=MAP_DIMENSIONS; i++)
+            for (int i = 1; i <= MAP_DIMENSIONS / 2 && i * multiplier <= MAP_DIMENSIONS; i++)
             {
                 multiplier = i * 5;
                 startPoint = new MapCoord(room.TopLeft.X - multiplier, room.TopLeft.Y + multiplier);
                 resultRoom = FindRoomForThisPoint(startPoint);
                 if (resultRoom != null && resultRoom.BasicConnectedRoom == null)
-                    return resultRoom; 
+                    return resultRoom;
                 iterator = new MapCoord(room.TopLeft.X - multiplier + 5, room.TopLeft.Y + multiplier);
                 int j = 0;
-                while (iterator.X>0 && iterator.X<XSize && iterator.Y>0 && iterator.Y < YSize)
+                while (iterator.X > 0 && iterator.X < XSize && iterator.Y > 0 && iterator.Y < YSize)
                 {
                     resultRoom = FindRoomByCoordinate(iterator);
-                    if (resultRoom != null && resultRoom.BasicConnectedRoom == null && resultRoom!=room && !DoRoomsContainEachOther(room.TopLeft,iterator))
+                    if (resultRoom != null && resultRoom.BasicConnectedRoom == null && resultRoom != room && !DoRoomsContainEachOther(room.TopLeft, iterator))
                         return resultRoom;
                     if (iterator.X == startPoint.X)
                         if (iterator.Y == startPoint.Y) break;
@@ -229,7 +229,7 @@ namespace TheUndergroundTower.Pathfinding
                     if (iterator.Y == room.BottomLeft.Y - multiplier)
                         iterator.X = iterator.X - 5 < startPoint.X ? startPoint.X : iterator.X - 5;
                     if (iterator.X == room.TopRight.X + multiplier) iterator.Y = iterator.Y - 5 < room.BottomRight.Y - multiplier ? room.BottomRight.Y - multiplier : iterator.Y - 5;
-                    if (iterator.Y == startPoint.Y && iterator.X!=startPoint.X) iterator.X = iterator.X + 5 > room.TopRight.X + multiplier ? room.TopRight.X + multiplier : iterator.X + 5;
+                    if (iterator.Y == startPoint.Y && iterator.X != startPoint.X) iterator.X = iterator.X + 5 > room.TopRight.X + multiplier ? room.TopRight.X + multiplier : iterator.X + 5;
                     j++;
                 }
             }
@@ -332,7 +332,7 @@ namespace TheUndergroundTower.Pathfinding
                 if (_tiles[coord.X, coord.Y].Seethrough)
                     return true;
             }
-            catch (Exception ex) {}
+            catch (Exception ex) { }
             return false;
         }
 
@@ -369,7 +369,7 @@ namespace TheUndergroundTower.Pathfinding
         /// </summary>
         public void CreateMonsters()
         {
-            int numOfMonstersForThisMap = (int)((_rand.NextDouble()*(2-0.5)+0.5)*_rooms.Count());
+            int numOfMonstersForThisMap = (int)((_rand.NextDouble() * (2 - 0.5) + 0.5) * _rooms.Count());
             for (int monsterCount = 0; monsterCount < numOfMonstersForThisMap; monsterCount++)
             {
                 Room room = _rooms[_rand.Next(_rooms.Count)];
@@ -377,10 +377,94 @@ namespace TheUndergroundTower.Pathfinding
                 Tile tile = _tiles[coord.X, coord.Y];
                 tile.Objects = tile.Objects ?? new List<GameObject>();
                 Monster monster = new Monster(GameData.POSSIBLE_MONSTERS[_rand.Next(GameData.POSSIBLE_MONSTERS.Count)]);
-                monster.Location = new FullCoord(coord.X,coord.Y,GameStatus.MAPS.IndexOf(this));
+                monster.Location = new FullCoord(coord.X, coord.Y, GameStatus.MAPS.IndexOf(this));
                 tile.Objects.Add(monster);
             }
         }
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/A*_search_algorithm
+        /// Returns a full, passable path from origin coordinate to target coordiate.
+        /// </summary>
+        /// <param name="origin">Start point for the search</param>
+        /// <param name="target">End point for the search</param>
+        /// <returns>The list of coordinates that contain the path</returns>
+        public List<MapCoord> AStar(MapCoord origin, MapCoord target)
+        {
+            List<MapCoord> closedSet = new List<MapCoord>();
+            List<MapCoord> openSet = new List<MapCoord>() { origin };
+            Dictionary<MapCoord, MapCoord> cameFrom = new Dictionary<MapCoord, MapCoord>();
+            PathDictionary gScore = new PathDictionary();
+            gScore[origin] = Double.PositiveInfinity;
+            PathDictionary fScore = new PathDictionary();
+            fScore[origin] = HeuristicCostEstimate(origin, target);
+            while (openSet.Count != 0)
+            {
+                MapCoord current=null;
+                double lowestValue = Double.PositiveInfinity;
+                foreach (MapCoord point in openSet)
+                {
+                    if (!fScore.ContainsKey(point))
+                        fScore[point] = double.PositiveInfinity;
+                    if (fScore[point] < lowestValue)
+                    {
+                        lowestValue = fScore[point];
+                        current = point;
+                    }
+                }
+                if (current == target) return ReconstructPath(cameFrom, current);
+
+                openSet.Remove(current);
+                closedSet.Add(current);
+
+                foreach (MapCoord neighbour in GetNeighbours(current))
+                {
+                    if (closedSet.Contains(neighbour)) continue;
+                    if (!openSet.Contains(neighbour)) openSet.Add(neighbour);
+                    if (!gScore.ContainsKey(current)) gScore[current] = double.PositiveInfinity;
+                    double tentative_gScore = gScore[current] + DistanceBetween(current, neighbour);
+                    if (!gScore.ContainsKey(neighbour)) gScore[neighbour] = double.PositiveInfinity;
+                    if (tentative_gScore > gScore[neighbour]) continue;
+
+                    cameFrom[neighbour] = current;
+                    gScore[neighbour] = tentative_gScore;
+                    if (!fScore.ContainsKey(neighbour))
+                    fScore[neighbour] = tentative_gScore + HeuristicCostEstimate(neighbour, target);
+                }
+            }
+            return null;
+        }
+
+        public List<MapCoord> ReconstructPath(Dictionary<MapCoord, MapCoord> cameFrom, MapCoord current)
+        {
+            List<MapCoord> totalPath = new List<MapCoord>() { current };
+            while (cameFrom.ContainsKey(current))
+            {
+                current = cameFrom[current];
+                totalPath.Add(current);
+            }
+            return totalPath;
+        }
+
+        public double HeuristicCostEstimate(MapCoord a,MapCoord b)
+        {
+            return DistanceBetween(a,b);
+        }
+
+        public List<MapCoord> GetNeighbours(MapCoord point)
+        {
+            List<MapCoord> neighbours = new List<MapCoord>();
+            neighbours.Add(new MapCoord(point.X + 1, point.Y + 1));
+            neighbours.Add(new MapCoord(point.X + 1, point.Y));
+            neighbours.Add(new MapCoord(point.X + 1, point.Y - 1));
+            neighbours.Add(new MapCoord(point.X, point.Y + 1));
+            neighbours.Add(new MapCoord(point.X, point.Y - 1));
+            neighbours.Add(new MapCoord(point.X - 1, point.Y + 1));
+            neighbours.Add(new MapCoord(point.X - 1, point.Y));
+            neighbours.Add(new MapCoord(point.X - 1, point.Y - 1));
+            return neighbours;
+        }
+
+        public double DistanceBetween(MapCoord a, MapCoord b) { return Math.Sqrt(Math.Pow((double)a.X - b.X, 2) + Math.Pow((double)a.Y - b.Y, 2)); }
 
         public void DrawMapToConsole()
         {
@@ -403,4 +487,42 @@ namespace TheUndergroundTower.Pathfinding
         }
         #endregion
     }
+
+    public class PathDictionary
+    {
+        private List<MapCoord> Keys;
+        private List<double> Values;
+
+        public double this[MapCoord key]
+        {
+            get {
+                if (!Keys.Contains(key)) return Double.PositiveInfinity;
+                return Values.ElementAt(Keys.IndexOf(key));
+
+            }
+            set
+            {
+                if (!Keys.Contains(key))
+                {
+                    Keys.Add(key);
+                    Values.Add(value);
+                }
+                else
+                    Values[Keys.IndexOf(key)] = value;
+            }
+        }
+
+        public PathDictionary()
+        {
+            Keys = new List<MapCoord>();
+            Values = new List<double>();
+        }
+
+        public bool ContainsKey(MapCoord coord)
+        {
+            return Keys.Contains(coord);
+        }
+
+    }
+
 }

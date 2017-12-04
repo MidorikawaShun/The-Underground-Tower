@@ -22,11 +22,18 @@ namespace TheUndergroundTower.Pathfinding
             }
         }
 
+        public MapCoord Minified
+        {
+            get { return new MapCoord(_x, _y); }
+            private set { }
+        }
+
         public FullCoord() { }
 
         public FullCoord(int x, int y, int z) : base(x, y)
         {
             Z = z;
         }
+
     }
 }

@@ -12,13 +12,17 @@ namespace TheUndergroundTower.Creatures
     public class Monster : Creature
     {
 
+        public const int SIGHTRANGE = 10;
+
         private bool _awareOfPlayer;
         private string _damageRange;
         private bool _rangedAttacker;
+        private int _turnsWithoutPlayerInSight;
         
         public bool AwareOfPlayer { get => _awareOfPlayer; set => _awareOfPlayer = value; }
         public string DamageRange { get => _damageRange; set => _damageRange = value; }
         public bool RangedAttacker { get => _rangedAttacker; set => _rangedAttacker = value; }
+        public int TurnsWithoutPlayerInSight { get => _turnsWithoutPlayerInSight; set => _turnsWithoutPlayerInSight = value; }
 
         public Monster(XmlNode monster)
         {
@@ -36,6 +40,7 @@ namespace TheUndergroundTower.Creatures
         public Monster (Monster monster)
         {
             _awareOfPlayer = false;
+            _turnsWithoutPlayerInSight = 0;
             Name = monster.Name;
             Description = monster.Description;
             HP = monster.HP;

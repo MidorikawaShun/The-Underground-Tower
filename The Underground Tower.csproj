@@ -78,6 +78,7 @@
     <Compile Include="GameProperties\GameObject.cs" />
     <Compile Include="GameProperties\GameStatus.cs" />
     <Compile Include="Items\Item.cs" />
+    <Compile Include="Pathfinding\BersenhamLine.cs" />
     <Compile Include="Pathfinding\FullCoord.cs" />
     <Compile Include="Pathfinding\Map.cs" />
     <Compile Include="Pathfinding\MapCoord.cs" />
