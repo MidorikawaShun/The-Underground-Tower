@@ -381,90 +381,94 @@ namespace TheUndergroundTower.Pathfinding
                 tile.Objects.Add(monster);
             }
         }
-        /// <summary>
-        /// https://en.wikipedia.org/wiki/A*_search_algorithm
-        /// Returns a full, passable path from origin coordinate to target coordiate.
-        /// </summary>
-        /// <param name="origin">Start point for the search</param>
-        /// <param name="target">End point for the search</param>
-        /// <returns>The list of coordinates that contain the path</returns>
-        public List<MapCoord> AStar(MapCoord origin, MapCoord target)
+        
+        public List<MapCoord> AStar(MapCoord origin,MapCoord target)
         {
-            List<MapCoord> closedSet = new List<MapCoord>();
-            List<MapCoord> openSet = new List<MapCoord>() { origin };
-            Dictionary<MapCoord, MapCoord> cameFrom = new Dictionary<MapCoord, MapCoord>();
-            PathDictionary gScore = new PathDictionary();
-            gScore[origin] = Double.PositiveInfinity;
-            PathDictionary fScore = new PathDictionary();
-            fScore[origin] = HeuristicCostEstimate(origin, target);
-            while (openSet.Count != 0)
+            List<MapCoord> openList = new List<MapCoord>() { origin }; //Unevaluated nodes
+            List<MapCoord> closedList = new List<MapCoord>(); //Evaluated nodes
+            PathPriceDictionary fScores = new PathPriceDictionary(); //gScore + Heuristic
+            fScores[origin] = 0;
+            Dictionary<MapCoord, MapCoord> cameFrom = new Dictionary<MapCoord, MapCoord>() { { origin,null } };
+            PathPriceDictionary gScores = new PathPriceDictionary(); //The costs it took to get to a node
+            gScores[origin] = 0;
+            MapCoord current = null;
+
+            while (openList.Count>0)
             {
-                MapCoord current=null;
-                double lowestValue = Double.PositiveInfinity;
-                foreach (MapCoord point in openSet)
+                //Find the MapCoord with the estimated shortest distance
+                double leastDistance = Double.PositiveInfinity;
+                foreach (MapCoord point in openList)
                 {
-                    if (!fScore.ContainsKey(point))
-                        fScore[point] = double.PositiveInfinity;
-                    if (fScore[point] < lowestValue)
+                    double f = gScores[point] + DistanceBetween(origin, target);
+                    if (leastDistance > f)
                     {
-                        lowestValue = fScore[point];
                         current = point;
+                        leastDistance = f;
                     }
                 }
-                if (current == target) return ReconstructPath(cameFrom, current);
+                openList.Remove(current); //This MapCoord has now been evaluated
+                closedList.Add(current); //So add it to the list of evaluated MapCoords
 
-                openSet.Remove(current);
-                closedSet.Add(current);
-
-                foreach (MapCoord neighbour in GetNeighbours(current))
+                //Find the neighbour most likely to be best path
+                foreach (MapCoord neighbour in GetWalkableNeighbours(current))
                 {
-                    if (closedSet.Contains(neighbour)) continue;
-                    if (!openSet.Contains(neighbour)) openSet.Add(neighbour);
-                    if (!gScore.ContainsKey(current)) gScore[current] = double.PositiveInfinity;
-                    double tentative_gScore = gScore[current] + DistanceBetween(current, neighbour);
-                    if (!gScore.ContainsKey(neighbour)) gScore[neighbour] = double.PositiveInfinity;
-                    if (tentative_gScore > gScore[neighbour]) continue;
-
+                    if (cameFrom.CustomContainsKey(neighbour))
+                        continue;
                     cameFrom[neighbour] = current;
-                    gScore[neighbour] = tentative_gScore;
-                    if (!fScore.ContainsKey(neighbour))
-                    fScore[neighbour] = tentative_gScore + HeuristicCostEstimate(neighbour, target);
+                    
+                    if (neighbour.Equals(target))
+                        return ReconstructPath(neighbour,cameFrom);
+                    gScores[neighbour] = gScores[current] + DistanceBetween(neighbour, current);
+                    fScores[neighbour] = gScores[neighbour] + DistanceBetween(neighbour, target);
+                    MapCoord existing = openList.Where(x => x.Equals(neighbour)).FirstOrDefault();
+                    if (existing != null && fScores[existing] < fScores[neighbour]) continue;
+                    existing = closedList.Where(x => x.Equals(neighbour)).FirstOrDefault();
+                    if (existing != null && fScores[existing] < fScores[neighbour]) continue;
+                    openList.Add(neighbour);
                 }
+
             }
             return null;
         }
 
-        public List<MapCoord> ReconstructPath(Dictionary<MapCoord, MapCoord> cameFrom, MapCoord current)
+        public List<MapCoord> ReconstructPath(MapCoord lastCoord,Dictionary<MapCoord,MapCoord> cameFrom)
         {
-            List<MapCoord> totalPath = new List<MapCoord>() { current };
-            while (cameFrom.ContainsKey(current))
+            List<MapCoord> path = new List<MapCoord>();
+            while (cameFrom[lastCoord]!=null)
             {
-                current = cameFrom[current];
-                totalPath.Add(current);
+                path.Add(cameFrom[lastCoord]);
+                lastCoord = cameFrom[lastCoord];
             }
-            return totalPath;
+            path.Reverse();
+            if (path.Count>1)
+                path.RemoveAt(0);
+            return path;
         }
 
-        public double HeuristicCostEstimate(MapCoord a,MapCoord b)
-        {
-            return DistanceBetween(a,b);
-        }
-
-        public List<MapCoord> GetNeighbours(MapCoord point)
+        public List<MapCoord> GetWalkableNeighbours(MapCoord origin)
         {
             List<MapCoord> neighbours = new List<MapCoord>();
-            neighbours.Add(new MapCoord(point.X + 1, point.Y + 1));
-            neighbours.Add(new MapCoord(point.X + 1, point.Y));
-            neighbours.Add(new MapCoord(point.X + 1, point.Y - 1));
-            neighbours.Add(new MapCoord(point.X, point.Y + 1));
-            neighbours.Add(new MapCoord(point.X, point.Y - 1));
-            neighbours.Add(new MapCoord(point.X - 1, point.Y + 1));
-            neighbours.Add(new MapCoord(point.X - 1, point.Y));
-            neighbours.Add(new MapCoord(point.X - 1, point.Y - 1));
+            int x = origin.X, y = origin.Y;
+            if (IsWalkable(_tiles[x + 1, y + 1])) neighbours.Add(new MapCoord(x + 1, y + 1));
+            if (IsWalkable(_tiles[x + 1, y])) neighbours.Add(new MapCoord(x + 1, y));
+            if (IsWalkable(_tiles[x + 1, y - 1])) neighbours.Add(new MapCoord(x + 1, y - 1));
+            if (IsWalkable(_tiles[x, y + 1])) neighbours.Add(new MapCoord(x, y + 1));
+            if (IsWalkable(_tiles[x, y - 1])) neighbours.Add(new MapCoord(x, y - 1));
+            if (IsWalkable(_tiles[x - 1, y + 1])) neighbours.Add(new MapCoord(x - 1, y + 1));
+            if (IsWalkable(_tiles[x - 1, y])) neighbours.Add(new MapCoord(x - 1, y));
+            if (IsWalkable(_tiles[x - 1, y - 1])) neighbours.Add(new MapCoord(x - 1, y - 1));
             return neighbours;
         }
 
-        public double DistanceBetween(MapCoord a, MapCoord b) { return Math.Sqrt(Math.Pow((double)a.X - b.X, 2) + Math.Pow((double)a.Y - b.Y, 2)); }
+        public bool IsWalkable(Tile tile)
+        {
+            return tile.Walkable && (tile.Objects == null || (tile.Objects.Contains(GameStatus.PLAYER)));
+        }
+
+        public double DistanceBetween(MapCoord a, MapCoord b)
+        {
+            return Math.Sqrt(Math.Pow(b.X-a.X,2)+Math.Pow(b.Y-a.Y,2));
+        }
 
         public void DrawMapToConsole()
         {
@@ -488,7 +492,7 @@ namespace TheUndergroundTower.Pathfinding
         #endregion
     }
 
-    public class PathDictionary
+    public class PathPriceDictionary
     {
         private List<MapCoord> Keys;
         private List<double> Values;
@@ -512,7 +516,7 @@ namespace TheUndergroundTower.Pathfinding
             }
         }
 
-        public PathDictionary()
+        public PathPriceDictionary()
         {
             Keys = new List<MapCoord>();
             Values = new List<double>();
@@ -523,6 +527,16 @@ namespace TheUndergroundTower.Pathfinding
             return Keys.Contains(coord);
         }
 
+    }
+
+    public static class DictionaryExtension
+    {
+        public static bool CustomContainsKey(this Dictionary<MapCoord, MapCoord> dict, MapCoord coord)
+        {
+            foreach (MapCoord item in dict.Keys)
+                if (item.X == coord.X && item.Y == coord.Y) return true;
+            return false;
+        }
     }
 
 }

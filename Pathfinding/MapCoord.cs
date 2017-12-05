@@ -9,7 +9,7 @@ namespace TheUndergroundTower.Pathfinding
     /// <summary>
     /// A mutable <int,int> tuple
     /// </summary>
-    public class MapCoord
+    public class MapCoord : IEquatable<MapCoord>
     {
         protected int _x, _y;
         public int X
@@ -40,5 +40,10 @@ namespace TheUndergroundTower.Pathfinding
             Y = y;
         }
 
+        public bool Equals(MapCoord other)
+        {
+            if (other == null) return false;
+            return _x == other._x && _y == other._y;
+        }
     }
 }

@@ -231,10 +231,16 @@ namespace TheUndergroundTower.Pages
                 if (monster.AwareOfPlayer)
                 {
                     if (!IsPlayerInSight(line)) monster.TurnsWithoutPlayerInSight++;
-                    if (monster.TurnsWithoutPlayerInSight == 5) monster.AwareOfPlayer = false;
+                    if (monster.TurnsWithoutPlayerInSight == 5)
+                    {
+                        monster.AwareOfPlayer = false;
+                        monster.TurnsWithoutPlayerInSight = 0;
+                    }
                     else
                     {
-                        //TODO: Monster tries to get to player
+                        List<MapCoord> path = GameStatus.CURRENT_MAP.AStar(monster.Location.Minified, GameStatus.PLAYER.Location.Minified);
+                        if (path == null) continue;
+                        monster.MoveTo(path.FirstOrDefault(), GameStatus.CURRENT_MAP);
                     }
                 }
             }

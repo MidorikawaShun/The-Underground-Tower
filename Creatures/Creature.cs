@@ -129,8 +129,10 @@ namespace WpfApp1.Creatures
             Tile tile = map.Tiles[coord.X, coord.Y];
             if (tile.IsWalkable() == false)
                 return;
-            else
-                Location = new FullCoord(coord.X, coord.Y, Location.Z);
+            map.Tiles[Location.X, Location.Y].Objects.Remove(this);
+            Location = new FullCoord(coord.X, coord.Y, Location.Z);
+            tile.Objects = tile.Objects ?? new List<GameObject>();
+            tile.Objects.Add(this);
         }
 
         public override ImageSource GetImage()
