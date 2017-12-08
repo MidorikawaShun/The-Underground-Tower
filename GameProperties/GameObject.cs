@@ -53,12 +53,12 @@ namespace TheUndergroundTower.OtherClasses
 
         /// <summary>
         /// Coordinates of the creature/item and map the creature/item is on.
-        /// first is X, second is Y, third is which map
+        /// Z is which map
         /// </summary>
-        private FullCoord _location;
-        public FullCoord Location { get => _location; set => _location = value; }
-
-
+        private int _x,_y,_z;
+        public int X { get => _x; set { if (value >= 0) _x = value; } }
+        public int Y { get => _y; set { if (value >= 0) _y = value; } }
+        public int Z { get => _z; set { if (value >= 0) _z = value; } }
         #endregion
         #region Constructors
         /// <summary>

@@ -80,13 +80,13 @@ namespace TheUndergroundTower.Pathfinding
             _visible = tile.Visible;
             _seethrough = tile.Seethrough;
             _image = tile.Image;
-            //save the created tile in the list of actual tiles present in the game
-            GameStatus.TILES.Add(this); 
+            ////save the created tile in the list of actual tiles present in the game
+            //GameStatus.TILES.Add(this); 
         }
 
         public bool IsWalkable()
         {
-            return _walkable && (_objects == null || _objects != null && _objects.Where(x => x is Creature).Count() == 0);
+            return _walkable && (_objects == null ? true : _objects.Where(x => x is Creature).Count() == 0);
         }
 
     }

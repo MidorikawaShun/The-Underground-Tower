@@ -21,34 +21,6 @@ C:\Users\matan\source\repos\Wpf1\obj\Debug\The Underground Tower.csproj.Generate
 C:\Users\matan\source\repos\Wpf1\obj\Debug\The Underground Tower.csproj.CoreCompileInputs.cache
 C:\Users\matan\source\repos\Wpf1\obj\Debug\TheUndergroundTower.exe
 C:\Users\matan\source\repos\Wpf1\obj\Debug\TheUndergroundTower.pdb
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\MainWindow.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageCharacterCreation.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainMenu.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ErrorPrompt.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ExitDialog.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowOptions.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\App.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower_Content.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower_MarkupCompile.cache
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower_MarkupCompile.lref
-C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\TheUndergroundTower.exe.config
-C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\TheUndergroundTower.exe
-C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\TheUndergroundTower.pdb
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\MainWindow.baml
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageCharacterCreation.baml
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainMenu.baml
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ErrorPrompt.baml
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ExitDialog.baml
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowOptions.baml
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.g.resources
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.Properties.Resources.resources
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csproj.GenerateResource.Cache
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csproj.CoreCompileInputs.cache
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.exe
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.pdb
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csprojResolveAssemblyReference.cache
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainGame.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainGame.baml
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\bin\Debug\TheUndergroundTower.exe.config
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\bin\Debug\TheUndergroundTower.exe
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\bin\Debug\TheUndergroundTower.pdb
@@ -77,8 +49,36 @@ C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\TheUndergroundT
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\TheUndergroundTower.pdb
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\bin\Debug\System.Drawing.Primitives.dll
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\The Underground Tower.csprojResolveAssemblyReference.cache
-C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\System.Drawing.Primitives.dll
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.g.cs
-C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.baml
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.g.cs
 C:\Users\Bakish\Documents\GitHub\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\TheUndergroundTower.exe.config
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\TheUndergroundTower.exe
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\TheUndergroundTower.pdb
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Debug\System.Drawing.Primitives.dll
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\MainWindow.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageCharacterCreation.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainGame.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainMenu.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ErrorPrompt.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ExitDialog.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowOptions.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\App.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower_Content.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower_MarkupCompile.cache
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower_MarkupCompile.lref
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\MainWindow.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageCharacterCreation.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainGame.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageMainMenu.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ErrorPrompt.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\ExitDialog.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowMessage.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\windowOptions.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.g.resources
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.Properties.Resources.resources
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csproj.GenerateResource.Cache
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csproj.CoreCompileInputs.cache
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.exe
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.pdb
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csprojResolveAssemblyReference.cache

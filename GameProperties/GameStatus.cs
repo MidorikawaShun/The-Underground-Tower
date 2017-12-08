@@ -32,7 +32,7 @@ namespace WpfApp1
         /// The map the player is currently on.
         /// </summary>
         public static Map CURRENT_MAP { get; set; }
-        
+
         /// <summary>
         /// All the Tiles that exist in the game.
         /// </summary>

@@ -3,132 +3,80 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfApp1;
 
 namespace TheUndergroundTower.Pathfinding
 {
-    /// <summary>
-    /// Represents a room that is contained inside of a map.
-    /// </summary>
     public class Room
     {
-        #region Members
-        /// <summary>
-        /// The dimensions of the room (width, height).
-        /// </summary>
+        private const int minRoomSize = 4;
+        private const int maxRoomSize = 9;
+
         private int _xSize, _ySize;
+        private int _topLeftX, _topLeftY;
+        private List<Tile> _walls;
 
-        public int RoomNumber =0;
-
-        private static int RoomNumberer = 0;
-
-        /// <summary>
-        /// The coordinate of this room's top-left tile on the map it belongs to.
-        /// </summary>
-        private MapCoord _topLeft;
-
-        /// <summary>
-        /// Object for random number generation.
-        /// </summary>
         private static Random _rand;
 
-        /// <summary>
-        /// The room that the corridor-generating algorithm pairs this room with.
-        /// </summary>
-        private Room _basicConnectedRoom;
+        public int XSize { get => _xSize; set { if (value >= 0) { _xSize = value; } } }
+        public int YSize { get => _ySize; set { if (value >= 0) { _ySize = value; } } }
 
-        private int _numOfExits;
+        public int TopLeftX { get => _topLeftX; set { if (value>=0) { _topLeftX = value; } } }
+        public int TopLeftY { get => _topLeftY; set { if (value >= 0) { _topLeftY = value; } } }
 
-        /// <summary>
-        /// The max width of any given room in tiles.
-        /// </summary>
-        private const int MAX_ROOM_X_SIZE = 9;
-        /// <summary>
-        /// The max height of any given room in tiles.
-        /// </summary>
-        private const int MAX_ROOM_Y_SIZE = 9;
-        /// <summary>
-        /// The minimum size any room dimension can be.
-        /// </summary>
-        private const int MIN_ROOM_SIZE = 5;
-        #endregion
+        public int TopRightX { get => _topLeftX + _xSize; }
+        public int TopRightY { get => _topLeftY; }
+        public int BottomLeftX { get => _topLeftX; }
+        public int BottomLeftY { get => _topLeftY - _ySize; }
+        public int BottomRightX { get => _topLeftX + _xSize; }
+        public int BottomRightY { get => _topLeftY + _ySize; }
 
-        #region Properties
-        public int XSize { get => _xSize; private set => _xSize = value; }
-        public int YSize { get => _ySize; private set => _ySize = value; }
-        public int NumOfExits { get => _numOfExits; set => _numOfExits = value; }
-        public Room BasicConnectedRoom { get => _basicConnectedRoom; set => _basicConnectedRoom = value; }
+        public List<Tile> Walls { get => _walls; set => _walls = value; }
 
-        public MapCoord TopLeft
+        public Room(Map map,Room room=null,int? xSize=null,int? ySize=null)
         {
-            get => _topLeft;
-            set
-            {
-                int numOfAttempts = 0;
-                while ((value.X-XSize<0 || value.Y-YSize<0) && numOfAttempts<10)
-                {
-                    DetermineRoomDimensions();
-                    numOfAttempts++;
-                }
-                if (numOfAttempts == 10)
-                    return;
-                _topLeft = value;
-            }
-        }
-        public MapCoord TopRight
-        {
-            get
-            {
-                if (_topLeft == null)
-                    return null;
-                return new MapCoord(_topLeft.X + _xSize, _topLeft.Y);
-            }
-        }
-        public MapCoord BottomLeft
-        {
-            get
-            {
-                if (_topLeft == null)
-                    return null;
-                return new MapCoord(_topLeft.X, _topLeft.Y - _ySize);
-            }
-        }
-        public MapCoord BottomRight
-        {
-            get
-            {
-                if (_topLeft == null)
-                    return null;
-                return new MapCoord(_topLeft.X + _xSize, _topLeft.Y - _ySize);
-            }
-        }
-        #endregion
+            _walls = new List<Tile>();
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public Room()
-        {
-            DetermineRoomDimensions();
-        }
-
-        private void DetermineRoomDimensions()
-        {
             _rand = _rand ?? new Random(DateTime.Now.Millisecond);
-            _xSize = _rand.Next(MIN_ROOM_SIZE, MAX_ROOM_X_SIZE);
-            _ySize = _rand.Next(MIN_ROOM_SIZE, MAX_ROOM_Y_SIZE);
-            RoomNumber = RoomNumberer++;
+            _xSize = xSize != null ? (int)xSize : _rand.Next(minRoomSize, maxRoomSize);
+            _ySize = ySize != null ? (int)ySize : _rand.Next(minRoomSize, maxRoomSize);
+            if (room == null) //place new room at center of map
+            {
+                TopLeftX = map.XSize / 2;
+                TopLeftY = map.YSize / 2;
+                GenerateWalls(map);
+                GenerateFloors(map);
+            }
+            else //connect new room to existing room
+            {
+
+            }
+            map.Rooms.Add(this);
         }
 
-        public override string ToString()
+        private void GenerateWalls(Map map)
         {
-            return $"TopLeft.X:{TopLeft.X} , TopLeft.Y:{TopLeft.Y}";
+            for (int x = 0; x < _xSize; x++)
+            {
+                _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = TopLeftY });
+                _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = BottomLeftY });
+            }
+            for (int y = 0; y < _ySize; y++)
+            {
+                _walls.Add(new Tile(map.WallTile) { X = TopLeftX, Y = BottomLeftY + y });
+                _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = BottomLeftY + y });
+            }
+            _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = TopRightY });
+            foreach (Tile wall in _walls)
+                map.Tiles[wall.X, wall.Y] = wall;
         }
 
-        public MapCoord GetPointInRoom()
+        private void GenerateFloors(Map map)
         {
-            int xPos = _rand.Next(TopLeft.X + 1, TopRight.X - 1); //don't include walls
-            int yPos = _rand.Next(BottomLeft.Y + 1, TopLeft.Y - 1);
-            return new MapCoord(xPos, yPos);
+            for (int x = 1; x < _xSize; x++)
+                for (int y = 1; y < _ySize; y++)
+                    map.Tiles[BottomLeftX + x, BottomLeftY + y] = new Tile(map.FloorTile) { X = BottomLeftX + x, Y = BottomLeftY + y };
         }
+
     }
 }

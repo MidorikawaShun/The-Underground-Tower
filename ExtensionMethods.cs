@@ -34,5 +34,10 @@ namespace TheUndergroundTower
             }
             return false;
         }
+
+        public static T Random<T>(this List<T> list,Random rand)
+        {
+            return list[rand.Next(0, list.Count())];
+        }
     }
 }

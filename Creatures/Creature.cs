@@ -120,24 +120,38 @@ namespace WpfApp1.Creatures
         /// </summary>
         public Creature() { }
 
-        /// <summary>
-        /// Check if a creature is able to move into the supplied coordinate, and move if possible.
-        /// </summary>
-        /// <param name="coord">The coordinate you want the creature to move to.</param>
-        public void MoveTo(MapCoord coord,Map map)
-        {
-            Tile tile = map.Tiles[coord.X, coord.Y];
-            if (tile.IsWalkable() == false)
-                return;
-            map.Tiles[Location.X, Location.Y].Objects.Remove(this);
-            Location = new FullCoord(coord.X, coord.Y, Location.Z);
-            tile.Objects = tile.Objects ?? new List<GameObject>();
-            tile.Objects.Add(this);
-        }
+        ///// <summary>
+        ///// Check if a creature is able to move into the supplied coordinate, and move if possible.
+        ///// </summary>
+        ///// <param name="coord">The coordinate you want the creature to move to.</param>
+        //public void MoveTo(int paramX,int paramY,Map map)
+        //{
+        //    Tile tile = map.Tiles[paramX, paramY];
+        //    //if (!tile.IsWalkable())
+        //    //    return;
+        //    map.Tiles[X, Y].Objects.Remove(this);
+        //    X = paramX;Y = paramY;
+        //    tile.Objects = tile.Objects ?? new List<GameObject>();
+        //    tile.Objects.Add(this);
+        //}
 
         public override ImageSource GetImage()
         {
             return Image;
+        }
+
+        public bool MoveTo(int targetX,int targetY, Map map)
+        {
+            if (!map.InBoundsOfMap(targetX,targetY) || !map.Tiles[targetX, targetY].IsWalkable())
+                return false;
+            Tile oldTile = map.Tiles[X, Y];
+            oldTile.Objects.Remove(this);
+            if (oldTile.Objects.Count() == 0) oldTile.Objects = null;
+            Tile tile = map.Tiles[targetX, targetY];
+            tile.Objects = tile.Objects ?? new List<GameObject>();
+            tile.Objects.Add(this);
+            X = targetX; Y = targetY;
+            return true;
         }
 
     }

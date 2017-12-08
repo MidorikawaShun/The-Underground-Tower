@@ -40,23 +40,28 @@ namespace TheUndergroundTower.Pages
             _rand = new Random(DateTime.Now.Millisecond);
             GameStatus.MAPS = new List<Map>();
             CreateDisplay();
-            Monsters = GameStatus.CREATURES.Where(x=>x is Monster && x.Location.Z==GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP)).Select(x=>x as Monster).ToList();
+            Monsters = GameStatus.CREATURES.Where(x=>x is Monster && x.Z==GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP)).Select(x=>x as Monster).ToList();
             Player p = GameStatus.PLAYER = new Player();
-            p.Location = GetCreatureStartLocation();
-            Room r = GameStatus.CURRENT_MAP.FindRoomByCoordinate(p.Location);
-            GameStatus.CURRENT_MAP.Tiles[p.Location.X, p.Location.Y].Objects = new List<GameObject>();
-            GameStatus.CURRENT_MAP.Tiles[p.Location.X, p.Location.Y].Objects.Add(p);
+            //Tile Startpoint = GameStatus.CURRENT_MAP.Tiles[_rand.Next(1, GameStatus.CURRENT_MAP.XSize), _rand.Next(1, GameStatus.CURRENT_MAP.YSize)];
+            Map map = GameStatus.CURRENT_MAP;
+            SetInitialPlayerLocation(map);
             RefreshScreen();
 
+        }
 
-
-            //zeroZero.Source = GameData.POSSIBLE_TILES.FirstOrDefault().Image;
+        private void SetInitialPlayerLocation(Map map)
+        {
+            Room startingRoom = map.Rooms.First();
+            Player p = GameStatus.PLAYER;
+            p.X = startingRoom.TopLeftX + startingRoom.XSize / 2;
+            p.Y = startingRoom.TopLeftY - startingRoom.YSize / 2;
+            map.Tiles[p.X, p.Y].Objects = new List<GameObject>() { p };
         }
 
         //create a map and fill it with empty image elements
         private void CreateDisplay()
         {
-            Map map = new Map();
+            Map map = new Map(30);
             GameStatus.CURRENT_MAP = map;
             GameStatus.MAPS.Add(map);
             for (int x = 0; x < Definitions.WINDOW_X_SIZE; x++)
@@ -68,31 +73,18 @@ namespace TheUndergroundTower.Pages
                 }
         }
 
-        /// <summary>
-        /// Returns a valid starting location for a creature.
-        /// </summary>
-        /// <returns>A tuple with the creatures starting location.</returns>
-        public FullCoord GetCreatureStartLocation()
-        {
-            //Choose a random room on the map
-            Room startRoom = GameStatus.CURRENT_MAP.Rooms[_rand.Next(GameStatus.CURRENT_MAP.Rooms.Count())];
-            int xPos = _rand.Next(startRoom.TopLeft.X + 1, startRoom.TopLeft.X + startRoom.XSize);
-            int yPos = _rand.Next(startRoom.BottomLeft.Y + 1, startRoom.BottomLeft.Y + startRoom.YSize);
-            return new FullCoord(xPos, yPos, GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP));
-        }
-
         //Move the map in accordance with player's movement.
         private void RefreshScreen()
         {
-            int xpos = GameStatus.PLAYER.Location.X - 5;
-            int ypos = GameStatus.PLAYER.Location.Y - 6;
+            int xpos = GameStatus.PLAYER.X - 5;
+            int ypos = GameStatus.PLAYER.Y - 6;
             int z = 0;
             for (int y = Definitions.WINDOW_Y_SIZE - 1; y >= 0; y--)
             {
                 for (int x = 0; x < Definitions.WINDOW_X_SIZE; x++)
                 {
                     bool tileExists = false;
-                    if ((xpos + x) >= 0 && (ypos + y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos - y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
+                    if ((xpos + x) >= 0 && (ypos + y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos + y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
                     {
                         Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + x, ypos+y];
                         if (tile != null)
@@ -122,17 +114,10 @@ namespace TheUndergroundTower.Pages
                                    16);
         }
 
-        private Tile GetTileFromCoordinate(FullCoord coord)
+        private Tile GetTileFromCoordinate(int x,int y)
         {
-            return GetTileFromCoordinate(new MapCoord(coord.X, coord.Y), GameStatus.MAPS[coord.Z]);
+            return GameStatus.CURRENT_MAP.Tiles[x, y];
         }
-
-        private Tile GetTileFromCoordinate(MapCoord coord, Map map = null)
-        {
-            Map targetMap = map ?? GameStatus.CURRENT_MAP;
-            return targetMap.Tiles[coord.X, coord.Y];
-        }
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             var window = Window.GetWindow(this);
@@ -143,61 +128,52 @@ namespace TheUndergroundTower.Pages
         {
             Player p = GameStatus.PLAYER;
             Map map = GameStatus.CURRENT_MAP;
-            map.Tiles[p.Location.X, p.Location.Y].Objects.Remove(p);
-            Tile oldTile = map.Tiles[p.Location.X, p.Location.Y];
+            Tile oldTile = map.Tiles[p.X, p.Y];
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
             {
                 case "NumPad8":
                 case "Up":
                     {
-                        p.MoveTo(new MapCoord(p.Location.X, p.Location.Y + 1), map);
-                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
+                        p.MoveTo(p.X, p.Y + 1, map);
                         break;
                     }
                 case "NumPad2":
                 case "Down":
                     {
-                        p.MoveTo(new MapCoord(p.Location.X, p.Location.Y - 1), map);
-                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
+                        p.MoveTo(p.X, p.Y - 1, map);
                         break;
                     }
                 case "NumPad4":
                 case "Left":
                     {
-                        p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y), map);
-                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
+                        p.MoveTo(p.X - 1, p.Y, map);
                         break;
                     }
                 case "NumPad6":
                 case "Right":
                     {
-                        p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y), map);
-                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
+                        p.MoveTo(p.X + 1, p.Y, map);
                         break;
                     }
                 case "NumPad1":
                     {
-                        p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y -1), map);
-                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
+                        p.MoveTo(p.X - 1, p.Y -1, map);
                         break;
                     }
                 case "NumPad3":
                     {
-                        p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y -1), map);
-                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
+                        p.MoveTo(p.X + 1, p.Y -1, map);
                         break;
                     }
                 case "NumPad7":
                     {
-                        p.MoveTo(new MapCoord(p.Location.X - 1, p.Location.Y +1), map);
-                        oldTile.Objects = oldTile.Objects.Count() == 1 && oldTile.Objects.Contains(p) ? null : oldTile.Objects;
+                        p.MoveTo(p.X - 1, p.Y +1, map);
                         break;
                     }
                 case "NumPad9":
                     {
-                        p.MoveTo(new MapCoord(p.Location.X + 1, p.Location.Y +1), map);
-                        oldTile.Objects = oldTile.Objects.Count()==1 && oldTile.Objects.Contains(p)?null:oldTile.Objects;
+                        p.MoveTo(p.X + 1, p.Y +1, map);
                         break;
                     }
                 case "NumPad5":
@@ -209,9 +185,6 @@ namespace TheUndergroundTower.Pages
                         return;
                     }
             }
-            Tile tile = GetTileFromCoordinate(p.Location);
-            if (tile.Objects == null) tile.Objects = new List<GameObject>();
-            tile.Objects.Add(p);
             MoveMonsters();
             RefreshScreen();
         }
@@ -220,34 +193,38 @@ namespace TheUndergroundTower.Pages
         {
             foreach (Monster monster in Monsters)
             {
-                //Get the line representing the tiles between monster and player
-                List<MapCoord> line = BersenhamLine.Line(monster.Location.Minified, GameStatus.PLAYER.Location.Minified, GameStatus.CURRENT_MAP, IsSeeThrough);
-                if (!monster.AwareOfPlayer)
-                {
-                    if (IsPlayerInSight(line))
-                        monster.AwareOfPlayer = true;
-                    else BrownianMotion(monster); //If monster is not aware of player, move randomly.
-                }
-                if (monster.AwareOfPlayer)
-                {
-                    if (!IsPlayerInSight(line)) monster.TurnsWithoutPlayerInSight++;
-                    if (monster.TurnsWithoutPlayerInSight == 5)
-                    {
-                        monster.AwareOfPlayer = false;
-                        monster.TurnsWithoutPlayerInSight = 0;
-                    }
-                    else
-                    {
-                        List<MapCoord> path = GameStatus.CURRENT_MAP.AStar(monster.Location.Minified, GameStatus.PLAYER.Location.Minified);
-                        if (path == null) continue;
-                        monster.MoveTo(path.FirstOrDefault(), GameStatus.CURRENT_MAP);
-                    }
-                }
+                ////Get the line representing the tiles between monster and player
+                //List<Tile> line = BersenhamLine.Line(monster.X,monster.Y,GameStatus.PLAYER.X,GameStatus.PLAYER.Y, GameStatus.CURRENT_MAP, IsSeeThrough);
+                //if (!monster.AwareOfPlayer)
+                //{
+                //    if (IsPlayerInSight(line))
+                //    {
+                //        //monster.AwareOfPlayer = true;
+                //        foreach (var item in line)
+                //        {
+                //            GameStatus.CURRENT_MAP.Tiles[item.X, item.Y].Image = new DrawingImage() { };
+                //        }
+                //    }
+                //    //else BrownianMotion(monster); //If monster is not aware of player, move randomly.
+                //}
+                //if (monster.AwareOfPlayer)
+                //{
+                //    if (!IsPlayerInSight(line)) monster.TurnsWithoutPlayerInSight++;
+                //    if (monster.TurnsWithoutPlayerInSight == 5)
+                //    {
+                //        monster.AwareOfPlayer = false;
+                //        monster.TurnsWithoutPlayerInSight = 0;
+                //    }
+                //    else
+                //    {
+                //        //ADD SOMETHING
+                //    }
+                //}
             }
         }
 
         //If the line is not null and player is also within sight range of the monster, monster is now aware of player.
-        public bool IsPlayerInSight(List<MapCoord> line)
+        public bool IsPlayerInSight(List<Tile> line)
         {
             return line != null && Monster.SIGHTRANGE > Math.Abs(line.First().X - line.Last().X) && Monster.SIGHTRANGE > Math.Abs(line.First().Y - line.Last().Y);
         }
@@ -268,24 +245,24 @@ namespace TheUndergroundTower.Pages
         /// <param name="creature">The creature to be moved.</param>
         public void BrownianMotion(Creature creature)
         {
-            Tile currentTile = GetTileFromCoordinate(creature.Location);
-            List<MapCoord> coordsChecked = new List<MapCoord>();
+            Tile currentTile = GetTileFromCoordinate(creature.X,creature.Y);
+            List<Tile> tilesChecked = new List<Tile>();
             while (currentTile.Objects!=null && currentTile.Objects.Contains(creature))
             {
-                if (coordsChecked.Count() == 8) return; //No walkable tile to move to
-                int newX = _rand.Next(-1, 2) + creature.Location.X;
-                int newY = _rand.Next(-1, 2) + creature.Location.Y;
+                if (tilesChecked.Count() == 8) return; //No walkable tile to move to
+                int newX = _rand.Next(-1, 2) + creature.X;
+                int newY = _rand.Next(-1, 2) + creature.Y;
                 Tile newTile = GameStatus.CURRENT_MAP.Tiles[newX, newY];
-                if (coordsChecked.Where(coord => coord.X == newX && coord.Y == newY).Count()>0) continue;
+                if (tilesChecked.Where(coord => coord.X == newX && coord.Y == newY).Count()>0) continue;
                 if (IsWalkable(newTile))
                 {
                     currentTile.Objects.Remove(creature);
                     currentTile.Objects = currentTile.Objects.Count == 0 ? null : currentTile.Objects;
                     newTile.Objects = newTile.Objects ?? new List<GameObject>();
                     newTile.Objects.Add(creature);
-                    creature.Location = new FullCoord(newX, newY, creature.Location.Z);
+                    creature.X = newX; creature.Y = newY;
                 }
-                else coordsChecked.Add(new MapCoord(newX, newY));
+                else tilesChecked.Add(GameStatus.CURRENT_MAP.Tiles[newX, newY]);
             }
         }
 
