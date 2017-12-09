@@ -89,5 +89,10 @@ namespace TheUndergroundTower.Pathfinding
             return _walkable && (_objects == null ? true : _objects.Where(x => x is Creature).Count() == 0);
         }
 
+        public override string ToString()
+        {
+            return $"X: {X} | Y: {Y}";
+        }
+
     }
 }

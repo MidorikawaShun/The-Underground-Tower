@@ -29,7 +29,7 @@ namespace TheUndergroundTower.Pathfinding
         public int BottomLeftX { get => _topLeftX; }
         public int BottomLeftY { get => _topLeftY - _ySize; }
         public int BottomRightX { get => _topLeftX + _xSize; }
-        public int BottomRightY { get => _topLeftY + _ySize; }
+        public int BottomRightY { get => _topLeftY - _ySize; }
 
         public List<Tile> Walls { get => _walls; set => _walls = value; }
 
@@ -76,6 +76,22 @@ namespace TheUndergroundTower.Pathfinding
             for (int x = 1; x < _xSize; x++)
                 for (int y = 1; y < _ySize; y++)
                     map.Tiles[BottomLeftX + x, BottomLeftY + y] = new Tile(map.FloorTile) { X = BottomLeftX + x, Y = BottomLeftY + y };
+        }
+
+        public bool IsTileARoomCorner(Tile tile)
+        {
+            if (tile.X == TopLeftX && tile.Y == TopLeftY) return true;
+            if (tile.X == TopRightX && tile.Y == TopRightY) return true;
+            if (tile.X == BottomLeftX && tile.Y == BottomLeftY) return true;
+            if (tile.X == BottomRightX && tile.Y == BottomRightY) return true;
+            return false;
+        }
+
+        public override string ToString()
+        {
+            string str = $"TopLeftX: {_topLeftX} , TopLeftY: {_topLeftY}  ||  TopRightX: {TopRightX} , TopRightY: {TopRightY}\n";
+            str += $"BottomLeftX: {BottomLeftX} , BottomLeftY: {BottomLeftY}  ||  BottomRightX: {BottomRightX} , BottomRightY: {BottomRightY}";
+            return str;
         }
 
     }
