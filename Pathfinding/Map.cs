@@ -129,14 +129,18 @@ namespace TheUndergroundTower.Pathfinding
                 }
                 else
                 {
-                    //TODO: Add room building
+                    if (TryToCreateRoom(startPoint,isTopOrBottomWall,incDec))
+                    {
+                        roomAttemptCounter = 0;
+                        currentRoom = _rooms.Last();
+                    }
                     roomAttemptCounter++;
                 }
             } 
         }
 
-        //This method shortens GenerateRooms to enhance readability
-        public void PrepareVariablesForBuilding(Room currentRoom, ref Tile startPoint, ref Tile previousPoint, bool isStartPointARoom,ref bool isTopOrBottomWall,ref int incDec)
+        //This method shortens GenerateRooms and enhances readability
+        private void PrepareVariablesForBuilding(Room currentRoom, ref Tile startPoint, ref Tile previousPoint, bool isStartPointARoom,ref bool isTopOrBottomWall,ref int incDec)
         {
             while (currentRoom.IsTileARoomCorner(startPoint)) startPoint = previousPoint = currentRoom.Walls.Random(_rand);
             if (isStartPointARoom)
@@ -155,7 +159,27 @@ namespace TheUndergroundTower.Pathfinding
 
         private bool TryToCreateRoom(Tile startPoint, bool isTopOrBottomWall, int incDec)
         {
-            throw new NotImplementedException();
+            int newRoomXDimension = _rand.Next(Room.minRoomSize, Room.maxRoomSize);
+            int newRoomYDimension = _rand.Next(Room.minRoomSize, Room.maxRoomSize);
+            int bottomLeftX = 0, bottomLeftY = 0, entranceOffset = _rand.Next(0,(newRoomYDimension-1)/2) * (_rand.NextDouble()>=50?1:-1);
+            //find bottomleft position of new room, calculating for jitter placement
+            if (isTopOrBottomWall)
+            {
+                bottomLeftX = startPoint.X - (newRoomXDimension - 1 / 2);
+                bottomLeftY = incDec == 1 ? startPoint.Y + incDec : startPoint.Y - newRoomYDimension;
+            }
+            else
+            {
+                bottomLeftY = startPoint.Y - (newRoomYDimension - 1 / 2);
+                bottomLeftX = incDec == 1 ? startPoint.X + incDec : startPoint.X - newRoomXDimension;
+            }
+
+            for (int x = 0; x < newRoomXDimension; x++)
+                for (int y = 0; y < newRoomYDimension; y++)
+                    if (_tiles[bottomLeftX + x, bottomLeftY + y] != null) return false;
+            _rooms.Add(new Room(this, bottomLeftX, bottomLeftY + newRoomYDimension + 2, newRoomXDimension, newRoomYDimension));
+            _tiles[startPoint.X + incDec, startPoint.Y+incDec] = new Tile(_floorTile);
+            return true;
         }
 
         private bool TryToCreateCorridor(Tile startPoint, bool topOrBottom, int incDec, out List<Tile> newTiles)

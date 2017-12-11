@@ -61,7 +61,7 @@ namespace TheUndergroundTower.Pages
         //create a map and fill it with empty image elements
         private void CreateDisplay()
         {
-            Map map = new Map(30);
+            Map map = new Map(100);
             GameStatus.CURRENT_MAP = map;
             GameStatus.MAPS.Add(map);
             for (int x = 0; x < Definitions.WINDOW_X_SIZE; x++)

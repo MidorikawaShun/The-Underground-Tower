@@ -9,8 +9,8 @@ namespace TheUndergroundTower.Pathfinding
 {
     public class Room
     {
-        private const int minRoomSize = 4;
-        private const int maxRoomSize = 9;
+        public const int minRoomSize = 4;
+        public const int maxRoomSize = 9;
 
         private int _xSize, _ySize;
         private int _topLeftX, _topLeftY;
@@ -21,7 +21,7 @@ namespace TheUndergroundTower.Pathfinding
         public int XSize { get => _xSize; set { if (value >= 0) { _xSize = value; } } }
         public int YSize { get => _ySize; set { if (value >= 0) { _ySize = value; } } }
 
-        public int TopLeftX { get => _topLeftX; set { if (value>=0) { _topLeftX = value; } } }
+        public int TopLeftX { get => _topLeftX; set { if (value >= 0) { _topLeftX = value; } } }
         public int TopLeftY { get => _topLeftY; set { if (value >= 0) { _topLeftY = value; } } }
 
         public int TopRightX { get => _topLeftX + _xSize; }
@@ -33,24 +33,17 @@ namespace TheUndergroundTower.Pathfinding
 
         public List<Tile> Walls { get => _walls; set => _walls = value; }
 
-        public Room(Map map,Room room=null,int? xSize=null,int? ySize=null)
+        public Room(Map map, int? topLeftX = null, int? topLeftY = null, int? xSize = null, int? ySize = null)
         {
             _walls = new List<Tile>();
 
             _rand = _rand ?? new Random(DateTime.Now.Millisecond);
             _xSize = xSize != null ? (int)xSize : _rand.Next(minRoomSize, maxRoomSize);
             _ySize = ySize != null ? (int)ySize : _rand.Next(minRoomSize, maxRoomSize);
-            if (room == null) //place new room at center of map
-            {
-                TopLeftX = map.XSize / 2;
-                TopLeftY = map.YSize / 2;
-                GenerateWalls(map);
-                GenerateFloors(map);
-            }
-            else //connect new room to existing room
-            {
-
-            }
+            TopLeftX = topLeftX == null ? map.XSize / 2 : (int)topLeftX;
+            TopLeftY = topLeftY == null ? map.YSize / 2 : (int)topLeftY;
+            GenerateWalls(map);
+            GenerateFloors(map);
             map.Rooms.Add(this);
         }
 
