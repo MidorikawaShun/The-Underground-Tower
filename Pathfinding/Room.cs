@@ -51,13 +51,13 @@ namespace TheUndergroundTower.Pathfinding
         {
             for (int x = 0; x < _xSize; x++)
             {
-                _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = TopLeftY });
-                _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = BottomLeftY });
+                if (map.Tiles[TopLeftX + x, TopLeftY] == null)  _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = TopLeftY });
+                if (map.Tiles[TopLeftX + x, BottomLeftY] == null)  _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = BottomLeftY });
             }
             for (int y = 0; y < _ySize; y++)
             {
-                _walls.Add(new Tile(map.WallTile) { X = TopLeftX, Y = BottomLeftY + y });
-                _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = BottomLeftY + y });
+                if (map.Tiles[TopLeftX, BottomLeftY + y] == null)  _walls.Add(new Tile(map.WallTile) { X = TopLeftX, Y = BottomLeftY + y });
+                if (map.Tiles[TopRightX, BottomLeftY + y] == null) _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = BottomLeftY + y });
             }
             _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = TopRightY });
             foreach (Tile wall in _walls)
