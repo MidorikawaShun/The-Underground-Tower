@@ -39,6 +39,8 @@ namespace TheUndergroundTower.Pages
             GameData.InitializeMonsters();
             _rand = new Random(DateTime.Now.Millisecond);
             GameStatus.MAPS = new List<Map>();
+            GameStatus.CURRENT_MAP = new Map(60);
+            GameStatus.MAPS.Add(GameStatus.CURRENT_MAP);
             CreateDisplay();
             Monsters = GameStatus.CREATURES.Where(x=>x is Monster && x.Z==GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP)).Select(x=>x as Monster).ToList();
             Player p = GameStatus.PLAYER = new Player();
@@ -61,9 +63,6 @@ namespace TheUndergroundTower.Pages
         //create a map and fill it with empty image elements
         private void CreateDisplay()
         {
-            Map map = new Map(45);
-            GameStatus.CURRENT_MAP = map;
-            GameStatus.MAPS.Add(map);
             for (int x = 0; x < Definitions.WINDOW_X_SIZE; x++)
                 for (int y = 0; y < Definitions.WINDOW_Y_SIZE; y++)
                 {
