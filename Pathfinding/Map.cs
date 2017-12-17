@@ -64,10 +64,10 @@ namespace TheUndergroundTower.Pathfinding
 
                 //InitializeVariables(ref incDec, ref isTopOrBottom, prevPoint, isStartPointARoom, currentRoom, startPoint);
                 PrepareVariablesForBuilding(currentRoom, ref startPoint, ref prevPoint, isStartPointARoom, ref isTopOrBottomWall, ref incDec);
-                if (corridorAttempts == 5) roomAttempts++;
+                //if (corridorAttempts == 5) roomAttempts++;
                 corridorAttempts = 0;
-                //if (isStartPointARoom || ((corridorTwists / MAX_CORRIDOR_TWISTS) + (_rand.NextDouble() / 2 + 0.00001) < CHANCE_TO_CREATE_CORRIDOR))
-                //{
+                if (isStartPointARoom || ((corridorTwists / MAX_CORRIDOR_TWISTS) + (_rand.NextDouble() / 2 + 0.00001) < CHANCE_TO_CREATE_CORRIDOR))
+                {
                     while (corridorAttempts < ATTEMPTS_BEFORE_STOP_MAKING_CORRIDORS)
                         if (TryToCreateCorridor(startPoint, incDec, isTopOrBottomWall, out currentWallTiles))
                         {
@@ -78,25 +78,43 @@ namespace TheUndergroundTower.Pathfinding
                             isStartPointARoom = false;
                         }
                         else corridorAttempts++;
-                //}
-                //else
-                //{
+                }
+                else
+                {
 
-                //    //if (TryToCreateRoom(startPoint, incDec, isTopOrBottom, ref currentRoom))
-                //    //{
-                //    //    roomAttempts = 0;
-                //    //    corridorTwists = 0;
-                //    //    prevPoint = startPoint;
-                //    //    startPoint = _rooms.Last().Walls.Random(_rand);
-                //    //    isStartPointARoom = true;
-                //    //}
-                //    /*else*/
-                //    roomAttempts++;
-                //}
+                    if (TryToCreateRoom(startPoint, incDec, isTopOrBottomWall, ref currentRoom))
+                    {
+                        roomAttempts = 0;
+                        corridorTwists = 0;
+                        prevPoint = startPoint;
+                        startPoint = _rooms.Last().Walls.Random(_rand);
+                        isStartPointARoom = true;
+                    }
+                    else
+                        roomAttempts++;
+                }
             }
         }
 
-        public void PrepareVariablesForBuilding(Room currentRoom, ref Tile startPoint, ref Tile previousPoint, bool isStartPointARoom, ref bool isTopOrBottomWall, ref int incDec)
+        private bool TryToCreateRoom(Tile startPoint, int incDec, bool isTopOrBottomWall, ref Room currentRoom)
+        {
+            int roomXSize = _rand.Next(Room.minRoomSize, Room.maxRoomSize), roomYSize = _rand.Next(Room.minRoomSize, Room.maxRoomSize);
+            int topLeftX = startPoint.X, topLeftY = startPoint.Y;
+            if (isTopOrBottomWall)
+                if (incDec == 1) topLeftY += roomYSize+1;
+                else topLeftY -= 2;
+            else
+                if (incDec == 1) topLeftX += 2;
+                else topLeftX -= roomXSize-1;
+            for (int y = topLeftY; y < topLeftY - roomYSize; y--)
+                for (int x = topLeftX; x < roomXSize; x++)
+                    if (_tiles[x, y] != null) return false;
+            _tiles[startPoint.X, startPoint.Y] = new Tile(_floorTile);
+            currentRoom = new Room(this, topLeftX, topLeftY, roomXSize, roomYSize);
+            return true;
+        }
+
+        private void PrepareVariablesForBuilding(Room currentRoom, ref Tile startPoint, ref Tile previousPoint, bool isStartPointARoom, ref bool isTopOrBottomWall, ref int incDec)
         {
             while (currentRoom.IsTileARoomCorner(startPoint)) startPoint = previousPoint = currentRoom.Walls.Random(_rand);
             if (isStartPointARoom)
