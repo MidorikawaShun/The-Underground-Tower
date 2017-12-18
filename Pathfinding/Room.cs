@@ -49,19 +49,28 @@ namespace TheUndergroundTower.Pathfinding
 
         private void GenerateWalls(Map map)
         {
-            for (int x = 0; x < _xSize; x++)
+            int x = 0, y = 0;
+
+            try
             {
-                if (map.Tiles[TopLeftX + x, TopLeftY] == null)  _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = TopLeftY });
-                if (map.Tiles[TopLeftX + x, BottomLeftY] == null)  _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = BottomLeftY });
+                for (x = 0; x < _xSize; x++)
+                {
+                    if (map.Tiles[TopLeftX + x, TopLeftY] == null) _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = TopLeftY });
+                    if (map.Tiles[TopLeftX + x, BottomLeftY] == null) _walls.Add(new Tile(map.WallTile) { X = TopLeftX + x, Y = BottomLeftY });
+                }
+                for (y = 0; y < _ySize; y++)
+                {
+                    if (map.Tiles[TopLeftX, BottomLeftY + y] == null) _walls.Add(new Tile(map.WallTile) { X = TopLeftX, Y = BottomLeftY + y });
+                    if (map.Tiles[TopRightX, BottomLeftY + y] == null) _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = BottomLeftY + y });
+                }
+                _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = TopRightY });
+                foreach (Tile wall in _walls)
+                    map.Tiles[wall.X, wall.Y] = wall;
             }
-            for (int y = 0; y < _ySize; y++)
+            catch (Exception ex)
             {
-                if (map.Tiles[TopLeftX, BottomLeftY + y] == null)  _walls.Add(new Tile(map.WallTile) { X = TopLeftX, Y = BottomLeftY + y });
-                if (map.Tiles[TopRightX, BottomLeftY + y] == null) _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = BottomLeftY + y });
+                Console.WriteLine(ex);
             }
-            _walls.Add(new Tile(map.WallTile) { X = TopRightX, Y = TopRightY });
-            foreach (Tile wall in _walls)
-                map.Tiles[wall.X, wall.Y] = wall;
         }
 
         private void GenerateFloors(Map map)

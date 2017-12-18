@@ -48,7 +48,7 @@ namespace TheUndergroundTower.Pages
             Map map = GameStatus.CURRENT_MAP;
             SetInitialPlayerLocation(map);
             RefreshScreen();
-
+            map.DrawMapToConsole();
         }
 
         private void SetInitialPlayerLocation(Map map)
