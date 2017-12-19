@@ -75,9 +75,16 @@ namespace TheUndergroundTower.Pathfinding
 
         private void GenerateFloors(Map map)
         {
-            for (int x = 1; x < _xSize; x++)
-                for (int y = 1; y < _ySize; y++)
-                    map.Tiles[BottomLeftX + x, BottomLeftY + y] = new Tile(map.FloorTile) { X = BottomLeftX + x, Y = BottomLeftY + y };
+            try
+            {
+                for (int x = 1; x < _xSize; x++)
+                    for (int y = 1; y < _ySize; y++)
+                        map.Tiles[BottomLeftX + x, BottomLeftY + y] = new Tile(map.FloorTile) { X = BottomLeftX + x, Y = BottomLeftY + y };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("OOPS");
+            }
         }
 
         public bool IsTileARoomCorner(Tile tile)

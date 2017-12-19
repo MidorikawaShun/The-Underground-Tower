@@ -62,8 +62,6 @@ namespace TheUndergroundTower.Pathfinding
                 bool isStartPointARoom = true, isTopOrBottomWall = true;
                 while (roomAttempts < ATTEMPTS_BEFORE_NO_MORE_ROOMS)
                 {
-                    //DrawMapToConsole();
-
                     //InitializeVariables(ref incDec, ref isTopOrBottom, prevPoint, isStartPointARoom, currentRoom, startPoint);
                     PrepareVariablesForBuilding(currentRoom, ref startPoint, ref prevPoint, isStartPointARoom, ref isTopOrBottomWall, ref incDec);
                     //if (corridorAttempts == 5) roomAttempts++;
@@ -71,6 +69,8 @@ namespace TheUndergroundTower.Pathfinding
                     if (isStartPointARoom || ((corridorTwists / MAX_CORRIDOR_TWISTS) + (_rand.NextDouble() / 2 + 0.00001) < CHANCE_TO_CREATE_CORRIDOR))
                     {
                         while (corridorAttempts < ATTEMPTS_BEFORE_STOP_MAKING_CORRIDORS)
+                        {
+                            PrepareVariablesForBuilding(currentRoom, ref startPoint, ref prevPoint, isStartPointARoom, ref isTopOrBottomWall, ref incDec);
                             if (TryToCreateCorridor(startPoint, incDec, isTopOrBottomWall, out currentWallTiles))
                             {
                                 corridorAttempts = ATTEMPTS_BEFORE_STOP_MAKING_CORRIDORS;
@@ -81,9 +81,15 @@ namespace TheUndergroundTower.Pathfinding
                             }
                             else
                             {
-                                startPoint = currentWallTiles != null ? currentWallTiles.Random(_rand) : _rooms.Random(_rand).Walls.Random(_rand);
+                                if (currentWallTiles != null) startPoint = currentWallTiles.Random(_rand);
+                                else
+                                {
+                                    currentRoom = _rooms.Random(_rand);
+                                    startPoint = currentRoom.Walls.Random(_rand);
+                                }
                                 corridorAttempts++;
                             }
+                        }
                     }
                     else
                     {
@@ -99,10 +105,16 @@ namespace TheUndergroundTower.Pathfinding
                         else
                         {
                             roomAttempts++;
-                            startPoint = currentWallTiles != null ? currentWallTiles.Random(_rand) : _rooms.Random(_rand).Walls.Random(_rand);
+                            if (currentWallTiles != null) startPoint = currentWallTiles.Random(_rand);
+                            else
+                            {
+                                currentRoom = _rooms.Random(_rand);
+                                startPoint = currentRoom.Walls.Random(_rand);
+                            }
                         }
                     }
                 }
+                DrawMapToConsole();
             }
             catch (Exception ex)
             {
@@ -119,19 +131,19 @@ namespace TheUndergroundTower.Pathfinding
                 if (isTopOrBottomWall)
                 {
                     if (incDec == 1) topLeftY += roomYSize;
-                    else topLeftY--;
+                    else
+                    { topLeftY--; roomYSize--; }
                     topLeftX--;
                 }
                 else
                 {
-                    if (incDec == 1) topLeftX += 1;
+                    if (incDec == 1) { topLeftX++; roomXSize--; }
                     else topLeftX -= roomXSize;
                     topLeftY++;
                 }
                 for (int y = topLeftY; y > topLeftY - roomYSize; y--)
-                    for (int x = 0; x < roomXSize; x++)
-                        if (!InBoundsOfMap(x + topLeftX, y) || _tiles[x + topLeftX, y] != null)
-                            return false;
+                    for (int x = 0; x <= roomXSize; x++)
+                        if (!ViableTile(x + topLeftX, y)) return false;
                 currentRoom = new Room(this, topLeftX, topLeftY, roomXSize, roomYSize);
                 _tiles[startPoint.X, startPoint.Y] = new Tile(_floorTile);
                 if (isTopOrBottomWall) _tiles[startPoint.X, startPoint.Y + incDec] = new Tile(_floorTile);
