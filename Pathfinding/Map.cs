@@ -132,7 +132,7 @@ namespace TheUndergroundTower.Pathfinding
                 {
                     if (incDec == 1) topLeftY += roomYSize;
                     else
-                    { topLeftY--; roomYSize--; }
+                        roomYSize--;
                     topLeftX--;
                 }
                 else

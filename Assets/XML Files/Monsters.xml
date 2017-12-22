@@ -8,4 +8,20 @@
     <MeleeDamage>1d10</MeleeDamage>
     <ImageIndex>2</ImageIndex>
   </Monster>
+  <Monster Name="Monster 2">
+    <Description>Monster 2</Description>
+    <HP>10</HP>
+    <RangedAttacker>False</RangedAttacker>
+    <MeleeSkill>5</MeleeSkill>
+    <MeleeDamage>1d10</MeleeDamage>
+    <ImageIndex>3</ImageIndex>
+  </Monster>
+  <Monster Name="Monster 3">
+    <Description>Monster 3</Description>
+    <HP>10</HP>
+    <RangedAttacker>False</RangedAttacker>
+    <MeleeSkill>5</MeleeSkill>
+    <MeleeDamage>1d10</MeleeDamage>
+    <ImageIndex>4</ImageIndex>
+  </Monster>
 </Monsters>

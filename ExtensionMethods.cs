@@ -35,6 +35,13 @@ namespace TheUndergroundTower
             return false;
         }
 
+        /// <summary>
+        /// Returns a random member of the list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list">The list in question.</param>
+        /// <param name="rand">An initialized Random object.</param>
+        /// <returns>A random member of the list.</returns>
         public static T Random<T>(this List<T> list,Random rand)
         {
             return list[rand.Next(0, list.Count())];

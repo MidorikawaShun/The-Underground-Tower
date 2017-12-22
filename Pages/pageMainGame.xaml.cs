@@ -31,6 +31,8 @@ namespace TheUndergroundTower.Pages
 
         private List<Monster> Monsters;
         private Random _rand;
+        private const double MAX_MONSTERS_MULTIPLIER = 2;
+        private const double MIN_MONSTERS_MULTIPLIER = 0.5;
 
         public pageMainGame()
         {
@@ -41,6 +43,7 @@ namespace TheUndergroundTower.Pages
             GameStatus.MAPS = new List<Map>();
             GameStatus.CURRENT_MAP = new Map(60);
             GameStatus.MAPS.Add(GameStatus.CURRENT_MAP);
+            GenerateMonsters();
             CreateDisplay();
             Monsters = GameStatus.CREATURES.Where(x=>x is Monster && x.Z==GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP)).Select(x=>x as Monster).ToList();
             Player p = GameStatus.PLAYER = new Player();
@@ -49,6 +52,24 @@ namespace TheUndergroundTower.Pages
             SetInitialPlayerLocation(map);
             RefreshScreen();
             map.DrawMapToConsole();
+        }
+
+        private void GenerateMonsters()
+        {
+            List<Monster> monsters = GameData.POSSIBLE_MONSTERS;
+            Map currentMap = GameStatus.CURRENT_MAP;
+            int monstersInThisStage = _rand.Next((int)(currentMap.Rooms.Count*MIN_MONSTERS_MULTIPLIER) ,(int)(currentMap.Rooms.Count*MAX_MONSTERS_MULTIPLIER));
+            for (int i = 0; i < monstersInThisStage; i++)
+            {
+                Room room = GameStatus.CURRENT_MAP.Rooms.Random(_rand);
+                int x = _rand.Next(room.TopLeftX + 1, room.TopRightX);
+                int y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
+                Monster newMonster = new Monster(monsters.Random(_rand)) {X=x,Y=y,Z=GameStatus.MAPS.Count()-1 };
+                Tile tile = GameStatus.CURRENT_MAP.Tiles[x, y];
+                tile.Objects = tile.Objects ?? new List<GameObject>() { newMonster};
+                if (tile.Objects.Count==0)
+                    tile.Objects.Add(newMonster);
+            }
         }
 
         private void SetInitialPlayerLocation(Map map)
