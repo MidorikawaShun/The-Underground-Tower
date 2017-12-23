@@ -16,7 +16,6 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            GameStatus.CREATURES = new List<Creature>();
             Definitions.MAIN_WINDOW = this;
             Main.Content = new pageMainMenu();
             //PlaySound(EnumSoundFiles.MainMenuMusic,EnumMediaPlayers.MusicPlayer);

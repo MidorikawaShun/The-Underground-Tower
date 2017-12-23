@@ -16,13 +16,17 @@ namespace TheUndergroundTower.Creatures
 
         private bool _awareOfPlayer;
         private string _damageRange;
-        private bool _rangedAttacker;
+        private bool _rangedAttacker,_followingPlayer;
         private int _turnsWithoutPlayerInSight;
+        private int _lastKnownPlayerLocationX, _lastKnownPlayerLocationY;
         
         public bool AwareOfPlayer { get => _awareOfPlayer; set => _awareOfPlayer = value; }
         public string DamageRange { get => _damageRange; set => _damageRange = value; }
         public bool RangedAttacker { get => _rangedAttacker; set => _rangedAttacker = value; }
         public int TurnsWithoutPlayerInSight { get => _turnsWithoutPlayerInSight; set => _turnsWithoutPlayerInSight = value; }
+        public int LastKnownPlayerLocationX { get => _lastKnownPlayerLocationX; set => _lastKnownPlayerLocationX = value; }
+        public int LastKnownPlayerLocationY { get => _lastKnownPlayerLocationY; set => _lastKnownPlayerLocationY = value; }
+        public bool FollowingPlayer { get => _followingPlayer; set => _followingPlayer = value; }
 
         public Monster(XmlNode monster)
         {
@@ -48,7 +52,12 @@ namespace TheUndergroundTower.Creatures
             MeleeSkill = monster.MeleeSkill;
             DamageRange = monster.DamageRange;
             Image = CreateTile.GetImageFromTileset(monster.Index);
-            GameStatus.CREATURES.Add(this);
+            _followingPlayer = false;
+        }
+
+        public override string ToString()
+        {
+            return $"Monster: {Name} at {X},{Y}";
         }
     }
 }

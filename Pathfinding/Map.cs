@@ -145,9 +145,9 @@ namespace TheUndergroundTower.Pathfinding
                     for (int x = 0; x <= roomXSize; x++)
                         if (!ViableTile(x + topLeftX, y)) return false;
                 currentRoom = new Room(this, topLeftX, topLeftY, roomXSize, roomYSize);
-                _tiles[startPoint.X, startPoint.Y] = new Tile(_floorTile);
-                if (isTopOrBottomWall) _tiles[startPoint.X, startPoint.Y + incDec] = new Tile(_floorTile);
-                else _tiles[startPoint.X + incDec, startPoint.Y] = new Tile(_floorTile);
+                _tiles[startPoint.X, startPoint.Y] = new Tile(_floorTile) { X = startPoint.X, Y = startPoint.Y };
+                if (isTopOrBottomWall) _tiles[startPoint.X, startPoint.Y + incDec] = new Tile(_floorTile) { X = startPoint.X, Y = startPoint.Y + incDec };
+                else _tiles[startPoint.X + incDec, startPoint.Y] = new Tile(_floorTile) { X = startPoint.X + incDec, Y = startPoint.Y };
             }
             catch (Exception ex)
             {
@@ -217,7 +217,7 @@ namespace TheUndergroundTower.Pathfinding
             int startX = startPoint.X, startY = startPoint.Y;
             if (isTopOrBottom) startY += incDec;
             else startX += incDec;
-            _tiles[startPoint.X, startPoint.Y] = new Tile(_floorTile);
+            _tiles[startPoint.X, startPoint.Y] = new Tile(_floorTile) { X = startPoint.X,Y = startPoint.Y};
 
             for (int i = 0; i < corridorLength; i++)
             {
@@ -252,6 +252,11 @@ namespace TheUndergroundTower.Pathfinding
             return InBoundsOfMap(x, y) && _tiles[x, y] == null;
         }
 
+        public bool TileExists(int x, int y)
+        {
+            return InBoundsOfMap(x, y) && _tiles[x, y] != null;
+        }
+
         public void DrawMapToConsole()
         {
             for (int y = YSize - 1; y >= 0; y--)
@@ -267,5 +272,25 @@ namespace TheUndergroundTower.Pathfinding
                 Console.WriteLine();
             }
         }
+
+        public List<Tile> AcquireNeighbours(Tile source)
+        {
+            List<Tile> neighbours = new List<Tile>();
+            int x = source.X, y = source.Y;
+            if (TileExists(x + 1, y + 1)) neighbours.Add(_tiles[x + 1, y + 1]);
+            if (TileExists(x + 1, y)) neighbours.Add(_tiles[x + 1, y]);
+            if (TileExists(x + 1, y - 1)) neighbours.Add(_tiles[x + 1, y - 1]);
+            if (TileExists(x, y + 1)) neighbours.Add(_tiles[x, y + 1]);
+            if (TileExists(x, y - 1)) neighbours.Add(_tiles[x, y - 1]);
+            if (TileExists(x - 1, y + 1)) neighbours.Add(_tiles[x - 1, y + 1]);
+            if (TileExists(x - 1, y)) neighbours.Add(_tiles[x - 1, y]);
+            if (TileExists(x - 1, y - 1)) neighbours.Add(_tiles[x - 1, y - 1]);
+            if (neighbours.Contains(null))
+            {
+                Console.WriteLine("OOPS");
+            }
+            return neighbours;
+        }
+
     }
 }

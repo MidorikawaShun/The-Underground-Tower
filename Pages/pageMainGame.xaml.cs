@@ -28,11 +28,12 @@ namespace TheUndergroundTower.Pages
     /// </summary>
     public partial class pageMainGame : Page
     {
-
+        Player Player;
         private List<Monster> Monsters;
         private Random _rand;
         private const double MAX_MONSTERS_MULTIPLIER = 2;
         private const double MIN_MONSTERS_MULTIPLIER = 0.5;
+        private const int MAX_MONSTER_PLACEMENT_ATTEMPTS = 10;
 
         public pageMainGame()
         {
@@ -45,8 +46,7 @@ namespace TheUndergroundTower.Pages
             GameStatus.MAPS.Add(GameStatus.CURRENT_MAP);
             GenerateMonsters();
             CreateDisplay();
-            Monsters = GameStatus.CREATURES.Where(x=>x is Monster && x.Z==GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP)).Select(x=>x as Monster).ToList();
-            Player p = GameStatus.PLAYER = new Player();
+            Player = GameStatus.PLAYER = new Player();
             //Tile Startpoint = GameStatus.CURRENT_MAP.Tiles[_rand.Next(1, GameStatus.CURRENT_MAP.XSize), _rand.Next(1, GameStatus.CURRENT_MAP.YSize)];
             Map map = GameStatus.CURRENT_MAP;
             SetInitialPlayerLocation(map);
@@ -58,27 +58,34 @@ namespace TheUndergroundTower.Pages
         {
             List<Monster> monsters = GameData.POSSIBLE_MONSTERS;
             Map currentMap = GameStatus.CURRENT_MAP;
-            int monstersInThisStage = _rand.Next((int)(currentMap.Rooms.Count*MIN_MONSTERS_MULTIPLIER) ,(int)(currentMap.Rooms.Count*MAX_MONSTERS_MULTIPLIER));
-            for (int i = 0; i < monstersInThisStage; i++)
+            int monstersInThisStage = _rand.Next((int)(currentMap.Rooms.Count * MIN_MONSTERS_MULTIPLIER), (int)(currentMap.Rooms.Count * MAX_MONSTERS_MULTIPLIER));
+            Monsters = new List<Monster>();
+
+            for (int i = 0; i < monstersInThisStage; i++) //Place 'monstersInThisStage' monsters on this map
             {
-                Room room = GameStatus.CURRENT_MAP.Rooms.Random(_rand);
-                int x = _rand.Next(room.TopLeftX + 1, room.TopRightX);
-                int y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
-                Monster newMonster = new Monster(monsters.Random(_rand)) {X=x,Y=y,Z=GameStatus.MAPS.Count()-1 };
-                Tile tile = GameStatus.CURRENT_MAP.Tiles[x, y];
-                tile.Objects = tile.Objects ?? new List<GameObject>() { newMonster};
-                if (tile.Objects.Count==0)
-                    tile.Objects.Add(newMonster);
+                //Make sure that the monster fits
+                for (int attemptedMonsterPlacements = 0; attemptedMonsterPlacements < MAX_MONSTER_PLACEMENT_ATTEMPTS; attemptedMonsterPlacements++)
+                {
+                    Room room = GameStatus.CURRENT_MAP.Rooms.Random(_rand);
+                    int x = _rand.Next(room.TopLeftX + 1, room.TopRightX);
+                    int y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
+                    Monster newMonster = new Monster(monsters.Random(_rand)) { X = x, Y = y, Z = GameStatus.MAPS.Count() - 1 };
+                    Tile tile = GameStatus.CURRENT_MAP.Tiles[x, y];
+                    tile.Objects = tile.Objects ?? new List<GameObject>() { newMonster };
+                    if (tile.Objects.Count == 0)
+                        tile.Objects.Add(newMonster);
+                    if (tile.Objects.Contains(newMonster)) Monsters.Add(newMonster);
+                }
+
             }
         }
 
         private void SetInitialPlayerLocation(Map map)
         {
             Room startingRoom = map.Rooms.First();
-            Player p = GameStatus.PLAYER;
-            p.X = startingRoom.TopLeftX + startingRoom.XSize / 2;
-            p.Y = startingRoom.TopLeftY - startingRoom.YSize / 2;
-            map.Tiles[p.X, p.Y].Objects = new List<GameObject>() { p };
+            Player.X = startingRoom.TopLeftX + startingRoom.XSize / 2;
+            Player.Y = startingRoom.TopLeftY - startingRoom.YSize / 2;
+            map.Tiles[Player.X, Player.Y].Objects = new List<GameObject>() { Player };
         }
 
         //create a map and fill it with empty image elements
@@ -93,11 +100,11 @@ namespace TheUndergroundTower.Pages
                 }
         }
 
-        //Move the map in accordance with player's movement.
+        //Move the map in accordance with Player's movement.
         private void RefreshScreen()
         {
-            int xpos = GameStatus.PLAYER.X - 5;
-            int ypos = GameStatus.PLAYER.Y - 6;
+            int xpos = Player.X - 5;
+            int ypos = Player.Y - 6;
             int z = 0;
             for (int y = Definitions.WINDOW_Y_SIZE - 1; y >= 0; y--)
             {
@@ -106,7 +113,7 @@ namespace TheUndergroundTower.Pages
                     bool tileExists = false;
                     if ((xpos + x) >= 0 && (ypos + y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos + y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
                     {
-                        Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + x, ypos+y];
+                        Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + x, ypos + y];
                         if (tile != null)
                         {
                             ImageSource overlayedImage = tile.Image;
@@ -134,7 +141,7 @@ namespace TheUndergroundTower.Pages
                                    16);
         }
 
-        private Tile GetTileFromCoordinate(int x,int y)
+        private Tile GetTileFromCoordinate(int x, int y)
         {
             return GameStatus.CURRENT_MAP.Tiles[x, y];
         }
@@ -144,56 +151,60 @@ namespace TheUndergroundTower.Pages
             window.KeyDown += HandleKeyPress;
         }
 
+        /// <summary>
+        /// This is our main game loop.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            Player p = GameStatus.PLAYER;
             Map map = GameStatus.CURRENT_MAP;
-            Tile oldTile = map.Tiles[p.X, p.Y];
+            Tile oldTile = map.Tiles[Player.X, Player.Y];
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
             {
                 case "NumPad8":
                 case "Up":
                     {
-                        p.MoveTo(p.X, p.Y + 1, map);
+                        Player.MoveTo(Player.X, Player.Y + 1, map);
                         break;
                     }
                 case "NumPad2":
                 case "Down":
                     {
-                        p.MoveTo(p.X, p.Y - 1, map);
+                        Player.MoveTo(Player.X, Player.Y - 1, map);
                         break;
                     }
                 case "NumPad4":
                 case "Left":
                     {
-                        p.MoveTo(p.X - 1, p.Y, map);
+                        Player.MoveTo(Player.X - 1, Player.Y, map);
                         break;
                     }
                 case "NumPad6":
                 case "Right":
                     {
-                        p.MoveTo(p.X + 1, p.Y, map);
+                        Player.MoveTo(Player.X + 1, Player.Y, map);
                         break;
                     }
                 case "NumPad1":
                     {
-                        p.MoveTo(p.X - 1, p.Y -1, map);
+                        Player.MoveTo(Player.X - 1, Player.Y - 1, map);
                         break;
                     }
                 case "NumPad3":
                     {
-                        p.MoveTo(p.X + 1, p.Y -1, map);
+                        Player.MoveTo(Player.X + 1, Player.Y - 1, map);
                         break;
                     }
                 case "NumPad7":
                     {
-                        p.MoveTo(p.X - 1, p.Y +1, map);
+                        Player.MoveTo(Player.X - 1, Player.Y + 1, map);
                         break;
                     }
                 case "NumPad9":
                     {
-                        p.MoveTo(p.X + 1, p.Y +1, map);
+                        Player.MoveTo(Player.X + 1, Player.Y + 1, map);
                         break;
                     }
                 case "NumPad5":
@@ -211,39 +222,37 @@ namespace TheUndergroundTower.Pages
 
         public void MoveMonsters()
         {
+            Map map = GameStatus.CURRENT_MAP;
             foreach (Monster monster in Monsters)
             {
-                ////Get the line representing the tiles between monster and player
-                //List<Tile> line = BersenhamLine.Line(monster.X,monster.Y,GameStatus.PLAYER.X,GameStatus.PLAYER.Y, GameStatus.CURRENT_MAP, IsSeeThrough);
-                //if (!monster.AwareOfPlayer)
-                //{
-                //    if (IsPlayerInSight(line))
-                //    {
-                //        //monster.AwareOfPlayer = true;
-                //        foreach (var item in line)
-                //        {
-                //            GameStatus.CURRENT_MAP.Tiles[item.X, item.Y].Image = new DrawingImage() { };
-                //        }
-                //    }
-                //    //else BrownianMotion(monster); //If monster is not aware of player, move randomly.
-                //}
-                //if (monster.AwareOfPlayer)
-                //{
-                //    if (!IsPlayerInSight(line)) monster.TurnsWithoutPlayerInSight++;
-                //    if (monster.TurnsWithoutPlayerInSight == 5)
-                //    {
-                //        monster.AwareOfPlayer = false;
-                //        monster.TurnsWithoutPlayerInSight = 0;
-                //    }
-                //    else
-                //    {
-                //        //ADD SOMETHING
-                //    }
-                //}
+                List<Tile> path = null;
+                //Get the line representing the tiles between monster and Player
+                List<Tile> line = Algorithms.Line(monster.X, Player.X, monster.Y, Player.Y, map, IsSeeThrough);
+                monster.AwareOfPlayer = line == null ? false : true;
+                if (monster.AwareOfPlayer)
+                {
+                    monster.FollowingPlayer = true;
+                    monster.LastKnownPlayerLocationX = Player.X;
+                    monster.LastKnownPlayerLocationY = Player.Y;
+                    monster.TurnsWithoutPlayerInSight = 0;
+                }
+                else
+                    monster.TurnsWithoutPlayerInSight++;
+                if (monster.FollowingPlayer) //move monsters
+                {
+                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[Player.X, Player.Y]);
+                    if (!monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY]);
+                    if (path != null)
+                    {
+                        int pathX = path.First().X, pathY = path.First().Y;
+                        monster.MoveTo(pathX, pathY, map);
+                    }
+                }
+                else BrownianMotion(monster);
             }
         }
 
-        //If the line is not null and player is also within sight range of the monster, monster is now aware of player.
+        //If the line is not null and Player is also within sight range of the monster, monster is now aware of Player.
         public bool IsPlayerInSight(List<Tile> line)
         {
             return line != null && Monster.SIGHTRANGE > Math.Abs(line.First().X - line.Last().X) && Monster.SIGHTRANGE > Math.Abs(line.First().Y - line.Last().Y);
@@ -256,7 +265,8 @@ namespace TheUndergroundTower.Pages
 
         public bool IsSeeThrough(Tile tile)
         {
-            return tile.Seethrough;
+            if (tile == null) return false;
+            else return tile.Seethrough;
         }
 
         /// <summary>
@@ -265,15 +275,15 @@ namespace TheUndergroundTower.Pages
         /// <param name="creature">The creature to be moved.</param>
         public void BrownianMotion(Creature creature)
         {
-            Tile currentTile = GetTileFromCoordinate(creature.X,creature.Y);
+            Tile currentTile = GetTileFromCoordinate(creature.X, creature.Y);
             List<Tile> tilesChecked = new List<Tile>();
-            while (currentTile.Objects!=null && currentTile.Objects.Contains(creature))
+            while (currentTile.Objects != null && currentTile.Objects.Contains(creature))
             {
                 if (tilesChecked.Count() == 8) return; //No walkable tile to move to
                 int newX = _rand.Next(-1, 2) + creature.X;
                 int newY = _rand.Next(-1, 2) + creature.Y;
                 Tile newTile = GameStatus.CURRENT_MAP.Tiles[newX, newY];
-                if (tilesChecked.Where(coord => coord.X == newX && coord.Y == newY).Count()>0) continue;
+                if (tilesChecked.Where(coord => coord.X == newX && coord.Y == newY).Count() > 0) continue;
                 if (IsWalkable(newTile))
                 {
                     currentTile.Objects.Remove(creature);

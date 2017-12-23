@@ -112,7 +112,6 @@ namespace WpfApp1.Creatures
             _hp = 1;
             _speed = 100;
             Image = CreateTile.GetImageFromTileset(index);
-            GameStatus.CREATURES.Add(this);
         }
 
         /// <summary>
@@ -140,18 +139,26 @@ namespace WpfApp1.Creatures
             return Image;
         }
 
-        public bool MoveTo(int targetX,int targetY, Map map)
+        public bool MoveTo(int targetX, int targetY, Map map)
         {
-            if (!map.InBoundsOfMap(targetX,targetY) || !map.Tiles[targetX, targetY].IsWalkable())
+            try
+            {
+                if (!map.InBoundsOfMap(targetX, targetY) || !map.Tiles[targetX, targetY].IsWalkable())
+                    return false;
+                Tile oldTile = map.Tiles[X, Y];
+                oldTile.Objects.Remove(this);
+                if (oldTile.Objects.Count() == 0) oldTile.Objects = null;
+                Tile tile = map.Tiles[targetX, targetY];
+                tile.Objects = tile.Objects ?? new List<GameObject>();
+                tile.Objects.Add(this);
+                X = targetX; Y = targetY;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("OOPS");
                 return false;
-            Tile oldTile = map.Tiles[X, Y];
-            oldTile.Objects.Remove(this);
-            if (oldTile.Objects.Count() == 0) oldTile.Objects = null;
-            Tile tile = map.Tiles[targetX, targetY];
-            tile.Objects = tile.Objects ?? new List<GameObject>();
-            tile.Objects.Add(this);
-            X = targetX; Y = targetY;
-            return true;
+            }
         }
 
     }
