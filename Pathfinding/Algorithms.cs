@@ -32,7 +32,7 @@ namespace TheUndergroundTower.Pathfinding
 
 
         //https://en.wikipedia.org/wiki/Dijkstras_algorithm
-        public static List<Tile> FindPath(Map graph, Tile source, Tile target)
+        public static List<Tile> FindPath(Map graph, Tile source, Tile target,Func<Tile,double> weighter)
         {
             List<Tile> Q = new List<Tile>();
             Dictionary<Tile, double> dist = new Dictionary<Tile, double>();
@@ -40,31 +40,32 @@ namespace TheUndergroundTower.Pathfinding
 
             foreach (Tile vertex in graph.Tiles)
             {
-                if (vertex == null) continue;
-                dist[vertex] = Double.PositiveInfinity;
-                prev[vertex] = null;
-                Q.Add(vertex);
+                if (vertex != null && vertex.Walkable || vertex == target || vertex==source)
+                { //initialize list
+                    dist[vertex] = Double.PositiveInfinity;
+                    prev[vertex] = null;
+                    Q.Add(vertex);
+                }
             }
 
             dist[source] = 0;
 
             while (Q.Count > 0)
             {
-                Tile u = null;
-                foreach (Tile possibleU in Q)
-                    if (u == null || (possibleU != null && dist[possibleU] < dist[u]))
-                        u = possibleU;
+                Tile u = Q.Aggregate((a, b) => dist[a] < dist[b]?a:b); //find tile with least distance
                 Q.Remove(u);
                 List<Tile> neighbours = graph.AcquireNeighbours(u);
                 foreach (Tile neighbour in neighbours)
                 {
-                    double alt = dist[u] + DistanceBetween(u, neighbour);
-                    if (neighbour == target || (neighbour.Walkable && (neighbour.Objects == null || neighbour.Objects.Count == 0))) 
-                        if (alt < dist[neighbour])
+                    if (neighbour == target || neighbour.Walkable)
+                    {
+                        double alt = dist[u] + DistanceBetween(u, neighbour) + weighter(u);
+                        if (alt<dist[neighbour])
                         {
                             dist[neighbour] = alt;
                             prev[neighbour] = u;
                         }
+                    }
                 }
             }
 

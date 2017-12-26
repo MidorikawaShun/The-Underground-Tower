@@ -23,7 +23,17 @@ namespace TheUndergroundTower.Pathfinding
         /// Can you walk through this tile?
         /// </summary>
         private bool _walkable;
-        public bool Walkable { get => _walkable; set => _walkable = value; }
+        //public bool Walkable
+        //{
+        //    get
+        //    {
+        //        return (_walkable && ((_objects==null) || (_objects!=null && _objects.OfType<Creature>().Count() == 0)));
+        //    }
+        //    set => _walkable = value;
+        //}
+
+        public bool Walkable
+        { get => _walkable; set => _walkable = value; }
 
         /// <summary>
         /// Can you see this tile?
@@ -44,12 +54,12 @@ namespace TheUndergroundTower.Pathfinding
         public ImageSource Image { get => _image; set => _image = value; }
 
         private List<GameObject> _objects;
-        public List<GameObject> Objects { get => _objects;  set => _objects = value; }
+        public List<GameObject> Objects { get => _objects; set => _objects = value; }
 
         #endregion
 
         private int _index;
-        
+
         /// <summary>
         /// constructor for creating an initial tile object from XML
         /// </summary>
@@ -58,7 +68,7 @@ namespace TheUndergroundTower.Pathfinding
         {
             Name = tile.Attributes["Name"].Value;
             Description = tile.ChildNodes[0].FirstChild.Value;
-            _walkable = Convert.ToBoolean(tile.ChildNodes[2].FirstChild.Value); 
+            _walkable = Convert.ToBoolean(tile.ChildNodes[2].FirstChild.Value);
             _visible = true;
             _seethrough = Convert.ToBoolean(tile.ChildNodes[1].FirstChild.Value);
             _index = Convert.ToInt32(tile.ChildNodes[3].FirstChild.Value);

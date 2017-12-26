@@ -93,7 +93,6 @@ namespace TheUndergroundTower.Pathfinding
                     }
                     else
                     {
-
                         if (TryToCreateRoom(startPoint, incDec, isTopOrBottomWall, ref currentRoom))
                         {
                             roomAttempts = 0;
@@ -131,8 +130,8 @@ namespace TheUndergroundTower.Pathfinding
                 if (isTopOrBottomWall)
                 {
                     if (incDec == 1) topLeftY += roomYSize;
-                    else
-                        roomYSize--;
+                    //else
+                        //roomYSize--;
                     topLeftX--;
                 }
                 else
@@ -217,7 +216,7 @@ namespace TheUndergroundTower.Pathfinding
             int startX = startPoint.X, startY = startPoint.Y;
             if (isTopOrBottom) startY += incDec;
             else startX += incDec;
-            _tiles[startPoint.X, startPoint.Y] = new Tile(_floorTile) { X = startPoint.X,Y = startPoint.Y};
+            _tiles[startPoint.X, startPoint.Y] = new Tile(_floorTile) { X = startPoint.X, Y = startPoint.Y };
 
             for (int i = 0; i < corridorLength; i++)
             {

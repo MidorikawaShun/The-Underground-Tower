@@ -31,8 +31,8 @@ namespace TheUndergroundTower.Pages
         Player Player;
         private List<Monster> Monsters;
         private Random _rand;
-        private const double MAX_MONSTERS_MULTIPLIER = 2;
-        private const double MIN_MONSTERS_MULTIPLIER = 0.5;
+        private const int MAX_MONSTERS_PER_ROOM = 2;
+        private const int MIN_MONSTERS_PER_ROOM = 0;
         private const int MAX_MONSTER_PLACEMENT_ATTEMPTS = 10;
 
         public pageMainGame()
@@ -58,26 +58,24 @@ namespace TheUndergroundTower.Pages
         {
             List<Monster> monsters = GameData.POSSIBLE_MONSTERS;
             Map currentMap = GameStatus.CURRENT_MAP;
-            int monstersInThisStage = _rand.Next((int)(currentMap.Rooms.Count * MIN_MONSTERS_MULTIPLIER), (int)(currentMap.Rooms.Count * MAX_MONSTERS_MULTIPLIER));
             Monsters = new List<Monster>();
 
-            for (int i = 0; i < monstersInThisStage; i++) //Place 'monstersInThisStage' monsters on this map
+            foreach (Room room in currentMap.Rooms)
             {
-                //Make sure that the monster fits
-                for (int attemptedMonsterPlacements = 0; attemptedMonsterPlacements < MAX_MONSTER_PLACEMENT_ATTEMPTS; attemptedMonsterPlacements++)
+                int monstersInThisRoom = _rand.Next(MIN_MONSTERS_PER_ROOM, MAX_MONSTERS_PER_ROOM + 1);
+                for (int attempts = 0,monstersPlaced=0; monstersPlaced < monstersInThisRoom && attempts < MAX_MONSTER_PLACEMENT_ATTEMPTS; attempts++)
                 {
-                    Room room = GameStatus.CURRENT_MAP.Rooms.Random(_rand);
-                    int x = _rand.Next(room.TopLeftX + 1, room.TopRightX);
-                    int y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
-                    Monster newMonster = new Monster(monsters.Random(_rand)) { X = x, Y = y, Z = GameStatus.MAPS.Count() - 1 };
-                    Tile tile = GameStatus.CURRENT_MAP.Tiles[x, y];
-                    tile.Objects = tile.Objects ?? new List<GameObject>() { newMonster };
-                    if (tile.Objects.Count == 0)
-                        tile.Objects.Add(newMonster);
-                    if (tile.Objects.Contains(newMonster)) Monsters.Add(newMonster);
+                    int x = _rand.Next(room.TopLeftX + 1, room.TopRightX), y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
+                    Tile targetTile = currentMap.Tiles[x, y];
+                    if (targetTile.Objects == null) targetTile.Objects = new List<GameObject>();
+                    if (targetTile.Objects.OfType<Creature>().Count() > 0) continue;
+                    Monster monster = (new Monster(monsters.Random(_rand)) { X = targetTile.X, Y = targetTile.Y, Z = GameStatus.MAPS.IndexOf(currentMap) });
+                    targetTile.Objects.Add(monster);
+                    Monsters.Add(monster);
+                    monstersPlaced++;
                 }
-
             }
+
         }
 
         private void SetInitialPlayerLocation(Map map)
@@ -240,16 +238,22 @@ namespace TheUndergroundTower.Pages
                     monster.TurnsWithoutPlayerInSight++;
                 if (monster.FollowingPlayer) //move monsters
                 {
-                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[Player.X, Player.Y]);
-                    if (!monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY]);
+                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[Player.X, Player.Y],CostToEnterTile);
+                    if (!monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY], CostToEnterTile);
                     if (path != null)
                     {
                         int pathX = path.First().X, pathY = path.First().Y;
                         monster.MoveTo(pathX, pathY, map);
                     }
+                    else BrownianMotion(monster);
                 }
                 else BrownianMotion(monster);
             }
+        }
+
+        private double CostToEnterTile(Tile tile)
+        {
+            return (tile.Objects != null && tile.Objects.OfType<Monster>().Any()) ? 5 : 0;
         }
 
         //If the line is not null and Player is also within sight range of the monster, monster is now aware of Player.
