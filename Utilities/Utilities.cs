@@ -334,6 +334,24 @@ namespace WpfApp1
 
     }
 
+    public static class GameLogic
+    {
+        public static int DiceRoll(string dice)
+        {
+            int numOfDice = Convert.ToInt32(dice.Split('d')[0]);
+            int typeOfDie = Convert.ToInt32(dice.Split('d')[1]);
+            int sum = 0;
+            for (int i = 0; i < numOfDice; i++)
+                sum += GameStatus.RANDOM.Next(1, typeOfDie + 1);
+            return sum;
+        }
+
+        public static int Roll20(int numOf20s)
+        {
+            return DiceRoll($"{numOf20s}d20");
+        }
+    }
+
     /// <summary>
     /// get a tile in Bitmap from the given tileset
     /// </summary>

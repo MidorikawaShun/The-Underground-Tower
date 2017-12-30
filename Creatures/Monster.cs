@@ -59,5 +59,13 @@ namespace TheUndergroundTower.Creatures
         {
             return $"Monster: {Name} at {X},{Y}";
         }
+
+        public override void Attack(Creature player) 
+        {
+            int targetDefense = (player as Player).DefenseSkill + GameLogic.Roll20(1);
+            double monsterAttack = MeleeSkill + GameLogic.Roll20(1);
+            if (monsterAttack > targetDefense)
+                player.TakeDamage(GameLogic.DiceRoll(_damageRange));
+        }
     }
 }

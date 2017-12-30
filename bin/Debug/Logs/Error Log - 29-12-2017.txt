@@ -1,0 +1,14 @@
+
+
+29-Dec-17 22:50:11 - An error has occured while attempting to populate races from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.GameObject..ctor() in C:\Users\matan\Source\Repos\The-Underground-Tower\GameProperties\GameObject.cs:line 70
+   at WpfApp1.Race..ctor(XmlNode race) in C:\Users\matan\Source\Repos\The-Underground-Tower\Character\Race.cs:line 115
+   at WpfApp1.Utilities.Xml.PopulateRaces() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 52
+
+
+29-Dec-17 22:52:21 - An error has occured while attempting to populate races from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.GameObject..ctor() in C:\Users\matan\Source\Repos\The-Underground-Tower\GameProperties\GameObject.cs:line 70
+   at WpfApp1.Race..ctor(XmlNode race) in C:\Users\matan\Source\Repos\The-Underground-Tower\Character\Race.cs:line 115
+   at WpfApp1.Utilities.Xml.PopulateRaces() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 52

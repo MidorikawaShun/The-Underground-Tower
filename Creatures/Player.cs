@@ -79,7 +79,8 @@ namespace WpfApp1.Creatures
         }
 
         public const int _imageIndex = 146;
-      
+
+        public int DefenseSkill;
        
         #endregion
         #region Constructors
@@ -90,6 +91,7 @@ namespace WpfApp1.Creatures
         {
             _playerStats = new int[Definitions.NUMBER_OF_CHARACTER_STATS];
             _lightRadius = 5;
+            DefenseSkill = 10;
         }
         #endregion
         #region Methods
@@ -115,6 +117,13 @@ namespace WpfApp1.Creatures
             IsCaster = chosenCareer.IsCaster;
             Equipment = new Item[Definitions.NUM_OF_EQUIPMENT_SLOTS];
         }
+
+        public override void Attack(Creature target)
+        {
+            int attackScore = (int)MeleeSkill + GameLogic.Roll20(1);
+            target.TakeDamage(20);
+        }
+
         #endregion
     }
 }

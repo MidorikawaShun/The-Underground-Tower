@@ -28,8 +28,6 @@ namespace TheUndergroundTower.Pages
     /// </summary>
     public partial class pageMainGame : Page
     {
-        Player Player;
-        private List<Monster> Monsters;
         private Random _rand;
         private const int MAX_MONSTERS_PER_ROOM = 2;
         private const int MIN_MONSTERS_PER_ROOM = 0;
@@ -46,7 +44,7 @@ namespace TheUndergroundTower.Pages
             GameStatus.MAPS.Add(GameStatus.CURRENT_MAP);
             GenerateMonsters();
             CreateDisplay();
-            Player = GameStatus.PLAYER = new Player();
+            GameStatus.PLAYER = new Player();
             //Tile Startpoint = GameStatus.CURRENT_MAP.Tiles[_rand.Next(1, GameStatus.CURRENT_MAP.XSize), _rand.Next(1, GameStatus.CURRENT_MAP.YSize)];
             Map map = GameStatus.CURRENT_MAP;
             SetInitialPlayerLocation(map);
@@ -58,7 +56,7 @@ namespace TheUndergroundTower.Pages
         {
             List<Monster> monsters = GameData.POSSIBLE_MONSTERS;
             Map currentMap = GameStatus.CURRENT_MAP;
-            Monsters = new List<Monster>();
+            GameStatus.Monsters = new List<Monster>();
 
             foreach (Room room in currentMap.Rooms)
             {
@@ -71,7 +69,7 @@ namespace TheUndergroundTower.Pages
                     if (targetTile.Objects.OfType<Creature>().Count() > 0) continue;
                     Monster monster = (new Monster(monsters.Random(_rand)) { X = targetTile.X, Y = targetTile.Y, Z = GameStatus.MAPS.IndexOf(currentMap) });
                     targetTile.Objects.Add(monster);
-                    Monsters.Add(monster);
+                    GameStatus.Monsters.Add(monster);
                     monstersPlaced++;
                 }
             }
@@ -81,9 +79,9 @@ namespace TheUndergroundTower.Pages
         private void SetInitialPlayerLocation(Map map)
         {
             Room startingRoom = map.Rooms.First();
-            Player.X = startingRoom.TopLeftX + startingRoom.XSize / 2;
-            Player.Y = startingRoom.TopLeftY - startingRoom.YSize / 2;
-            map.Tiles[Player.X, Player.Y].Objects = new List<GameObject>() { Player };
+            GameStatus.PLAYER.X = startingRoom.TopLeftX + startingRoom.XSize / 2;
+            GameStatus.PLAYER.Y = startingRoom.TopLeftY - startingRoom.YSize / 2;
+            map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y].Objects = new List<GameObject>() { GameStatus.PLAYER };
         }
 
         //create a map and fill it with empty image elements
@@ -101,8 +99,8 @@ namespace TheUndergroundTower.Pages
         //Move the map in accordance with Player's movement.
         private void RefreshScreen()
         {
-            int xpos = Player.X - 5;
-            int ypos = Player.Y - 6;
+            int xpos = GameStatus.PLAYER.X - 5;
+            int ypos = GameStatus.PLAYER.Y - 6;
             int z = 0;
             for (int y = Definitions.WINDOW_Y_SIZE - 1; y >= 0; y--)
             {
@@ -157,52 +155,51 @@ namespace TheUndergroundTower.Pages
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             Map map = GameStatus.CURRENT_MAP;
-            Tile oldTile = map.Tiles[Player.X, Player.Y];
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
             {
                 case "NumPad8":
                 case "Up":
                     {
-                        Player.MoveTo(Player.X, Player.Y + 1, map);
+                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X, GameStatus.PLAYER.Y + 1, map);
                         break;
                     }
                 case "NumPad2":
                 case "Down":
                     {
-                        Player.MoveTo(Player.X, Player.Y - 1, map);
+                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X, GameStatus.PLAYER.Y - 1, map);
                         break;
                     }
                 case "NumPad4":
                 case "Left":
                     {
-                        Player.MoveTo(Player.X - 1, Player.Y, map);
+                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X - 1, GameStatus.PLAYER.Y, map);
                         break;
                     }
                 case "NumPad6":
                 case "Right":
                     {
-                        Player.MoveTo(Player.X + 1, Player.Y, map);
+                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X + 1, GameStatus.PLAYER.Y, map);
                         break;
                     }
                 case "NumPad1":
                     {
-                        Player.MoveTo(Player.X - 1, Player.Y - 1, map);
+                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X - 1, GameStatus.PLAYER.Y - 1, map);
                         break;
                     }
                 case "NumPad3":
                     {
-                        Player.MoveTo(Player.X + 1, Player.Y - 1, map);
+                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X + 1, GameStatus.PLAYER.Y - 1, map);
                         break;
                     }
                 case "NumPad7":
                     {
-                        Player.MoveTo(Player.X - 1, Player.Y + 1, map);
+                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X - 1, GameStatus.PLAYER.Y + 1, map);
                         break;
                     }
                 case "NumPad9":
                     {
-                        Player.MoveTo(Player.X + 1, Player.Y + 1, map);
+                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X + 1, GameStatus.PLAYER.Y + 1, map);
                         break;
                     }
                 case "NumPad5":
@@ -214,41 +211,60 @@ namespace TheUndergroundTower.Pages
                         return;
                     }
             }
-            MoveMonsters();
+            MonsterLogic();
             RefreshScreen();
+            if (GameStatus.PLAYER.HP<=0)
+            {
+                Console.WriteLine("DEAD");
+            }
         }
 
-        public void MoveMonsters()
+        public void MonsterLogic()
         {
             Map map = GameStatus.CURRENT_MAP;
-            foreach (Monster monster in Monsters)
+            List<Monster> deadMonsters = new List<Monster>();
+            foreach (Monster monster in GameStatus.Monsters)
             {
+                if (monster.HP<=0)
+                {
+                    map.Tiles[monster.X, monster.Y].Objects.Remove(monster);
+                    deadMonsters.Add(monster);
+                    continue;
+                }
                 List<Tile> path = null;
                 //Get the line representing the tiles between monster and Player
-                List<Tile> line = Algorithms.Line(monster.X, Player.X, monster.Y, Player.Y, map, IsSeeThrough);
+                List<Tile> line = Algorithms.Line(monster.X, GameStatus.PLAYER.X, monster.Y, GameStatus.PLAYER.Y, map, IsSeeThrough);
                 monster.AwareOfPlayer = line == null ? false : true;
                 if (monster.AwareOfPlayer)
                 {
                     monster.FollowingPlayer = true;
-                    monster.LastKnownPlayerLocationX = Player.X;
-                    monster.LastKnownPlayerLocationY = Player.Y;
+                    monster.LastKnownPlayerLocationX = GameStatus.PLAYER.X;
+                    monster.LastKnownPlayerLocationY = GameStatus.PLAYER.Y;
                     monster.TurnsWithoutPlayerInSight = 0;
                 }
                 else
                     monster.TurnsWithoutPlayerInSight++;
                 if (monster.FollowingPlayer) //move monsters
                 {
-                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[Player.X, Player.Y],CostToEnterTile);
+                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y],CostToEnterTile);
                     if (!monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY], CostToEnterTile);
                     if (path != null)
                     {
-                        int pathX = path.First().X, pathY = path.First().Y;
-                        monster.MoveTo(pathX, pathY, map);
+                        if (path.Count > 1) //not adjacent to player
+                        {
+                            int pathX = path.First().X, pathY = path.First().Y;
+                            monster.MoveTo(pathX, pathY, map);
+                        }
+                        if (path.Count==1) //adjacent to player
+                        {
+                            monster.Attack(GameStatus.PLAYER);
+                        }
                     }
                     else BrownianMotion(monster);
                 }
                 else BrownianMotion(monster);
             }
+            GameStatus.Monsters.RemoveAll(x => deadMonsters.Contains(x));
         }
 
         private double CostToEnterTile(Tile tile)

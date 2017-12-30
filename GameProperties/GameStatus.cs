@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheUndergroundTower.Creatures;
 using TheUndergroundTower.Pathfinding;
 using WpfApp1.Creatures;
 
@@ -43,6 +44,8 @@ namespace WpfApp1
         /// in the beginning.
         /// </summary>
         public static Random RANDOM = new Random(DateTime.Now.Millisecond);
+
+        public static List<Monster> Monsters = new List<Monster>();
 
     }
 }
