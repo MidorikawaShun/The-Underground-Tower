@@ -45,7 +45,7 @@ namespace WpfApp1
         /// </summary>
         public static Random RANDOM = new Random(DateTime.Now.Millisecond);
 
-        public static List<Monster> Monsters = new List<Monster>();
+        public static List<Monster> Monsters;
 
     }
 }

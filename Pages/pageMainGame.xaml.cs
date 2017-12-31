@@ -213,7 +213,7 @@ namespace TheUndergroundTower.Pages
             }
             MonsterLogic();
             RefreshScreen();
-            if (GameStatus.PLAYER.HP<=0)
+            if (GameStatus.PLAYER.HP<=0) //if player has died
             {
                 Console.WriteLine("DEAD");
             }
@@ -225,7 +225,7 @@ namespace TheUndergroundTower.Pages
             List<Monster> deadMonsters = new List<Monster>();
             foreach (Monster monster in GameStatus.Monsters)
             {
-                if (monster.HP<=0)
+                if (monster.HP<=0) //if this monster died during the player's turn
                 {
                     map.Tiles[monster.X, monster.Y].Objects.Remove(monster);
                     deadMonsters.Add(monster);
@@ -250,12 +250,12 @@ namespace TheUndergroundTower.Pages
                     if (!monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY], CostToEnterTile);
                     if (path != null)
                     {
-                        if (path.Count > 1) //not adjacent to player
+                        if (path.Count > 1 || (path.Count==1 && path.Last() == map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY])) //not adjacent to player
                         {
                             int pathX = path.First().X, pathY = path.First().Y;
                             monster.MoveTo(pathX, pathY, map);
                         }
-                        if (path.Count==1) //adjacent to player
+                        if (path.Count==1 && path.Last()== map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y]) //adjacent to player
                         {
                             monster.Attack(GameStatus.PLAYER);
                         }

@@ -147,8 +147,8 @@ namespace WpfApp1.Creatures
             bool shouldMove = true;
             try
             {
-                if (!map.InBoundsOfMap(targetX, targetY) || !map.Tiles[targetX, targetY].Walkable)
-                    return false;
+                if (!map.InBoundsOfMap(targetX, targetY) || !map.Tiles[targetX, targetY].IsWalkable())
+                    shouldMove = false;
                 Tile tile = map.Tiles[targetX, targetY];
                 if (this is Player && tile.Objects != null && tile.Objects.OfType<Creature>().Count() > 0)
                 {
