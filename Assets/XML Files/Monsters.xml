@@ -7,6 +7,7 @@
     <MeleeSkill>5</MeleeSkill>
     <MeleeDamage>1d10</MeleeDamage>
     <ImageIndex>2</ImageIndex>
+    <Defense>2</Defense>
   </Monster>
   <Monster Name="Monster 2">
     <Description>Monster 2</Description>
@@ -15,6 +16,7 @@
     <MeleeSkill>5</MeleeSkill>
     <MeleeDamage>1d10</MeleeDamage>
     <ImageIndex>3</ImageIndex>
+    <Defense>2</Defense>
   </Monster>
   <Monster Name="Monster 3">
     <Description>Monster 3</Description>
@@ -23,5 +25,6 @@
     <MeleeSkill>5</MeleeSkill>
     <MeleeDamage>1d10</MeleeDamage>
     <ImageIndex>4</ImageIndex>
+    <Defense>2</Defense>
   </Monster>
 </Monsters>

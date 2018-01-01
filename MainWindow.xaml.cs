@@ -19,7 +19,7 @@ namespace WpfApp1
             Definitions.MAIN_WINDOW = this;
             Main.Content = new pageMainMenu();
             //PlaySound(EnumSoundFiles.MainMenuMusic,EnumMediaPlayers.MusicPlayer);
-            Main.Content = new pageMainGame();
+            //Main.Content = new pageMainGame();
         }
 
 

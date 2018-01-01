@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using WpfApp1.GameProperties;
 
@@ -121,7 +122,8 @@ namespace WpfApp1.Creatures
         public override void Attack(Creature target)
         {
             int attackScore = (int)MeleeSkill + GameLogic.Roll20(1);
-            target.TakeDamage(20);
+            int defenseScore = (target as Monster).Defense + GameLogic.Roll20(1);
+            if (attackScore > defenseScore)  target.TakeDamage(GameLogic.DiceRoll("1d6") + _playerStats[0]);
         }
 
         #endregion

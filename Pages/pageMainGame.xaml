@@ -16,6 +16,11 @@
         <UniformGrid x:Name="XAMLMap" >
 
         </UniformGrid>
-        <Rectangle Height="600" Width="200" Canvas.Left="600" Fill="#FFEC1414"/>
+        <Rectangle x:Name="CharacterInfo" Height="200" Width="200" Canvas.Left="600" Fill="Green"/>
+        <Rectangle x:Name="GameLog" Height="200" Width="200" Canvas.Left="600" Fill="#FFEC1414" Canvas.Top="200"/>
+        <Border BorderBrush="Black" BorderThickness="2" Canvas.Left="600" Canvas.Top="400" Height="200" Width="200">
+            <UniformGrid x:Name="InventoryGrid" Rows="5" Columns="5" Margin="-2,-2,8,0">
+            </UniformGrid>
+        </Border>
     </Canvas>
 </Page>

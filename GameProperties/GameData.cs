@@ -24,6 +24,7 @@ namespace WpfApp1
         public static List<TowerDepth> POSSIBLE_TOWER_DEPTHS { get; set; }
         public static List<Tile> POSSIBLE_TILES { get; set; }
         public static List<Monster> POSSIBLE_MONSTERS { get; set; }
+        public static List<Item> POSSIBLE_ITEMS { get; set; }
 
         //Creates the lists above from XML files.
 

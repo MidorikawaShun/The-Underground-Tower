@@ -19,13 +19,15 @@ namespace TheUndergroundTower.Creatures
         private bool _rangedAttacker,_followingPlayer;
         private int _turnsWithoutPlayerInSight;
         private int _lastKnownPlayerLocationX, _lastKnownPlayerLocationY;
-        
+        private int _defense;
+
         public bool AwareOfPlayer { get => _awareOfPlayer; set => _awareOfPlayer = value; }
         public string DamageRange { get => _damageRange; set => _damageRange = value; }
         public bool RangedAttacker { get => _rangedAttacker; set => _rangedAttacker = value; }
         public int TurnsWithoutPlayerInSight { get => _turnsWithoutPlayerInSight; set => _turnsWithoutPlayerInSight = value; }
         public int LastKnownPlayerLocationX { get => _lastKnownPlayerLocationX; set => _lastKnownPlayerLocationX = value; }
         public int LastKnownPlayerLocationY { get => _lastKnownPlayerLocationY; set => _lastKnownPlayerLocationY = value; }
+        public int Defense { get => _defense; set => _defense = value; }
         public bool FollowingPlayer { get => _followingPlayer; set => _followingPlayer = value; }
 
         public Monster(XmlNode monster)
@@ -38,6 +40,8 @@ namespace TheUndergroundTower.Creatures
             MeleeSkill = Convert.ToDouble(monster.ChildNodes[3].FirstChild.Value);
             DamageRange = monster.ChildNodes[4].FirstChild.Value;
             Index = Convert.ToInt32(monster.ChildNodes[5].FirstChild.Value);
+            _defense = Convert.ToInt32(monster.ChildNodes[6].FirstChild.Value);
+
             GameData.POSSIBLE_MONSTERS.Add(this);
         }
 
@@ -52,6 +56,7 @@ namespace TheUndergroundTower.Creatures
             MeleeSkill = monster.MeleeSkill;
             DamageRange = monster.DamageRange;
             Image = CreateTile.GetImageFromTileset(monster.Index);
+            Defense = monster.Defense;
             _followingPlayer = false;
         }
 

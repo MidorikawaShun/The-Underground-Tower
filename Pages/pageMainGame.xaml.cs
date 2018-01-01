@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -44,7 +45,7 @@ namespace TheUndergroundTower.Pages
             GameStatus.MAPS.Add(GameStatus.CURRENT_MAP);
             GenerateMonsters();
             CreateDisplay();
-            GameStatus.PLAYER = new Player();
+            GameStatus.PLAYER = GameStatus.PLAYER ?? new Player();
             //Tile Startpoint = GameStatus.CURRENT_MAP.Tiles[_rand.Next(1, GameStatus.CURRENT_MAP.XSize), _rand.Next(1, GameStatus.CURRENT_MAP.YSize)];
             Map map = GameStatus.CURRENT_MAP;
             SetInitialPlayerLocation(map);
@@ -61,7 +62,7 @@ namespace TheUndergroundTower.Pages
             foreach (Room room in currentMap.Rooms)
             {
                 int monstersInThisRoom = _rand.Next(MIN_MONSTERS_PER_ROOM, MAX_MONSTERS_PER_ROOM + 1);
-                for (int attempts = 0,monstersPlaced=0; monstersPlaced < monstersInThisRoom && attempts < MAX_MONSTER_PLACEMENT_ATTEMPTS; attempts++)
+                for (int attempts = 0, monstersPlaced = 0; monstersPlaced < monstersInThisRoom && attempts < MAX_MONSTER_PLACEMENT_ATTEMPTS; attempts++)
                 {
                     int x = _rand.Next(room.TopLeftX + 1, room.TopRightX), y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
                     Tile targetTile = currentMap.Tiles[x, y];
@@ -94,6 +95,33 @@ namespace TheUndergroundTower.Pages
                     img.Height = img.Width = 50;
                     XAMLMap.Children.Add(img);
                 }
+            CreateInventoryGrid();
+        }
+
+        private void CreateInventoryGrid()
+        {
+            int NumOfInventorySlots = InventoryGrid.Rows * InventoryGrid.Columns;
+            for (int i = 0; i < NumOfInventorySlots; i++)
+            {
+                Border border = new Border();
+                border.BorderBrush = new System.Windows.Media.SolidColorBrush() { Color = Colors.Black };
+                border.BorderThickness = new Thickness(1);
+                Button button = new Button()
+                {
+                    Width = InventoryGrid.Width / InventoryGrid.Columns,
+                    Height = InventoryGrid.Height / InventoryGrid.Rows,
+                    Background = new RadialGradientBrush(Colors.DarkGray, Colors.Gray)
+                };
+                button.Name = $"InventorySlot{i}";
+                button.Click += InteractWithInventory;
+                border.Child = button;
+                InventoryGrid.Children.Add(border);
+            }
+        }
+
+        private void InteractWithInventory(object sender, RoutedEventArgs e)
+        {
+            string myName = ((Button)sender).Name;
         }
 
         //Move the map in accordance with Player's movement.
@@ -213,7 +241,7 @@ namespace TheUndergroundTower.Pages
             }
             MonsterLogic();
             RefreshScreen();
-            if (GameStatus.PLAYER.HP<=0) //if player has died
+            if (GameStatus.PLAYER.HP <= 0) //if player has died
             {
                 Console.WriteLine("DEAD");
             }
@@ -225,7 +253,7 @@ namespace TheUndergroundTower.Pages
             List<Monster> deadMonsters = new List<Monster>();
             foreach (Monster monster in GameStatus.Monsters)
             {
-                if (monster.HP<=0) //if this monster died during the player's turn
+                if (monster.HP <= 0) //if this monster died during the player's turn
                 {
                     map.Tiles[monster.X, monster.Y].Objects.Remove(monster);
                     deadMonsters.Add(monster);
@@ -246,16 +274,16 @@ namespace TheUndergroundTower.Pages
                     monster.TurnsWithoutPlayerInSight++;
                 if (monster.FollowingPlayer) //move monsters
                 {
-                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y],CostToEnterTile);
+                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y], CostToEnterTile);
                     if (!monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY], CostToEnterTile);
                     if (path != null)
                     {
-                        if (path.Count > 1 || (path.Count==1 && path.Last() == map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY])) //not adjacent to player
+                        if (path.Count > 1 || (path.Count == 1 && path.Last() == map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY])) //not adjacent to player
                         {
                             int pathX = path.First().X, pathY = path.First().Y;
                             monster.MoveTo(pathX, pathY, map);
                         }
-                        if (path.Count==1 && path.Last()== map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y]) //adjacent to player
+                        if (path.Count == 1 && path.Last() == map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y]) //adjacent to player
                         {
                             monster.Attack(GameStatus.PLAYER);
                         }

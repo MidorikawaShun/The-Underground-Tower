@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
+using WpfApp1;
 using static WpfApp1.Utilities;
 
 namespace TheUndergroundTower.OtherClasses
@@ -80,12 +83,21 @@ namespace TheUndergroundTower.OtherClasses
         {
             Name = weapon.Attributes["Name"].Value;
             Description = weapon.ChildNodes[0].FirstChild.Value;
-            HitBonus = Convert.ToDouble(weapon.ChildNodes[2].FirstChild.Value);
-            DamageRange = weapon.ChildNodes[3].FirstChild.Value;
-            TwoHanded = Convert.ToBoolean(weapon.ChildNodes[4].FirstChild.Value);
-            Weight = Convert.ToDouble(weapon.ChildNodes[5].FirstChild.Value);
-            Value = Convert.ToDouble(weapon.ChildNodes[6].FirstChild.Value);
-            UnsellableItem = Convert.ToBoolean(weapon.ChildNodes[7].FirstChild.Value);
+            HitBonus = Convert.ToDouble(weapon.ChildNodes[1].FirstChild.Value);
+            DamageRange = weapon.ChildNodes[2].FirstChild.Value;
+            TwoHanded = Convert.ToBoolean(weapon.ChildNodes[3].FirstChild.Value);
+            Weight = Convert.ToDouble(weapon.ChildNodes[4].FirstChild.Value);
+            Value = Convert.ToDouble(weapon.ChildNodes[5].FirstChild.Value);
+            UnsellableItem = Convert.ToBoolean(weapon.ChildNodes[6].FirstChild.Value);
+            ImageIndex = Convert.ToInt32(weapon.ChildNodes[7].FirstChild.Value);
+            GameData.POSSIBLE_ITEMS = GameData.POSSIBLE_ITEMS ?? new List<Item>();
+            if (GameData.POSSIBLE_ITEMS.Any(x => x.Name.Equals(this.Name)))
+                GameData.POSSIBLE_ITEMS.Add(this);
+        }
+
+        public Weapon(Weapon weapon)
+        {
+            //TODO: this
         }
         
         #endregion

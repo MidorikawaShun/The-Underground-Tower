@@ -1,0 +1,12 @@
+
+
+01-Jan-18 20:50:59 - An error has occured while attempting to populate classes from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.Career..ctor(XmlNode newCareer)
+   at WpfApp1.Utilities.Xml.PopulateCareers()
+
+
+01-Jan-18 20:51:06 - An error has occured while attempting to populate classes from XML.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TheUndergroundTower.OtherClasses.Career..ctor(XmlNode newCareer) in C:\Users\matan\Source\Repos\The-Underground-Tower\Character\Career.cs:line 113
+   at WpfApp1.Utilities.Xml.PopulateCareers() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 72

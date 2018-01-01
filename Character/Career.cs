@@ -91,6 +91,7 @@ namespace TheUndergroundTower.OtherClasses
         {
             //Obtains the career name
             Name = newCareer.Attributes["Name"].Value;
+            _startingInventory = new List<Item>();
             foreach (XmlNode privacyType in newCareer)
             {
                 //Public features are what the user can see during character creation
@@ -110,10 +111,10 @@ namespace TheUndergroundTower.OtherClasses
                         switch (item.Name)
                         {
                             case "Weapon":
-                                new Weapon(item);
+                                _startingInventory.Add(new Weapon(item));
                                 break;
                             case "Armor":
-                                new Armor(item);
+                                _startingInventory.Add(new Armor(item));
                                 break;
                         }
                     }

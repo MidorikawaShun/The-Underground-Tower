@@ -12,21 +12,22 @@
       <StartingEquipment>
         <Weapon Name="Rusty Sword">
           <Description>An old-looking, rusty sword. It's almost useless, but the best you could bring with you.</Description>
-          <Speed>1</Speed>
           <HitBonus>3</HitBonus>
           <DamageRange>3-5</DamageRange>
           <Two-Handed>False</Two-Handed>
           <Weight>2</Weight>
           <Value>1</Value>
           <UnsellableItem>False</UnsellableItem>
+          <ImageIndex>725</ImageIndex>
         </Weapon>
-        <Armor Name="Rusty Shield">
-          <Description>An old-looking, rusty shield. Hardly any better than not carrying it, at all.</Description>
+        <Armor Name="Wooden Shield">
+          <Description>An old-looking wooden shield. Hardly any better than not carrying it, at all.</Description>
           <ArmorBonus>1</ArmorBonus>
           <HeldInHand>True</HeldInHand>
           <Weight>3</Weight>
           <Value>1</Value>
           <UnsellableItem>False</UnsellableItem>
+          <ImageIndex>851</ImageIndex>
         </Armor>
       </StartingEquipment>
     </Private>
