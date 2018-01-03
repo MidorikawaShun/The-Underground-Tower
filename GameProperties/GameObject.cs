@@ -51,6 +51,11 @@ namespace TheUndergroundTower.OtherClasses
             private set { _id = value; }
         }
 
+        private ImageSource _image;
+        public ImageSource Image { get; set; }
+
+        protected int _index;
+
         /// <summary>
         /// Coordinates of the creature/item and map the creature/item is on.
         /// Z is which map

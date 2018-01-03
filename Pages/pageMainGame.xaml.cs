@@ -106,15 +106,25 @@ namespace TheUndergroundTower.Pages
                 Border border = new Border();
                 border.BorderBrush = new System.Windows.Media.SolidColorBrush() { Color = Colors.Black };
                 border.BorderThickness = new Thickness(1);
-                Button button = new Button()
+                Canvas canvas = new Canvas()
                 {
                     Width = InventoryGrid.Width / InventoryGrid.Columns,
                     Height = InventoryGrid.Height / InventoryGrid.Rows,
                     Background = new RadialGradientBrush(Colors.DarkGray, Colors.Gray)
                 };
+                Button button = new Button()
+                {
+                    Opacity=0.5,
+                    Height=100,
+                    Width=100
+                    //Width = InventoryGrid.Width / InventoryGrid.Columns,
+                    //Height = InventoryGrid.Height / InventoryGrid.Rows,
+                    //Background = new RadialGradientBrush(Colors.DarkGray, Colors.Gray)
+                };
                 button.Name = $"InventorySlot{i}";
                 button.Click += InteractWithInventory;
-                border.Child = button;
+                border.Child = canvas;
+                canvas.Children.Add(button);
                 InventoryGrid.Children.Add(border);
             }
         }
@@ -122,10 +132,17 @@ namespace TheUndergroundTower.Pages
         private void InteractWithInventory(object sender, RoutedEventArgs e)
         {
             string myName = ((Button)sender).Name;
+            //GameStatus.PLAYER.Inventory
         }
 
         //Move the map in accordance with Player's movement.
         private void RefreshScreen()
+        {
+            DrawGameScreen();
+            DrawInventoryScreen();
+        }
+
+        private void DrawGameScreen()
         {
             int xpos = GameStatus.PLAYER.X - 5;
             int ypos = GameStatus.PLAYER.Y - 6;
@@ -151,6 +168,16 @@ namespace TheUndergroundTower.Pages
                     if (!tileExists)
                         (XAMLMap.Children[z++] as Image).Source = CreateBlackImage();
                 }
+            }
+        }
+
+        private void DrawInventoryScreen()
+        {
+            List<Item> inventory = GameStatus.PLAYER.Inventory;
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                Button btn = (((InventoryGrid.Children[i] as Border).Child as Canvas).Children[0] as Button);
+                btn.Content = inventory[i].GetImage();
             }
         }
 

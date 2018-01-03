@@ -53,14 +53,6 @@ namespace TheUndergroundTower.OtherClasses
             set { _unsellableItem = value; }
         }
 
-        /// <summary>
-        /// The visual representation of the creature.
-        /// </summary>
-        private ImageSource _image;
-        public ImageSource Image { get => _image; set => _image = value; }
-
-        private int _imageIndex;
-        public int ImageIndex { get => _imageIndex; set => _imageIndex = value; }
 
         #endregion
 

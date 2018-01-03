@@ -89,7 +89,7 @@ namespace TheUndergroundTower.OtherClasses
             Weight = Convert.ToDouble(weapon.ChildNodes[4].FirstChild.Value);
             Value = Convert.ToDouble(weapon.ChildNodes[5].FirstChild.Value);
             UnsellableItem = Convert.ToBoolean(weapon.ChildNodes[6].FirstChild.Value);
-            ImageIndex = Convert.ToInt32(weapon.ChildNodes[7].FirstChild.Value);
+            _index = Convert.ToInt32(weapon.ChildNodes[7].FirstChild.Value);
             GameData.POSSIBLE_ITEMS = GameData.POSSIBLE_ITEMS ?? new List<Item>();
             if (GameData.POSSIBLE_ITEMS.Any(x => x.Name.Equals(this.Name)))
                 GameData.POSSIBLE_ITEMS.Add(this);
@@ -97,7 +97,16 @@ namespace TheUndergroundTower.OtherClasses
 
         public Weapon(Weapon weapon)
         {
-            //TODO: this
+            Name = weapon.Name;
+            Description = weapon.Description;
+            HitBonus = weapon.HitBonus;
+            DamageRange = weapon.DamageRange;
+            TwoHanded = weapon.TwoHanded;
+            Weight = weapon.Weight;
+            Value = weapon.Value;
+            UnsellableItem = weapon.UnsellableItem;
+            _index = weapon._index;
+            Image = CreateTile.GetImageFromTileset(_index);
         }
         
         #endregion

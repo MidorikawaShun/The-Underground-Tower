@@ -58,8 +58,6 @@ namespace TheUndergroundTower.Pathfinding
 
         #endregion
 
-        private int _index;
-
         /// <summary>
         /// constructor for creating an initial tile object from XML
         /// </summary>
