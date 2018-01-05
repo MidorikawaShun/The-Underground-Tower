@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using WpfApp1;
 
 namespace TheUndergroundTower.OtherClasses
 {
@@ -56,6 +57,19 @@ namespace TheUndergroundTower.OtherClasses
             Weight = Convert.ToDouble(armor.ChildNodes[3].Value);
             Value = Convert.ToDouble(armor.ChildNodes[4].Value);
             UnsellableItem = Convert.ToBoolean(armor.ChildNodes[5].Value);
+            _index = Convert.ToInt32(armor.ChildNodes[6].Value);
+        }
+
+        public Armor(Armor armor)
+        {
+            Name = armor.Name;
+            Description = armor.Description;
+            ArmorBonus = armor.ArmorBonus;
+            HeldInHand = armor.HeldInHand;
+            Weight = armor.Weight;
+            Value = armor.Value;
+            UnsellableItem = armor.UnsellableItem;
+            Image = CreateTile.GetImageFromTileset(_index);
         }
 
         #endregion

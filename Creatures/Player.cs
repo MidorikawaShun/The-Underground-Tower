@@ -111,7 +111,26 @@ namespace WpfApp1.Creatures
         /// <param name="chosenCareer">The career the player will have</param>
         public void SetCareer(Career chosenCareer)
         {
-            Inventory = chosenCareer.StartingInventory;
+            _inventory = new List<Item>();
+            foreach (Item item in chosenCareer.StartingInventory)
+                switch (item.GetType().Name.ToString())
+                {
+                    case "Weapon":
+                        {
+                            _inventory.Add(new Weapon(item as Weapon));
+                            break;
+                        }
+                    case "Armor":
+                        {
+                            _inventory.Add(new Armor(item as Armor));
+                            break;
+                        }
+                    default:
+                        {
+                            //_inventory.Add(new Item(item));
+                            break;
+                        }
+                }
             MeleeSkill = chosenCareer.MeleeSkill;
             MagicSkill = chosenCareer.MagicSkill;
             RangedSkill = chosenCareer.RangedSkill;

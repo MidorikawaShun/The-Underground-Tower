@@ -20,6 +20,11 @@
         <Rectangle x:Name="GameLog" Height="200" Width="200" Canvas.Left="600" Fill="#FFEC1414" Canvas.Top="200"/>
         <Border BorderBrush="Black" BorderThickness="2" Canvas.Left="600" Canvas.Top="400" Height="200" Width="200">
             <UniformGrid x:Name="InventoryGrid" Rows="5" Columns="5" Margin="-2,-2,8,0">
+                <!--<Border>
+                    <Button>
+                        <Image Height="32" Width="32" Source="C:\Users\matan\Source\Repos\The-Underground-Tower\Assets\Images\downhillduck.jpg"></Image>
+                    </Button>
+                </Border>-->
             </UniformGrid>
         </Border>
     </Canvas>

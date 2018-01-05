@@ -197,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Images\rltiles-2d.png" />
+    <Resource Include="Assets\Images\downhillduck.jpg" />
     <Content Include="Assets\Sounds\Nonstop.mp3" />
     <Content Include="Assets\Sounds\Sword Slash.mp3" />
     <Resource Include="Assets\XML Files\Tiles.xml" />

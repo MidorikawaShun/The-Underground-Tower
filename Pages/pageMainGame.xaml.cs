@@ -108,15 +108,16 @@ namespace TheUndergroundTower.Pages
                 border.BorderThickness = new Thickness(1);
                 Canvas canvas = new Canvas()
                 {
-                    Width = InventoryGrid.Width / InventoryGrid.Columns,
-                    Height = InventoryGrid.Height / InventoryGrid.Rows,
+                    Width = 36,
+                    Height = 36,
                     Background = new RadialGradientBrush(Colors.DarkGray, Colors.Gray)
                 };
                 Button button = new Button()
                 {
                     Opacity=0.5,
-                    Height=100,
-                    Width=100
+                    Width=36,
+                    Height=36,
+                    Content = new Image() { Height=36,Width=36}
                     //Width = InventoryGrid.Width / InventoryGrid.Columns,
                     //Height = InventoryGrid.Height / InventoryGrid.Rows,
                     //Background = new RadialGradientBrush(Colors.DarkGray, Colors.Gray)
@@ -131,7 +132,7 @@ namespace TheUndergroundTower.Pages
 
         private void InteractWithInventory(object sender, RoutedEventArgs e)
         {
-            string myName = ((Button)sender).Name;
+            //string myName = ((Button)sender).Name;
             //GameStatus.PLAYER.Inventory
         }
 
@@ -177,7 +178,8 @@ namespace TheUndergroundTower.Pages
             for (int i = 0; i < inventory.Count; i++)
             {
                 Button btn = (((InventoryGrid.Children[i] as Border).Child as Canvas).Children[0] as Button);
-                btn.Content = inventory[i].GetImage();
+                Image buttonImage = btn.Content as Image;
+                buttonImage.Source = inventory[i].GetImage();
             }
         }
 

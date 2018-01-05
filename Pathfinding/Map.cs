@@ -140,6 +140,7 @@ namespace TheUndergroundTower.Pathfinding
                     else topLeftX -= roomXSize;
                     topLeftY++;
                 }
+                if (topLeftY - roomYSize < 0) roomYSize = topLeftY;
                 for (int y = topLeftY; y > topLeftY - roomYSize; y--)
                     for (int x = 0; x <= roomXSize; x++)
                         if (!ViableTile(x + topLeftX, y)) return false;
