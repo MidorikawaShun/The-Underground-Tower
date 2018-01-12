@@ -114,15 +114,14 @@ namespace TheUndergroundTower.Pages
                 };
                 Button button = new Button()
                 {
-                    Opacity=0.5,
-                    Width=36,
-                    Height=36,
-                    Content = new Image() { Height=36,Width=36}
+                    Opacity = 0.5,
+                    Width = 36,
+                    Height = 36,
+                    Content = new Image() { Height = 36, Width = 36 }
                     //Width = InventoryGrid.Width / InventoryGrid.Columns,
                     //Height = InventoryGrid.Height / InventoryGrid.Rows,
                     //Background = new RadialGradientBrush(Colors.DarkGray, Colors.Gray)
                 };
-                button.Name = $"InventorySlot{i}";
                 button.Click += InteractWithInventory;
                 border.Child = canvas;
                 canvas.Children.Add(button);
@@ -132,8 +131,45 @@ namespace TheUndergroundTower.Pages
 
         private void InteractWithInventory(object sender, RoutedEventArgs e)
         {
-            //string myName = ((Button)sender).Name;
-            //GameStatus.PLAYER.Inventory
+            string slot = ((Button)sender).Name;
+            if (string.IsNullOrEmpty(slot)) return;
+            Player player = GameStatus.PLAYER;
+            string itemIDString = slot.Split(new string[] { "InventoryItem" }, StringSplitOptions.None)[1];
+            if (string.IsNullOrEmpty(itemIDString)) return;
+            Item itemInSlot = player.Inventory.Where(x => x.ID == itemIDString).SingleOrDefault();
+            Item leftHandItem = player.Equipment[(int)Definitions.EnumBodyParts.LeftHand];
+            Item rightHandItem = player.Equipment[(int)Definitions.EnumBodyParts.RightHand];
+            if (itemInSlot != null)
+            {
+                switch (itemInSlot.GetType().Name.ToString())
+                {
+                    case "Weapon":
+                        {
+                            Weapon weapon = itemInSlot as Weapon;
+                            player.Equipment[(int)Definitions.EnumBodyParts.RightHand] = weapon;
+                            if (weapon.TwoHanded)
+                                player.Equipment[(int)Definitions.EnumBodyParts.LeftHand] = null;
+                            break;
+                        }
+                    case "Armor":
+                        {
+                            Armor armor = itemInSlot as Armor;
+                            if (armor.HeldInHand) //if shield
+                            {
+                                player.Equipment[(int)Definitions.EnumBodyParts.LeftHand] = armor;
+                                if (rightHandItem != null && (rightHandItem as Weapon).TwoHanded)
+                                    player.Equipment[(int)Definitions.EnumBodyParts.RightHand] = null;
+                            }
+                            else
+                                player.EquipArmor(armor);
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
         }
 
         //Move the map in accordance with Player's movement.
@@ -180,6 +216,8 @@ namespace TheUndergroundTower.Pages
                 Button btn = (((InventoryGrid.Children[i] as Border).Child as Canvas).Children[0] as Button);
                 Image buttonImage = btn.Content as Image;
                 buttonImage.Source = inventory[i].GetImage();
+                if (i < inventory.Count)
+                    btn.Name = $"InventoryItem{inventory[i].ID}";
             }
         }
 
@@ -377,5 +415,6 @@ namespace TheUndergroundTower.Pages
         {
 
         }
+
     }
 }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using WpfApp1.GameProperties;
+using Microsoft.VisualBasic;
+using TheUndergroundTower.Windows.MetaMenus;
 
 namespace WpfApp1.Creatures
 {
@@ -60,7 +62,7 @@ namespace WpfApp1.Creatures
             get { return _equipment; }
             private set
             {
-                if (value != null && value.Length==Definitions.NUM_OF_EQUIPMENT_SLOTS)
+                if (value != null && value.Length == Definitions.NUM_OF_EQUIPMENT_SLOTS)
                     _equipment = value;
             }
         }
@@ -82,7 +84,7 @@ namespace WpfApp1.Creatures
         public const int _imageIndex = 146;
 
         public int DefenseSkill;
-       
+
         #endregion
         #region Constructors
         /// <summary>
@@ -142,7 +144,77 @@ namespace WpfApp1.Creatures
         {
             int attackScore = (int)MeleeSkill + GameLogic.Roll20(1);
             int defenseScore = (target as Monster).Defense + GameLogic.Roll20(1);
-            if (attackScore > defenseScore)  target.TakeDamage(GameLogic.DiceRoll("1d6") + _playerStats[0]);
+            if (attackScore > defenseScore)
+                target.TakeDamage(GameLogic.DiceRoll("1d6") + _playerStats[0]);
+            MeleeSkill += GameLogic.DiceRoll("1d3") / 100.0;
+        }
+
+        public void EquipArmor(Armor armor)
+        {
+            switch (armor.Type)
+            {
+                case "Ring":
+                    {
+                        Item leftRing = _equipment[(int)Definitions.EnumBodyParts.LeftRing];
+                        Item rightRing = _equipment[(int)Definitions.EnumBodyParts.RightRing];
+                        //Microsoft.VisualBasic.Interaction.MsgBox("What finger would you like to put the ring on?", MsgBoxStyle.DefaultButton1, "Equip rings");
+                        //GenericWindow.Create("title", new string[] {"hello","inigo","montoya" });
+                        string userChoice = GenericWindow.Create("title", new string[] { "Left Finger", "Right Finger", "Cancel" });
+                        switch (userChoice)
+                        {
+                            case "LeftFinger":
+                                {
+                                    leftRing = armor;
+                                    break;
+                                }
+                            case "RightFinger":
+                                {
+                                    rightRing = armor;
+                                    break;
+                                }
+                            default:
+                                {
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "Hat":
+                    {
+
+                        break;
+                    }
+                case "Amulet":
+                    {
+
+                        break;
+                    }
+                case "Shirt":
+                    {
+
+                        break;
+                    }
+                case "Gloves":
+                    {
+
+                        break;
+                    }
+                case "Pants":
+                    {
+
+                        break;
+                    }
+                case "Boots":
+                    {
+
+                        break;
+                    }
+                default:
+                    {
+
+                        break;
+                    }
+            }
         }
 
         #endregion

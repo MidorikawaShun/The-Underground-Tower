@@ -36,6 +36,12 @@ namespace TheUndergroundTower.OtherClasses
             set { _heldInHand = value; }
         }
 
+        private string _type;
+        public string Type
+        {
+            get { return _type; }
+        }
+
         #endregion
         #region Constructors
 
@@ -51,13 +57,14 @@ namespace TheUndergroundTower.OtherClasses
         public Armor(XmlNode armor)
         {
             Name = armor.Attributes["Name"].Value;
-            Description = armor.ChildNodes[0].Value;
-            ArmorBonus = Convert.ToInt32(armor.ChildNodes[1].Value);
-            HeldInHand = Convert.ToBoolean(armor.ChildNodes[2].Value);
-            Weight = Convert.ToDouble(armor.ChildNodes[3].Value);
-            Value = Convert.ToDouble(armor.ChildNodes[4].Value);
-            UnsellableItem = Convert.ToBoolean(armor.ChildNodes[5].Value);
-            _index = Convert.ToInt32(armor.ChildNodes[6].Value);
+            Description = armor.ChildNodes[0].FirstChild.Value;
+            ArmorBonus = Convert.ToInt32(armor.ChildNodes[1].FirstChild.Value);
+            HeldInHand = Convert.ToBoolean(armor.ChildNodes[2].FirstChild.Value);
+            Weight = Convert.ToDouble(armor.ChildNodes[3].FirstChild.Value);
+            Value = Convert.ToDouble(armor.ChildNodes[4].FirstChild.Value);
+            UnsellableItem = Convert.ToBoolean(armor.ChildNodes[5].FirstChild.Value);
+            _index = Convert.ToInt32(armor.ChildNodes[6].FirstChild.Value);
+            _type = armor.ChildNodes[7].FirstChild.Value;
         }
 
         public Armor(Armor armor)
@@ -69,7 +76,9 @@ namespace TheUndergroundTower.OtherClasses
             Weight = armor.Weight;
             Value = armor.Value;
             UnsellableItem = armor.UnsellableItem;
+            _index = armor._index;
             Image = CreateTile.GetImageFromTileset(_index);
+            _type = armor.Type;
         }
 
         #endregion

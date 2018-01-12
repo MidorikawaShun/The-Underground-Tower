@@ -27,7 +27,18 @@
           <Weight>3</Weight>
           <Value>1</Value>
           <UnsellableItem>False</UnsellableItem>
-          <ImageIndex>851</ImageIndex>
+          <ImageIndex>1176</ImageIndex>
+          <Type>Shield</Type>
+        </Armor>
+        <Armor Name="Old Ring">
+          <Description>An old-looking ring. You might get tetanus.</Description>
+          <ArmorBonus>0</ArmorBonus>
+          <HeldInHand>False</HeldInHand>
+          <Weight>1</Weight>
+          <Value>0</Value>
+          <UnsellableItem>False</UnsellableItem>
+          <ImageIndex>1191</ImageIndex>
+          <Type>Ring</Type>
         </Armor>
       </StartingEquipment>
     </Private>

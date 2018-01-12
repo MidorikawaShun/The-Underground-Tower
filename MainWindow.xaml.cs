@@ -5,6 +5,7 @@ using TheUndergroundTower.Pages;
 using WpfApp1.GameProperties;
 using TheUndergroundTower.Windows.MetaMenus;
 using WpfApp1.Pages;
+using System.Windows.Controls;
 
 namespace WpfApp1
 {
@@ -21,7 +22,6 @@ namespace WpfApp1
             //PlaySound(EnumSoundFiles.MainMenuMusic,EnumMediaPlayers.MusicPlayer);
             //Main.Content = new pageMainGame();
         }
-
 
     }
 }

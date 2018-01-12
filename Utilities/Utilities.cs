@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -12,6 +13,7 @@ using System.Xml;
 using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
+using TheUndergroundTower.Windows.MetaMenus;
 using WpfApp1.Windows.MetaMenus;
 using static WpfApp1.GameProperties.Definitions;
 
@@ -20,6 +22,7 @@ namespace WpfApp1
     ///
     public static class Utilities
     {
+
         /// <summary>
         /// This class handles XML-related actions.
         /// </summary>
@@ -387,14 +390,14 @@ namespace WpfApp1
         /// <returns></returns>
         public static ImageSource GetImageFromTileset(int index)
         {
-            int row = index / TILESET_WIDTH * TILE_HEIGHT; 
+            int row = index / TILESET_WIDTH * TILE_HEIGHT;
             int col = (index % TILESET_WIDTH) * TILE_WIDTH;
 
             //create a bitmap image with the whole spritesheet
             Bitmap source = new Bitmap(TILESET);
 
             //crop a bitmap image out of the spritesheet in accordance with the coordinates
-            Bitmap bmp = source.Clone(new Rectangle(col,row,TILE_WIDTH,TILE_HEIGHT), source.PixelFormat);
+            Bitmap bmp = source.Clone(new Rectangle(col, row, TILE_WIDTH, TILE_HEIGHT), source.PixelFormat);
 
             //convert bitmap into an imagesource and return it
             var handle = bmp.GetHbitmap();
@@ -411,12 +414,13 @@ namespace WpfApp1
         {
             var group = new DrawingGroup();
             group.Children.Add(new ImageDrawing(first, new Rect(0, 0, first.Width, first.Height)));
-            group.Children.Add(new ImageDrawing(second,new Rect(0, 0, first.Width, first.Height)));
+            group.Children.Add(new ImageDrawing(second, new Rect(0, 0, first.Width, first.Height)));
 
             return new DrawingImage(group);
 
         }
-        
+
     }
+
 
 }
