@@ -84,6 +84,23 @@ namespace WpfApp1.Creatures
         public const int _imageIndex = 146;
 
         public int DefenseSkill;
+        public int Protection
+        {
+            get
+            {
+                return _equipment.Where(x => x is Armor).Cast<Armor>().Sum(x => x.ArmorBonus);
+            }
+        }
+
+        public string DamageRange
+        {
+            get
+            {
+                Weapon weapon = _equipment[(int)Definitions.EnumBodyParts.RightHand] as Weapon;
+                if (weapon != null) return weapon.DamageRange;
+                return "1d6";
+            }
+        }
 
         #endregion
         #region Constructors
@@ -145,8 +162,14 @@ namespace WpfApp1.Creatures
             int attackScore = (int)MeleeSkill + GameLogic.Roll20(1);
             int defenseScore = (target as Monster).Defense + GameLogic.Roll20(1);
             if (attackScore > defenseScore)
-                target.TakeDamage(GameLogic.DiceRoll("1d6") + _playerStats[0]);
+                target.TakeDamage(GameLogic.DiceRoll(this.DamageRange,this[(int)Definitions.EnumCharacterStats.Strength]) + _playerStats[0]);
             MeleeSkill += GameLogic.DiceRoll("1d3") / 100.0;
+        }
+
+        public override void TakeDamage(int damage)
+        {
+            damage -= Protection;
+            base.TakeDamage(damage);
         }
 
         public void EquipArmor(Armor armor)
@@ -155,21 +178,17 @@ namespace WpfApp1.Creatures
             {
                 case "Ring":
                     {
-                        Item leftRing = _equipment[(int)Definitions.EnumBodyParts.LeftRing];
-                        Item rightRing = _equipment[(int)Definitions.EnumBodyParts.RightRing];
-                        //Microsoft.VisualBasic.Interaction.MsgBox("What finger would you like to put the ring on?", MsgBoxStyle.DefaultButton1, "Equip rings");
-                        //GenericWindow.Create("title", new string[] {"hello","inigo","montoya" });
                         string userChoice = GenericWindow.Create("title", new string[] { "Left Finger", "Right Finger", "Cancel" });
                         switch (userChoice)
                         {
                             case "LeftFinger":
                                 {
-                                    leftRing = armor;
+                                    _equipment[(int)Definitions.EnumBodyParts.LeftRing] = armor;
                                     break;
                                 }
                             case "RightFinger":
                                 {
-                                    rightRing = armor;
+                                    _equipment[(int)Definitions.EnumBodyParts.RightRing] = armor;
                                     break;
                                 }
                             default:
@@ -181,32 +200,32 @@ namespace WpfApp1.Creatures
                     }
                 case "Hat":
                     {
-
+                        _equipment[(int)Definitions.EnumBodyParts.Hat] = armor;
                         break;
                     }
                 case "Amulet":
                     {
-
+                        _equipment[(int)Definitions.EnumBodyParts.Amulet] = armor;
                         break;
                     }
                 case "Shirt":
                     {
-
+                        _equipment[(int)Definitions.EnumBodyParts.Shirt] = armor;
                         break;
                     }
                 case "Gloves":
                     {
-
+                        _equipment[(int)Definitions.EnumBodyParts.Gloves] = armor;
                         break;
                     }
                 case "Pants":
                     {
-
+                        _equipment[(int)Definitions.EnumBodyParts.Pants] = armor;
                         break;
                     }
                 case "Boots":
                     {
-
+                        _equipment[(int)Definitions.EnumBodyParts.Boots] = armor;
                         break;
                     }
                 default:

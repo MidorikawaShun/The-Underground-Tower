@@ -175,7 +175,7 @@ namespace WpfApp1.Creatures
 
         public abstract void Attack(Creature target);
 
-        public void TakeDamage(int damage)
+        public virtual void TakeDamage(int damage)
         {
             HP -= damage;
         }

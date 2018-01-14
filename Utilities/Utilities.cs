@@ -339,14 +339,14 @@ namespace WpfApp1
 
     public static class GameLogic
     {
-        public static int DiceRoll(string dice)
+        public static int DiceRoll(string dice, int bonus = 0)
         {
             int numOfDice = Convert.ToInt32(dice.Split('d')[0]);
             int typeOfDie = Convert.ToInt32(dice.Split('d')[1]);
             int sum = 0;
             for (int i = 0; i < numOfDice; i++)
                 sum += GameStatus.RANDOM.Next(1, typeOfDie + 1);
-            return sum;
+            return sum + bonus;
         }
 
         public static int Roll20(int numOf20s)
