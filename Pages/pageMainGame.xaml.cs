@@ -70,7 +70,7 @@ namespace TheUndergroundTower.Pages
                     int x = _rand.Next(room.TopLeftX + 1, room.TopRightX), y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
                     Tile targetTile = currentMap.Tiles[x, y];
                     if (targetTile.Objects == null) targetTile.Objects = new List<GameObject>();
-                    var item = Item.Create(items.Random(_rand)) /*{X=targetTile.X,Y=targetTile.Y,Z=GameStatus.MAPS.IndexOf(currentMap) }*/;
+                    var item = Item.Create(items.Random(_rand));
                     item.X = targetTile.X;item.Y = targetTile.Y;item.Z = GameStatus.MAPS.IndexOf(currentMap);
                     targetTile.Objects.Add(item);
                     GameStatus.Items.Add(item);
@@ -324,6 +324,11 @@ namespace TheUndergroundTower.Pages
                     }
                 case "NumPad5":
                     {
+                        break;
+                    }
+                case "G":
+                    {
+                        GameStatus.PLAYER.PickUp(map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y]);
                         break;
                     }
                 default:

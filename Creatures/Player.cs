@@ -8,6 +8,7 @@ using TheUndergroundTower.OtherClasses;
 using WpfApp1.GameProperties;
 using Microsoft.VisualBasic;
 using TheUndergroundTower.Windows.MetaMenus;
+using TheUndergroundTower.Pathfinding;
 
 namespace WpfApp1.Creatures
 {
@@ -234,6 +235,21 @@ namespace WpfApp1.Creatures
                         break;
                     }
             }
+        }
+
+        public void PickUp(Tile tile)
+        {
+            try
+            {
+                List<Item> items = new List<Item>();
+                foreach (var item in tile.Objects.OfType<Item>())
+                    items.Add(item);
+                string userChoice = GenericWindow.Create("title", items.Select(x=>x.Name).ToArray());
+                Item chosenItem = tile.Objects.Where(x => x.Name.Replace(" ","").Equals(userChoice)).FirstOrDefault() as Item;
+                Inventory.Add(chosenItem);
+                tile.Objects.Remove(chosenItem);
+            }
+            catch (Exception ex) {}
         }
 
         #endregion
