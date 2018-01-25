@@ -33,17 +33,21 @@ namespace TheUndergroundTower.Pages
         private const int MAX_MONSTERS_PER_ROOM = 2;
         private const int MIN_MONSTERS_PER_ROOM = 0;
         private const int MAX_MONSTER_PLACEMENT_ATTEMPTS = 10;
+        private const int MIN_ITEMS_IN_ROOM = 1;
+        private const int MAX_ITEMS_IN_ROOM = 5;
 
         public pageMainGame()
         {
             InitializeComponent();
             GameData.InitializeTiles();
             GameData.InitializeMonsters();
+            GameData.InitializeItems();
             _rand = new Random(DateTime.Now.Millisecond);
             GameStatus.MAPS = new List<Map>();
             GameStatus.CURRENT_MAP = new Map(60);
             GameStatus.MAPS.Add(GameStatus.CURRENT_MAP);
             GenerateMonsters();
+            GenerateItems();
             CreateDisplay();
             GameStatus.PLAYER = GameStatus.PLAYER ?? new Player();
             //Tile Startpoint = GameStatus.CURRENT_MAP.Tiles[_rand.Next(1, GameStatus.CURRENT_MAP.XSize), _rand.Next(1, GameStatus.CURRENT_MAP.YSize)];
@@ -51,6 +55,27 @@ namespace TheUndergroundTower.Pages
             SetInitialPlayerLocation(map);
             RefreshScreen();
             map.DrawMapToConsole();
+        }
+
+        private void GenerateItems()
+        {
+            List<Item> items = GameData.POSSIBLE_ITEMS;
+            Map currentMap = GameStatus.CURRENT_MAP;
+            GameStatus.Items = new List<Item>();
+            foreach (Room  room in currentMap.Rooms)
+            {
+                int numOfItemsInThisRoom = _rand.Next(MIN_ITEMS_IN_ROOM, MAX_ITEMS_IN_ROOM + 1);
+                for (; numOfItemsInThisRoom > 0; numOfItemsInThisRoom--)
+                {
+                    int x = _rand.Next(room.TopLeftX + 1, room.TopRightX), y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
+                    Tile targetTile = currentMap.Tiles[x, y];
+                    if (targetTile.Objects == null) targetTile.Objects = new List<GameObject>();
+                    var item = Item.Create(items.Random(_rand)) /*{X=targetTile.X,Y=targetTile.Y,Z=GameStatus.MAPS.IndexOf(currentMap) }*/;
+                    item.X = targetTile.X;item.Y = targetTile.Y;item.Z = GameStatus.MAPS.IndexOf(currentMap);
+                    targetTile.Objects.Add(item);
+                    GameStatus.Items.Add(item);
+                }
+            }
         }
 
         private void GenerateMonsters()

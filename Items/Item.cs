@@ -56,6 +56,38 @@ namespace TheUndergroundTower.OtherClasses
 
         #endregion
 
+        public Item(){}
+
+        public Item(Item newItem)
+        {
+            switch(newItem.GetType().Name)
+            {
+                case "Weapon":
+                    new Weapon(newItem as Weapon);
+                    break;
+                case "Armor":
+                    new Armor(newItem as Armor);
+                    break;
+                default: break;
+            }
+        }
+
+        //Factory method. Required to return proper polymorphic object.
+        public static Item Create(Item newItem)
+        {
+            Item retVal=null;
+            switch (newItem.GetType().Name)
+            {
+                case "Weapon":
+                    retVal = new Weapon(newItem as Weapon);
+                    break;
+                case "Armor":
+                    retVal = new Armor(newItem as Armor);
+                    break;
+                default: break;
+            }
+            return retVal;
+        }
         
         public override ImageSource GetImage()
         {

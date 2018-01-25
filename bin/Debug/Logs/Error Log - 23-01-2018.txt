@@ -1,0 +1,18 @@
+
+
+23-Jan-18 21:17:15 - An error has occured while attempting to populate Items from XML.
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at WpfApp1.Utilities.Files.GetDefinitionFilePath(EnumXmlFiles file) in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 193
+   at WpfApp1.Utilities.Xml.PopulateItems() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 164
+
+
+23-Jan-18 21:19:41 - An error has occured while attempting to populate Items from XML.
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at WpfApp1.Utilities.Files.GetDefinitionFilePath(EnumXmlFiles file) in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 193
+   at WpfApp1.Utilities.Xml.PopulateItems() in C:\Users\matan\Source\Repos\The-Underground-Tower\Utilities\Utilities.cs:line 164
+
+
+23-Jan-18 21:24:10 - An error has occured while attempting to populate Items from XML.
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at WpfApp1.Utilities.Files.GetDefinitionFilePath(EnumXmlFiles file)
+   at WpfApp1.Utilities.Xml.PopulateItems()

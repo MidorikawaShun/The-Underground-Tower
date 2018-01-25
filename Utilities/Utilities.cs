@@ -143,16 +143,42 @@ namespace WpfApp1
             {
                 try
                 {
-                    //Opens the Tiles XML file.
+                    //Opens the Monsters XML file.
                     XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileMonsters));
                     XmlNode monsters = doc.ChildNodes[1];
-                    //Creates the tiles objects and adds them to the list.
+                    //Creates the monsters objects and adds them to the list.
                     foreach (XmlNode monster in monsters)
                         new Monster(monster);
                 }
                 catch (Exception ex)
                 {
                     ErrorLog.Log(ex, "An error has occured while attempting to populate Monsters from XML.");
+                }
+            }
+
+            public static void PopulateItems()
+            {
+                try
+                {
+                    //Opens the Items XML file.
+                    XmlDocument doc = ReadXml(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileItems));
+                    XmlNode items = doc.ChildNodes[1];
+                    //Creates the item objects and adds them to the list.
+                    foreach (XmlNode item in items)
+                        switch (item.Name)
+                        {
+                            case "Weapon":
+                                new Weapon(item);
+                                break;
+                            case "Armor":
+                                new Armor(item);
+                                break;
+                            default: break;
+                        }
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex, "An error has occured while attempting to populate Items from XML.");
                 }
             }
 

@@ -50,7 +50,7 @@ namespace WpfApp1.GameProperties
         /// </summary>
         public static string[] XML_FILES = { @"../../Assets/XML Files/Races.xml", @"../../Assets/XML Files/Careers.xml" ,
             @"../../Assets/XML Files/Difficulties.xml",@"../../Assets/XML Files/TowerDepths.xml",
-            @"../../Assets/XML Files/Tiles.xml",@"../../Assets/XML Files/Monsters.xml"};
+            @"../../Assets/XML Files/Tiles.xml",@"../../Assets/XML Files/Monsters.xml",@"../../Assets/XML Files/Items.xml"};
 
         /// <summary>
         /// Easy access to the XML files.
@@ -63,6 +63,7 @@ namespace WpfApp1.GameProperties
             XmlFileTowerDepths=3,
             XmlFileTiles=4,
             XmlFileMonsters=5,
+            XmlFileItems=6,
         };
 
         /// <summary>

@@ -203,6 +203,7 @@
     <Folder Include="WpfApp1\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\XML Files\Items.xml" />
     <Resource Include="Assets\Images\rltiles-2d.png" />
     <Resource Include="Assets\Images\downhillduck.jpg" />
     <Content Include="Assets\Sounds\Nonstop.mp3" />

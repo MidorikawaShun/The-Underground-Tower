@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheUndergroundTower.Creatures;
+using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
 using WpfApp1.Creatures;
 
@@ -47,5 +48,6 @@ namespace WpfApp1
 
         public static List<Monster> Monsters;
 
+        public static List<Item> Items;
     }
 }

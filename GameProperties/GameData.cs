@@ -65,5 +65,11 @@ namespace WpfApp1
             Utilities.Xml.PopulateMonsters();
         }
 
+        public static void InitializeItems()
+        {
+            POSSIBLE_ITEMS = new List<Item>();
+            Utilities.Xml.PopulateItems();
+        }
+
     }
 }

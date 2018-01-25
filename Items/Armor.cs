@@ -65,6 +65,8 @@ namespace TheUndergroundTower.OtherClasses
             UnsellableItem = Convert.ToBoolean(armor.ChildNodes[5].FirstChild.Value);
             _index = Convert.ToInt32(armor.ChildNodes[6].FirstChild.Value);
             _type = armor.ChildNodes[7].FirstChild.Value;
+            if (!GameData.POSSIBLE_ITEMS.Any(x => x.Name.Equals(this.Name)))
+                GameData.POSSIBLE_ITEMS.Add(this);
         }
 
         public Armor(Armor armor)

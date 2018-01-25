@@ -91,7 +91,7 @@ namespace TheUndergroundTower.OtherClasses
             UnsellableItem = Convert.ToBoolean(weapon.ChildNodes[6].FirstChild.Value);
             _index = Convert.ToInt32(weapon.ChildNodes[7].FirstChild.Value);
             GameData.POSSIBLE_ITEMS = GameData.POSSIBLE_ITEMS ?? new List<Item>();
-            if (GameData.POSSIBLE_ITEMS.Any(x => x.Name.Equals(this.Name)))
+            if (!GameData.POSSIBLE_ITEMS.Any(x => x.Name.Equals(this.Name)))
                 GameData.POSSIBLE_ITEMS.Add(this);
         }
 
