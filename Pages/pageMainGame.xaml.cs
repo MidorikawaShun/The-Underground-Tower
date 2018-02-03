@@ -40,21 +40,26 @@ namespace TheUndergroundTower.Pages
         {
             InitializeComponent();
             GameData.InitializeTiles();
+            Console.WriteLine("Tiles initialized");
             GameData.InitializeMonsters();
+            Console.WriteLine("Monsters initialized");
             GameData.InitializeItems();
+            Console.WriteLine("Items initialized");
             _rand = new Random(DateTime.Now.Millisecond);
             GameStatus.MAPS = new List<Map>();
             GameStatus.CURRENT_MAP = new Map(60);
+            Console.WriteLine("Map generated");
             GameStatus.MAPS.Add(GameStatus.CURRENT_MAP);
             GenerateMonsters();
+            Console.WriteLine("Monsters generated");
             GenerateItems();
+            Console.WriteLine("Items generated");
             CreateDisplay();
+            Console.WriteLine("Display generated");
             GameStatus.PLAYER = GameStatus.PLAYER ?? new Player();
-            //Tile Startpoint = GameStatus.CURRENT_MAP.Tiles[_rand.Next(1, GameStatus.CURRENT_MAP.XSize), _rand.Next(1, GameStatus.CURRENT_MAP.YSize)];
             Map map = GameStatus.CURRENT_MAP;
             SetInitialPlayerLocation(map);
             RefreshScreen();
-            map.DrawMapToConsole();
         }
 
         private void GenerateItems()
@@ -147,11 +152,17 @@ namespace TheUndergroundTower.Pages
                     //Height = InventoryGrid.Height / InventoryGrid.Rows,
                     //Background = new RadialGradientBrush(Colors.DarkGray, Colors.Gray)
                 };
-                button.Click += InteractWithInventory;
+                button.MouseLeftButtonUp += InteractWithInventory;
+                button.MouseRightButtonUp += InventoryMenu;
                 border.Child = canvas;
                 canvas.Children.Add(button);
                 InventoryGrid.Children.Add(border);
             }
+        }
+
+        private void InventoryMenu(object sender,RoutedEventArgs e)
+        {
+
         }
 
         private void InteractWithInventory(object sender, RoutedEventArgs e)
@@ -241,6 +252,9 @@ namespace TheUndergroundTower.Pages
                 Button btn = (((InventoryGrid.Children[i] as Border).Child as Canvas).Children[0] as Button);
                 Image buttonImage = btn.Content as Image;
                 buttonImage.Source = inventory[i].GetImage();
+                TextBlock tooltipInfo = new TextBlock();
+                tooltipInfo.Text = $"{inventory[i].Name}\n{inventory[i].Description}";
+                btn.ToolTip = tooltipInfo;
                 if (i < inventory.Count)
                     btn.Name = $"InventoryItem{inventory[i].ID}";
             }

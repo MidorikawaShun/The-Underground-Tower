@@ -151,26 +151,31 @@ namespace TheUndergroundTower.Pathfinding
             }
             catch (Exception ex)
             {
-                Console.Write("HI");
+                Console.WriteLine("Error when attempting to create a room!");
             }
             return true;
         }
 
         private void PrepareVariablesForBuilding(Room currentRoom, ref Tile startPoint, ref Tile previousPoint, bool isStartPointARoom, ref bool isTopOrBottomWall, ref int incDec)
         {
-            while (currentRoom.IsTileARoomCorner(startPoint)) startPoint = previousPoint = currentRoom.Walls.Random(_rand);
-            if (isStartPointARoom)
+            bool loop = true;
+            while (loop)
             {
-                isTopOrBottomWall = startPoint.Y == currentRoom.TopLeftY || startPoint.Y == currentRoom.BottomLeftY;
-                incDec = (startPoint.Y == currentRoom.TopLeftY || startPoint.X == currentRoom.TopRightX) ? 1 : -1;
-            }
-            else
-            {
-                //isTopOrBottomWall = startPoint.X + 1 < previousPoint.X || startPoint.X - 1 > previousPoint.X;
-                if (startPoint.X != previousPoint.X && startPoint.Y != previousPoint.Y)
-                    isTopOrBottomWall = isTopOrBottomWall = startPoint.X + 1 < previousPoint.X || startPoint.X - 1 > previousPoint.X;
-                else isTopOrBottomWall = startPoint.X == previousPoint.X;
-                incDec = (isTopOrBottomWall && previousPoint.Y < startPoint.Y) || (!isTopOrBottomWall && previousPoint.X < startPoint.X) ? 1 : -1;
+                while (currentRoom.IsTileARoomCorner(startPoint)) startPoint = previousPoint = currentRoom.Walls.Random(_rand);
+                if (isStartPointARoom)
+                {
+                    isTopOrBottomWall = startPoint.Y == currentRoom.TopLeftY || startPoint.Y == currentRoom.BottomLeftY;
+                    incDec = (startPoint.Y == currentRoom.TopLeftY || startPoint.X == currentRoom.TopRightX) ? 1 : -1;
+                }
+                else
+                {
+                    //isTopOrBottomWall = startPoint.X + 1 < previousPoint.X || startPoint.X - 1 > previousPoint.X;
+                    if (startPoint.X != previousPoint.X && startPoint.Y != previousPoint.Y)
+                        isTopOrBottomWall = isTopOrBottomWall = startPoint.X + 1 < previousPoint.X || startPoint.X - 1 > previousPoint.X;
+                    else isTopOrBottomWall = startPoint.X == previousPoint.X;
+                    incDec = (isTopOrBottomWall && previousPoint.Y < startPoint.Y) || (!isTopOrBottomWall && previousPoint.X < startPoint.X) ? 1 : -1;
+                }
+                if (startPoint.X != 0 && startPoint.Y != 0) loop = false;
             }
         }
 

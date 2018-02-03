@@ -17,6 +17,9 @@ namespace WpfApp1.Creatures
     /// </summary>
     public class Player : Creature
     {
+
+        private const int NUM_OF_INVENTORY_SLOTS = 25;
+
         #region Properties
         /// <summary>
         /// The player's race.
@@ -241,10 +244,15 @@ namespace WpfApp1.Creatures
         {
             try
             {
+                if (Inventory.Count() >= NUM_OF_INVENTORY_SLOTS) return;
                 List<Item> items = new List<Item>();
                 foreach (var item in tile.Objects.OfType<Item>())
                     items.Add(item);
-                string userChoice = GenericWindow.Create("title", items.Select(x=>x.Name).ToArray());
+                string userChoice;
+                if (items.Count > 1)
+                    userChoice = GenericWindow.Create("title", items.Select(x => x.Name).ToArray());
+                else
+                    userChoice = items[0].Name.Replace(" ","");
                 Item chosenItem = tile.Objects.Where(x => x.Name.Replace(" ","").Equals(userChoice)).FirstOrDefault() as Item;
                 Inventory.Add(chosenItem);
                 tile.Objects.Remove(chosenItem);
