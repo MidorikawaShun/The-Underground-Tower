@@ -176,6 +176,7 @@ namespace TheUndergroundTower.Pathfinding
                     incDec = (isTopOrBottomWall && previousPoint.Y < startPoint.Y) || (!isTopOrBottomWall && previousPoint.X < startPoint.X) ? 1 : -1;
                 }
                 if (startPoint.X != 0 && startPoint.Y != 0) loop = false;
+                else startPoint = currentRoom.Walls.Random(_rand);
             }
         }
 

@@ -24,6 +24,13 @@ namespace WpfApp1.Creatures
             set { _hp = value; }
         }
 
+        private int _maxhp;
+        public int MaxHP
+        {
+            get { return _maxhp; }
+            set { _maxhp = value; }
+        }
+
         /// <summary>
         /// Determines how quickly a creature can perform actions that do not involve movement.
         /// </summary>
@@ -108,6 +115,7 @@ namespace WpfApp1.Creatures
             _hp = 1;
             _speed = 100;
             Image = CreateTile.GetImageFromTileset(index);
+            _maxhp = _hp;
         }
 
         /// <summary>

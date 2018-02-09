@@ -85,6 +85,39 @@ namespace WpfApp1.Creatures
             }
         }
 
+        private int _level;
+        public int Level
+        {
+            get { return _level; }
+            set
+            {
+                if (value >= 0)
+                    _level = value;
+            }
+        }
+
+        private int _experience;
+        public int Experience
+        {
+            get { return _experience; }
+            set
+            {
+                if (value >= 0)
+                    _experience = value;
+            }
+        }
+
+        private int _neededExperience;
+        public int NeededExperience
+        {
+            get { return _neededExperience; }
+            set
+            {
+                if (value >= 0)
+                    _neededExperience = value;
+            }
+        }
+
         public const int _imageIndex = 146;
 
         public int DefenseSkill;
@@ -116,6 +149,8 @@ namespace WpfApp1.Creatures
             _playerStats = new int[Definitions.NUMBER_OF_CHARACTER_STATS];
             _lightRadius = 5;
             DefenseSkill = 10;
+            _neededExperience = 100;
+            _experience = 0;
         }
         #endregion
         #region Methods
@@ -161,12 +196,25 @@ namespace WpfApp1.Creatures
             Equipment = new Item[Definitions.NUM_OF_EQUIPMENT_SLOTS];
         }
 
+        public void LevelUp()
+        {
+            Random rand = GameStatus.RANDOM;
+            _neededExperience += _neededExperience * 2;
+            _playerStats[rand.Next(6)] += rand.Next(3); //increase two random stats
+            _playerStats[rand.Next(6)] += rand.Next(3);
+            HP = MaxHP += GameLogic.DiceRoll("1d6", _playerStats[(int)Definitions.EnumCharacterStats.Constitution]);
+        }
+
         public override void Attack(Creature target)
         {
             int attackScore = (int)MeleeSkill + GameLogic.Roll20(1);
             int defenseScore = (target as Monster).Defense + GameLogic.Roll20(1);
             if (attackScore > defenseScore)
-                target.TakeDamage(GameLogic.DiceRoll(this.DamageRange,this[(int)Definitions.EnumCharacterStats.Strength]) + _playerStats[0]);
+            {
+                target.TakeDamage(GameLogic.DiceRoll(this.DamageRange, this[(int)Definitions.EnumCharacterStats.Strength]) + _playerStats[0]);
+                if (target.HP <= 0)
+                    _experience += (target as Monster).ExperienceValue;
+            }
             MeleeSkill += GameLogic.DiceRoll("1d3") / 100.0;
         }
 
@@ -248,16 +296,22 @@ namespace WpfApp1.Creatures
                 List<Item> items = new List<Item>();
                 foreach (var item in tile.Objects.OfType<Item>())
                     items.Add(item);
-                string userChoice;
-                if (items.Count > 1)
-                    userChoice = GenericWindow.Create("title", items.Select(x => x.Name).ToArray());
-                else
-                    userChoice = items[0].Name.Replace(" ","");
-                Item chosenItem = tile.Objects.Where(x => x.Name.Replace(" ","").Equals(userChoice)).FirstOrDefault() as Item;
-                Inventory.Add(chosenItem);
-                tile.Objects.Remove(chosenItem);
+                string userChoice = string.Empty;
+                if (items.Count > 0)
+                {
+                    if (items.Count > 1)
+                        userChoice = GenericWindow.Create("title", items.Select(x => x.Name).ToArray());
+                    else
+                        userChoice = items[0].Name.Replace(" ", "");
+                    if (userChoice != null)
+                    {
+                        Item chosenItem = tile.Objects.Where(x => x.Name.Replace(" ", "").Equals(userChoice)).FirstOrDefault() as Item;
+                        Inventory.Add(chosenItem);
+                        tile.Objects.Remove(chosenItem);
+                    }
+                }
             }
-            catch (Exception ex) {}
+            catch (Exception ex) { }
         }
 
         #endregion

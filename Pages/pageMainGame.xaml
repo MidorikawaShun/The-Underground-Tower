@@ -16,7 +16,14 @@
         <UniformGrid x:Name="XAMLMap" >
 
         </UniformGrid>
-        <Rectangle x:Name="CharacterInfo" Height="200" Width="200" Canvas.Left="600" Fill="Green"/>
+        <StackPanel Height="195" Width="200" Canvas.Left="600" Background="Black">
+            <Label x:Name="PlayerName" Foreground="White">asd</Label>
+            <Label x:Name="PlayerHP" Foreground="White">asd</Label>
+            <Label x:Name="PlayerLevel" Foreground="White">asd</Label>
+            <Label x:Name="PlayerEXP" Foreground="White">asd</Label>
+            <Label x:Name="PlayerScore" Foreground="White">asd</Label>
+            <Label x:Name="CurrentFloor" Foreground="White" Content="asd"/>
+        </StackPanel>
         <Rectangle x:Name="GameLog" Height="200" Width="200" Canvas.Left="600" Fill="#FFEC1414" Canvas.Top="200"/>
         <Border BorderBrush="Black" BorderThickness="2" Canvas.Left="600" Canvas.Top="400" Height="200" Width="200">
             <UniformGrid x:Name="InventoryGrid" Rows="5" Columns="5" Margin="-2,-2,8,0">

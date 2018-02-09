@@ -16,10 +16,11 @@ namespace TheUndergroundTower.Creatures
 
         private bool _awareOfPlayer;
         private string _damageRange;
-        private bool _rangedAttacker,_followingPlayer;
+        private bool _rangedAttacker, _followingPlayer;
         private int _turnsWithoutPlayerInSight;
         private int _lastKnownPlayerLocationX, _lastKnownPlayerLocationY;
         private int _defense;
+        private int _experienceValue;
 
         public bool AwareOfPlayer { get => _awareOfPlayer; set => _awareOfPlayer = value; }
         public string DamageRange { get => _damageRange; set => _damageRange = value; }
@@ -29,6 +30,7 @@ namespace TheUndergroundTower.Creatures
         public int LastKnownPlayerLocationY { get => _lastKnownPlayerLocationY; set => _lastKnownPlayerLocationY = value; }
         public int Defense { get => _defense; set => _defense = value; }
         public bool FollowingPlayer { get => _followingPlayer; set => _followingPlayer = value; }
+        public int ExperienceValue { get => _experienceValue; set => _experienceValue = value; }
 
         public Monster(XmlNode monster)
         {
@@ -41,11 +43,12 @@ namespace TheUndergroundTower.Creatures
             DamageRange = monster.ChildNodes[4].FirstChild.Value;
             Index = Convert.ToInt32(monster.ChildNodes[5].FirstChild.Value);
             _defense = Convert.ToInt32(monster.ChildNodes[6].FirstChild.Value);
+            _experienceValue = Convert.ToInt32(monster.ChildNodes[7].FirstChild.Value);
 
             GameData.POSSIBLE_MONSTERS.Add(this);
         }
 
-        public Monster (Monster monster)
+        public Monster(Monster monster)
         {
             _awareOfPlayer = false;
             _turnsWithoutPlayerInSight = 0;
@@ -57,6 +60,7 @@ namespace TheUndergroundTower.Creatures
             DamageRange = monster.DamageRange;
             Image = CreateTile.GetImageFromTileset(monster.Index);
             Defense = monster.Defense;
+            ExperienceValue = monster.ExperienceValue;
             _followingPlayer = false;
         }
 
@@ -65,7 +69,7 @@ namespace TheUndergroundTower.Creatures
             return $"Monster: {Name} at {X},{Y}";
         }
 
-        public override void Attack(Creature player) 
+        public override void Attack(Creature player)
         {
             int targetDefense = (player as Player).DefenseSkill + GameLogic.Roll20(1);
             double monsterAttack = MeleeSkill + GameLogic.Roll20(1);

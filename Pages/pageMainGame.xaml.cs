@@ -67,7 +67,7 @@ namespace TheUndergroundTower.Pages
             List<Item> items = GameData.POSSIBLE_ITEMS;
             Map currentMap = GameStatus.CURRENT_MAP;
             GameStatus.Items = new List<Item>();
-            foreach (Room  room in currentMap.Rooms)
+            foreach (Room room in currentMap.Rooms)
             {
                 int numOfItemsInThisRoom = _rand.Next(MIN_ITEMS_IN_ROOM, MAX_ITEMS_IN_ROOM + 1);
                 for (; numOfItemsInThisRoom > 0; numOfItemsInThisRoom--)
@@ -76,7 +76,7 @@ namespace TheUndergroundTower.Pages
                     Tile targetTile = currentMap.Tiles[x, y];
                     if (targetTile.Objects == null) targetTile.Objects = new List<GameObject>();
                     var item = Item.Create(items.Random(_rand));
-                    item.X = targetTile.X;item.Y = targetTile.Y;item.Z = GameStatus.MAPS.IndexOf(currentMap);
+                    item.X = targetTile.X; item.Y = targetTile.Y; item.Z = GameStatus.MAPS.IndexOf(currentMap);
                     targetTile.Objects.Add(item);
                     GameStatus.Items.Add(item);
                 }
@@ -152,23 +152,32 @@ namespace TheUndergroundTower.Pages
                     //Height = InventoryGrid.Height / InventoryGrid.Rows,
                     //Background = new RadialGradientBrush(Colors.DarkGray, Colors.Gray)
                 };
-                button.MouseLeftButtonUp += InteractWithInventory;
-                button.MouseRightButtonUp += InventoryMenu;
+                button.PreviewMouseLeftButtonUp += InteractWithInventory;
+                button.PreviewMouseRightButtonUp += DropItem;
                 border.Child = canvas;
                 canvas.Children.Add(button);
                 InventoryGrid.Children.Add(border);
             }
         }
 
-        private void InventoryMenu(object sender,RoutedEventArgs e)
+        private void DropItem(object sender, RoutedEventArgs e)
         {
-
+            Player player = GameStatus.PLAYER;
+            string slotString = ((System.Windows.Controls.Button)sender).Name;
+            if (slotString.Equals("EmptySlot") || !slotString.Contains("_")) return;
+            slotString = "_" + slotString.Split('_')[1];
+            Item droppedItem = player.Inventory.Where(x => x.ID.Equals(slotString)).FirstOrDefault();
+            player.Inventory.Remove(droppedItem);
+            Tile playerTile = GameStatus.CURRENT_MAP.Tiles[player.X, player.Y];
+            playerTile.Objects = playerTile.Objects ?? new List<GameObject>();
+            playerTile.Objects.Add(droppedItem);
+            RefreshScreen();
         }
 
         private void InteractWithInventory(object sender, RoutedEventArgs e)
         {
             string slot = ((Button)sender).Name;
-            if (string.IsNullOrEmpty(slot)) return;
+            if (string.IsNullOrEmpty(slot) || slot.Equals("EmptySlot")) return;
             Player player = GameStatus.PLAYER;
             string itemIDString = slot.Split(new string[] { "InventoryItem" }, StringSplitOptions.None)[1];
             if (string.IsNullOrEmpty(itemIDString)) return;
@@ -213,6 +222,18 @@ namespace TheUndergroundTower.Pages
         {
             DrawGameScreen();
             DrawInventoryScreen();
+            DrawPlayerInfoScreen();
+        }
+
+        private void DrawPlayerInfoScreen()
+        {
+            Player player = GameStatus.PLAYER;
+            PlayerName.Content = player.Name;
+            PlayerHP.Content = player.HP + "\\" + player.MaxHP;
+            PlayerLevel.Content = player.Level;
+            PlayerEXP.Content = player.Experience + "\\" + player.NeededExperience;
+            PlayerScore.Content = "NONE!";
+            CurrentFloor.Content = GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP) + 1;
         }
 
         private void DrawGameScreen()
@@ -224,6 +245,7 @@ namespace TheUndergroundTower.Pages
             {
                 for (int x = 0; x < Definitions.WINDOW_X_SIZE; x++)
                 {
+                    (XAMLMap.Children[z] as Image).ToolTip = new TextBlock() { Text = string.Empty };
                     bool tileExists = false;
                     if ((xpos + x) >= 0 && (ypos + y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos + y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
                     {
@@ -233,30 +255,67 @@ namespace TheUndergroundTower.Pages
                             ImageSource overlayedImage = tile.Image;
                             if (tile.Objects != null && tile.Objects.Count > 0)
                                 for (int i = 0; i < tile.Objects.Count; i++)
+                                {
                                     overlayedImage = CreateTile.Overlay(overlayedImage, tile.Objects[i].GetImage());
+                                    ((XAMLMap.Children[z] as Image).ToolTip as TextBlock).Text += GetObjectTooltip(tile.Objects[i],i>0);
+                                }
+                            else (XAMLMap.Children[z] as Image).ToolTip = null;
                             (XAMLMap.Children[z++] as Image).Source = overlayedImage;
                             tileExists = true;
                         }
                     }
                     if (!tileExists)
+                    {
+                        (XAMLMap.Children[z] as Image).ToolTip = null;
                         (XAMLMap.Children[z++] as Image).Source = CreateBlackImage();
+                    }
                 }
             }
+        }
+
+        public string GetObjectTooltip(GameObject obj,bool isFirstTooltip)
+        {
+            string result = obj.Name + Environment.NewLine + obj.Description;
+            if (isFirstTooltip) result = Environment.NewLine + Environment.NewLine + result;
+            switch (obj.GetType().Name)
+            {
+                case "Monster":
+                    {
+                        return result + Environment.NewLine + "HP left: " + (obj as Monster).HP;
+                    }
+                case "Armor":
+                    {
+                        return result + Environment.NewLine + "Armor bonus: " + (obj as Armor).ArmorBonus;
+                    }
+                case "Weapon":
+                    {
+                        return result + Environment.NewLine + "Damage: " + (obj as Weapon).DamageRange;
+                    }
+            }
+            return result;
         }
 
         private void DrawInventoryScreen()
         {
             List<Item> inventory = GameStatus.PLAYER.Inventory;
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i <= inventory.Count; i++)
             {
                 Button btn = (((InventoryGrid.Children[i] as Border).Child as Canvas).Children[0] as Button);
                 Image buttonImage = btn.Content as Image;
-                buttonImage.Source = inventory[i].GetImage();
-                TextBlock tooltipInfo = new TextBlock();
-                tooltipInfo.Text = $"{inventory[i].Name}\n{inventory[i].Description}";
-                btn.ToolTip = tooltipInfo;
                 if (i < inventory.Count)
+                {
+                    TextBlock tooltipInfo = new TextBlock();
+                    buttonImage.Source = inventory[i].GetImage();
+                    tooltipInfo.Text = $"{inventory[i].Name}\n{inventory[i].Description}";
+                    btn.ToolTip = tooltipInfo;
                     btn.Name = $"InventoryItem{inventory[i].ID}";
+                }
+                else
+                {
+                    buttonImage.Source = null;
+                    btn.ToolTip = null;
+                    btn.Name = "EmptySlot";
+                }
             }
         }
 
@@ -350,12 +409,19 @@ namespace TheUndergroundTower.Pages
                         return;
                     }
             }
+            LevelUpPlayer();
             MonsterLogic();
             RefreshScreen();
             if (GameStatus.PLAYER.HP <= 0) //if player has died
             {
                 Console.WriteLine("DEAD");
             }
+        }
+
+        private void LevelUpPlayer()
+        {
+            if (GameStatus.PLAYER.Experience >= GameStatus.PLAYER.NeededExperience)
+                GameStatus.PLAYER.LevelUp();
         }
 
         public void MonsterLogic()

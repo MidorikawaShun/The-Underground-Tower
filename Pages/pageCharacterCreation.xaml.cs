@@ -358,6 +358,7 @@ namespace WpfApp1.Pages
             player.SetRace(ChosenRace);
             player.SetCareer(ChosenClass);
             player.Name = lblName.Content as string;
+            player.Description = "This is you.";
             Definitions.MAIN_WINDOW.Main.Content = new pageMainGame();
         }
 
