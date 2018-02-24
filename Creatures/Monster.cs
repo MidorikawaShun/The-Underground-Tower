@@ -75,6 +75,8 @@ namespace TheUndergroundTower.Creatures
             double monsterAttack = MeleeSkill + GameLogic.Roll20(1);
             if (monsterAttack > targetDefense)
                 player.TakeDamage(GameLogic.DiceRoll(_damageRange));
+            else
+                GameLogic.PrintToGameLog(Name + " has missed you!");
         }
     }
 }

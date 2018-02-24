@@ -56,6 +56,7 @@ namespace TheUndergroundTower.Pages
             Console.WriteLine("Items generated");
             CreateDisplay();
             Console.WriteLine("Display generated");
+            GameLogic.GameLog = GameLog; //initialize gamelog
             GameStatus.PLAYER = GameStatus.PLAYER ?? new Player();
             Map map = GameStatus.CURRENT_MAP;
             SetInitialPlayerLocation(map);
@@ -171,6 +172,7 @@ namespace TheUndergroundTower.Pages
             Tile playerTile = GameStatus.CURRENT_MAP.Tiles[player.X, player.Y];
             playerTile.Objects = playerTile.Objects ?? new List<GameObject>();
             playerTile.Objects.Add(droppedItem);
+            GameLogic.PrintToGameLog("You have dropped " + droppedItem.Name);
             RefreshScreen();
         }
 
@@ -228,12 +230,12 @@ namespace TheUndergroundTower.Pages
         private void DrawPlayerInfoScreen()
         {
             Player player = GameStatus.PLAYER;
-            PlayerName.Content = player.Name;
-            PlayerHP.Content = player.HP + "\\" + player.MaxHP;
-            PlayerLevel.Content = player.Level;
-            PlayerEXP.Content = player.Experience + "\\" + player.NeededExperience;
-            PlayerScore.Content = "NONE!";
-            CurrentFloor.Content = GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP) + 1;
+            PlayerName.Content = "Name: " + player.Name;
+            PlayerHP.Content = "HP: " + player.HP + "\\" + player.MaxHP;
+            PlayerLevel.Content = "Level: " + player.Level;
+            PlayerEXP.Content = "EXP: " + player.Experience + "\\" + player.NeededExperience;
+            PlayerScore.Content = "Score: " + "NONE!";
+            CurrentFloor.Content = "Floor: " + GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP) + 1;
         }
 
         private void DrawGameScreen()
@@ -257,7 +259,7 @@ namespace TheUndergroundTower.Pages
                                 for (int i = 0; i < tile.Objects.Count; i++)
                                 {
                                     overlayedImage = CreateTile.Overlay(overlayedImage, tile.Objects[i].GetImage());
-                                    ((XAMLMap.Children[z] as Image).ToolTip as TextBlock).Text += GetObjectTooltip(tile.Objects[i],i>0);
+                                    ((XAMLMap.Children[z] as Image).ToolTip as TextBlock).Text += GetObjectTooltip(tile.Objects[i], i > 0);
                                 }
                             else (XAMLMap.Children[z] as Image).ToolTip = null;
                             (XAMLMap.Children[z++] as Image).Source = overlayedImage;
@@ -273,7 +275,7 @@ namespace TheUndergroundTower.Pages
             }
         }
 
-        public string GetObjectTooltip(GameObject obj,bool isFirstTooltip)
+        public string GetObjectTooltip(GameObject obj, bool isFirstTooltip)
         {
             string result = obj.Name + Environment.NewLine + obj.Description;
             if (isFirstTooltip) result = Environment.NewLine + Environment.NewLine + result;

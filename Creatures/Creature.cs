@@ -186,6 +186,7 @@ namespace WpfApp1.Creatures
         public virtual void TakeDamage(int damage)
         {
             HP -= damage;
+
         }
 
     }

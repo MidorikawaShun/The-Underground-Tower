@@ -211,10 +211,16 @@ namespace WpfApp1.Creatures
             int defenseScore = (target as Monster).Defense + GameLogic.Roll20(1);
             if (attackScore > defenseScore)
             {
-                target.TakeDamage(GameLogic.DiceRoll(this.DamageRange, this[(int)Definitions.EnumCharacterStats.Strength]) + _playerStats[0]);
+                int damage = GameLogic.DiceRoll(this.DamageRange, this[(int)Definitions.EnumCharacterStats.Strength]) + _playerStats[0];
+                target.TakeDamage(damage);
+                GameLogic.PrintToGameLog("You have hit " + target.Name + " for " + damage);
                 if (target.HP <= 0)
+                {
                     _experience += (target as Monster).ExperienceValue;
+                    GameLogic.PrintToGameLog(target.Name + " has died!");
+                }
             }
+            else GameLogic.PrintToGameLog("You have missed " + target.Name);
             MeleeSkill += GameLogic.DiceRoll("1d3") / 100.0;
         }
 
@@ -222,6 +228,7 @@ namespace WpfApp1.Creatures
         {
             damage -= Protection;
             base.TakeDamage(damage);
+            GameLogic.PrintToGameLog("You have taken " + (damage > 0 ? damage : 0) + " damage!");
         }
 
         public void EquipArmor(Armor armor)
@@ -286,6 +293,7 @@ namespace WpfApp1.Creatures
                         break;
                     }
             }
+            GameLogic.PrintToGameLog("You have equipped " + armor.Name);
         }
 
         public void PickUp(Tile tile)
@@ -308,6 +316,7 @@ namespace WpfApp1.Creatures
                         Item chosenItem = tile.Objects.Where(x => x.Name.Replace(" ", "").Equals(userChoice)).FirstOrDefault() as Item;
                         Inventory.Add(chosenItem);
                         tile.Objects.Remove(chosenItem);
+                        GameLogic.PrintToGameLog("You have picked up " + chosenItem.Name);
                     }
                 }
             }

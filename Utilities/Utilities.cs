@@ -365,6 +365,9 @@ namespace WpfApp1
 
     public static class GameLogic
     {
+
+        public static StackPanel GameLog;
+
         public static int DiceRoll(string dice, int bonus = 0)
         {
             int numOfDice = Convert.ToInt32(dice.Split('d')[0]);
@@ -378,6 +381,14 @@ namespace WpfApp1
         public static int Roll20(int numOf20s)
         {
             return DiceRoll($"{numOf20s}d20");
+        }
+
+        public static void PrintToGameLog(string message)
+        {
+            UIElementCollection textblocks = GameLog.Children;
+            for (int i = textblocks.Count - 1; i > 0; i--)
+                (textblocks[i] as TextBlock).Text = (textblocks[i - 1] as TextBlock).Text;
+            (textblocks[0] as TextBlock).Text = message;
         }
     }
 
