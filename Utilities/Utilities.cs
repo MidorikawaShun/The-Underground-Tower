@@ -383,6 +383,11 @@ namespace WpfApp1
             return DiceRoll($"{numOf20s}d20");
         }
 
+        public static int RollDamage(string damageRange) //format {min limit}-{max limit}, for example 3-5
+        {
+            return GameStatus.RANDOM.Next(Convert.ToInt32(damageRange.Split('-')[0]), Convert.ToInt32(damageRange.Split('-')[1]) + 1);
+        }
+
         public static void PrintToGameLog(string message)
         {
             UIElementCollection textblocks = GameLog.Children;
@@ -404,14 +409,18 @@ namespace WpfApp1
         {
             OrdinaryWall = 1365,
             OrdinaryFloor = 1434,
-            Jelly = 146
+            OrdinaryStairsUp = 1381,
+            OrdinaryStairsDown = 1387,
+            Jelly = 146,
         }
 
         public enum Tiles
         {
             OrdinaryWall = 0,
             OrdinaryFloor = 1,
-            Jelly = 2
+            OrdinaryStairsUp = 2,
+            OrdinaryStairsDown = 3,
+            Jelly = 4,
         }
 
         /// <summary>

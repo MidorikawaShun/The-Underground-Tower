@@ -56,6 +56,13 @@ namespace TheUndergroundTower.Pathfinding
         private List<GameObject> _objects;
         public List<GameObject> Objects { get => _objects; set => _objects = value; }
 
+        private bool _leadsUp;
+        public bool LeadsUp { get => _leadsUp; set => _leadsUp = value; }
+
+        private bool _leadsDown;
+        public bool LeadsDown { get => _leadsDown; set => _leadsDown = value; }
+
+
         #endregion
 
         /// <summary>
@@ -71,6 +78,8 @@ namespace TheUndergroundTower.Pathfinding
             _seethrough = Convert.ToBoolean(tile.ChildNodes[1].FirstChild.Value);
             _index = Convert.ToInt32(tile.ChildNodes[3].FirstChild.Value);
             _image = CreateTile.GetImageFromTileset(_index);
+            _leadsDown = false;
+            _leadsUp = false;
             if (GameData.POSSIBLE_TILES == null) GameData.POSSIBLE_TILES = new List<Tile>();
             //save the created tile into the list of all tiles that can be created and put on a map
             GameData.POSSIBLE_TILES.Add(this);

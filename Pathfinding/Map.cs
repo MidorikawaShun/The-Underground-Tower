@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using WpfApp1;
+using WpfApp1.Creatures;
 
 namespace TheUndergroundTower.Pathfinding
 {
@@ -19,36 +20,81 @@ namespace TheUndergroundTower.Pathfinding
         private const int ATTEMPTS_BEFORE_STOP_MAKING_CORRIDORS = 5;
         private const int MAX_CORRIDOR_LENGTH = 10;
         private const int MIN_CORRIDOR_LENGTH = 7;
+        private const int MAX_MONSTERS_PER_ROOM = 2;
+        private const int MIN_MONSTERS_PER_ROOM = 0;
+        private const int MAX_MONSTER_PLACEMENT_ATTEMPTS = 10;
+        private const int MIN_ITEMS_IN_ROOM = 1;
+        private const int MAX_ITEMS_IN_ROOM = 5;
         private const double CHANCE_TO_CREATE_CORRIDOR = 0.7;
         private const double CHANCE_TO_CREATE_ROOM = 0.3;
         private const double MAX_CORRIDOR_TWISTS = 5;
 
-        private static int _mapCounter = 0;
         private static Random _rand;
 
         private int _xSize, _ySize;
+        public int mapNum;
         private Tile[,] _tiles;
-        private Tile _wallTile, _floorTile;
+        private Tile _wallTile, _floorTile, _stairsUpTile, _stairsDownTile;
         private List<Room> _rooms;
+        private List<Monster> _monsters;
+        private List<Item> _items;
 
         public int XSize { get => _xSize; set => _xSize = value; }
         public int YSize { get => _ySize; set => _ySize = value; }
         public Tile[,] Tiles { get => _tiles; set => _tiles = value; }
         public Tile WallTile { get => _wallTile; set => _wallTile = value; }
         public Tile FloorTile { get => _floorTile; set => _floorTile = value; }
+        public Tile StairsUpTile { get => _stairsUpTile; set => _stairsUpTile = value; }
+        public Tile StairsDownTile { get => _stairsDownTile; set => _stairsDownTile = value; }
         public List<Room> Rooms { get => _rooms; set => _rooms = value; }
+        public List<Monster> Monsters { get => _monsters; set => _monsters = value; }
+        public List<Item> Items { get => _items; set => _items = value; }
 
         //Constructor
         public Map(int size)
         {
+            mapNum = GameStatus.MAPS.Count() + 1;
             _rand = new Random(DateTime.Now.Millisecond);
             _wallTile = GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall];
             _floorTile = GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryFloor];
+            _stairsDownTile = GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryStairsDown];
+            _stairsUpTile = GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryStairsUp];
             _rooms = new List<Room>();
-            _mapCounter++;
             _tiles = new Tile[size, size];
             _xSize = _ySize = size;
             GenerateRooms();
+            GenerateStairsDown();
+            Monsters = new List<Monster>();
+            Items = new List<Item>();
+            GenerateMonsters();
+            GenerateItems();
+        }
+
+        private void GenerateStairsDown()
+        {
+            try
+            {
+                //create stairs to next floor
+                Room roomToPutStairsIn = _rooms.Random(_rand);
+                int stairsX = _rand.Next(roomToPutStairsIn.TopLeftX + 1, roomToPutStairsIn.XSize + roomToPutStairsIn.TopLeftX);
+                int stairsY = _rand.Next(roomToPutStairsIn.BottomLeftY + 1, roomToPutStairsIn.YSize + roomToPutStairsIn.BottomLeftY);
+                Tile stairsDownTile = new Tile(_stairsDownTile) { LeadsDown = true, X = stairsX, Y = stairsY };
+                stairsDownTile.Image = CreateTile.Overlay(_tiles[stairsX, stairsY].Image, stairsDownTile.Image);
+                _tiles[stairsX, stairsY] = stairsDownTile;
+                GameStatus.STAIRS_DOWN_LOCATIONS.Add(this, stairsDownTile); //will be used to navigate up floors
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("OOPS");
+            }
+        }
+
+        public void GenerateStairsUp()
+        {
+            Tile stairsUpTile = new Tile(_stairsUpTile) { LeadsUp = true, X = GameStatus.PLAYER.X, Y = GameStatus.PLAYER.Y };
+            stairsUpTile.Image = CreateTile.Overlay(_tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y].Image,stairsUpTile.Image);
+            _tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y] = stairsUpTile;
+            GameStatus.STAIRS_UP_LOCATIONS.Add(this, stairsUpTile);
         }
 
         private void GenerateRooms()
@@ -131,7 +177,7 @@ namespace TheUndergroundTower.Pathfinding
                 {
                     if (incDec == 1) topLeftY += roomYSize;
                     //else
-                        //roomYSize--;
+                    //roomYSize--;
                     topLeftX--;
                 }
                 else
@@ -296,6 +342,49 @@ namespace TheUndergroundTower.Pathfinding
                 Console.WriteLine("OOPS");
             }
             return neighbours;
+        }
+
+        private void GenerateMonsters()
+        {
+            List<Monster> monsters = GameData.POSSIBLE_MONSTERS;
+            Map currentMap = this;
+
+            foreach (Room room in currentMap.Rooms)
+            {
+                int monstersInThisRoom = _rand.Next(MIN_MONSTERS_PER_ROOM, MAX_MONSTERS_PER_ROOM + 1);
+                for (int attempts = 0, monstersPlaced = 0; monstersPlaced < monstersInThisRoom && attempts < MAX_MONSTER_PLACEMENT_ATTEMPTS; attempts++)
+                {
+                    int x = _rand.Next(room.TopLeftX + 1, room.TopRightX), y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
+                    Tile targetTile = currentMap.Tiles[x, y];
+                    if (targetTile.Objects == null) targetTile.Objects = new List<GameObject>();
+                    if (targetTile.Objects.OfType<Creature>().Count() > 0) continue;
+                    Monster monster = (new Monster(monsters.Random(_rand)) { X = targetTile.X, Y = targetTile.Y, Z = GameStatus.MAPS.IndexOf(currentMap) });
+                    targetTile.Objects.Add(monster);
+                    Monsters.Add(monster);
+                    monstersPlaced++;
+                }
+            }
+
+        }
+
+        private void GenerateItems()
+        {
+            List<Item> items = GameData.POSSIBLE_ITEMS;
+            Map currentMap = this;
+            foreach (Room room in currentMap.Rooms)
+            {
+                int numOfItemsInThisRoom = _rand.Next(MIN_ITEMS_IN_ROOM, MAX_ITEMS_IN_ROOM + 1);
+                for (; numOfItemsInThisRoom > 0; numOfItemsInThisRoom--)
+                {
+                    int x = _rand.Next(room.TopLeftX + 1, room.TopRightX), y = _rand.Next(room.BottomLeftY + 1, room.TopLeftY);
+                    Tile targetTile = currentMap.Tiles[x, y];
+                    if (targetTile.Objects == null) targetTile.Objects = new List<GameObject>();
+                    var item = Item.Create(items.Random(_rand));
+                    item.X = targetTile.X; item.Y = targetTile.Y; item.Z = GameStatus.MAPS.IndexOf(currentMap);
+                    targetTile.Objects.Add(item);
+                    Items.Add(item);
+                }
+            }
         }
 
     }

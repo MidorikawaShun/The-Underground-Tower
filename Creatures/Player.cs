@@ -135,7 +135,7 @@ namespace WpfApp1.Creatures
             {
                 Weapon weapon = _equipment[(int)Definitions.EnumBodyParts.RightHand] as Weapon;
                 if (weapon != null) return weapon.DamageRange;
-                return "1d6";
+                return "1-6";
             }
         }
 
@@ -211,7 +211,8 @@ namespace WpfApp1.Creatures
             int defenseScore = (target as Monster).Defense + GameLogic.Roll20(1);
             if (attackScore > defenseScore)
             {
-                int damage = GameLogic.DiceRoll(this.DamageRange, this[(int)Definitions.EnumCharacterStats.Strength]) + _playerStats[0];
+                //int damage = GameLogic.DiceRoll(this.DamageRange, this[(int)Definitions.EnumCharacterStats.Strength]) + _playerStats[0];
+                int damage = GameLogic.RollDamage(this.DamageRange) + _playerStats[(int)Definitions.EnumCharacterStats.Strength];
                 target.TakeDamage(damage);
                 GameLogic.PrintToGameLog("You have hit " + target.Name + " for " + damage);
                 if (target.HP <= 0)

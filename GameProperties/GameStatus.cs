@@ -35,6 +35,10 @@ namespace WpfApp1
         /// </summary>
         public static Map CURRENT_MAP { get; set; }
 
+        public static Dictionary<Map,Tile> STAIRS_DOWN_LOCATIONS { get; set; }
+
+        public static Dictionary<Map, Tile> STAIRS_UP_LOCATIONS { get; set; }
+
         /// <summary>
         /// All the Tiles that exist in the game.
         /// </summary>

@@ -12,6 +12,16 @@
     <Walkable>True</Walkable>
     <Index>1434</Index>
   </Tile>
-  
-  
+  <Tile Name="Ordinary Stairs Down">
+    <Description>These are just some ordinary stairs.</Description>
+    <Seethrough>True</Seethrough>
+    <Walkable>True</Walkable>
+    <Index>1381</Index>
+  </Tile>
+  <Tile Name="Ordinary Stairs Up">
+    <Description>These are just some ordinary stairs.</Description>
+    <Seethrough>True</Seethrough>
+    <Walkable>True</Walkable>
+    <Index>1387</Index>
+  </Tile>
 </Tiles>
