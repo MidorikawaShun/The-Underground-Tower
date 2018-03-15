@@ -13,6 +13,7 @@
         <Button x:Name="New_Game" Content="Start Game" Canvas.Left="327" Canvas.Top="263" Height="44" Width="141" Click="New_Game_Click"/>
         <Button x:Name="Options" Content="Options" Canvas.Left="327" Canvas.Top="312" Height="44" Width="141" Click="Options_Click"/>
         <Button x:Name="Leaderboard" Content="Leaderboard" Canvas.Left="327" Canvas.Top="361" Height="45" Width="141" Click="Leaderboard_Click"/>
-        <Button x:Name="Exit_Game" Content="Exit" Canvas.Left="327" Canvas.Top="411" Height="45" Width="141" Click="Exit_Game_Click"/>
+        <Button x:Name="Instructions" Content="Instructions" Canvas.Left="327" Canvas.Top="411" Height="45" Width="141" Click="Instructions_Click"/>
+        <Button x:Name="Exit_Game" Content="Exit" Canvas.Left="327" Canvas.Top="461" Height="45" Width="141" Click="Exit_Game_Click"/>
     </Canvas>
 </Page>

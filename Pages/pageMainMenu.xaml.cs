@@ -59,5 +59,10 @@ namespace WpfApp1.Pages
         {
             new windowOptions();
         }
+
+        private void Instructions_Click(object sender, RoutedEventArgs e)
+        {
+            new Instructions();
+        }
     }
 }

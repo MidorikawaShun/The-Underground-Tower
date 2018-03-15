@@ -53,5 +53,7 @@ namespace WpfApp1
         public static List<Monster> Monsters;
 
         public static List<Item> Items;
+
+        public static bool GamePaused = false;
     }
 }

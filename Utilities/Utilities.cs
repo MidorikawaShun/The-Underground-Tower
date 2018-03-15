@@ -409,8 +409,8 @@ namespace WpfApp1
         {
             OrdinaryWall = 1365,
             OrdinaryFloor = 1434,
-            OrdinaryStairsUp = 1381,
-            OrdinaryStairsDown = 1387,
+            OrdinaryStairsDown = 1381,
+            OrdinaryStairsUp = 1387,
             Jelly = 146,
         }
 
@@ -418,8 +418,8 @@ namespace WpfApp1
         {
             OrdinaryWall = 0,
             OrdinaryFloor = 1,
-            OrdinaryStairsUp = 2,
-            OrdinaryStairsDown = 3,
+            OrdinaryStairsDown = 2,
+            OrdinaryStairsUp = 3,
             Jelly = 4,
         }
 

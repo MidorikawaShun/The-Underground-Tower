@@ -106,6 +106,9 @@
     <Compile Include="Windows\MetaMenus\GenericWindow.xaml.cs">
       <DependentUpon>GenericWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\MetaMenus\Instructions.xaml.cs">
+      <DependentUpon>Instructions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\MetaMenus\windowMessage.xaml.cs">
       <DependentUpon>windowMessage.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MetaMenus\GenericWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MetaMenus\Instructions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

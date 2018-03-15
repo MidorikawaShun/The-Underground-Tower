@@ -84,3 +84,6 @@ C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Towe
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.exe
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\TheUndergroundTower.pdb
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csprojResolveAssemblyReference.cache
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csproj.CopyComplete
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\Instructions.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\Instructions.baml

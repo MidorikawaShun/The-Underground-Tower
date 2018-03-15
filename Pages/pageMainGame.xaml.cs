@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using TheUndergroundTower.Creatures;
 using TheUndergroundTower.OtherClasses;
 using TheUndergroundTower.Pathfinding;
+using TheUndergroundTower.Windows.MetaMenus;
 using WpfApp1;
 using WpfApp1.Creatures;
 using WpfApp1.GameProperties;
@@ -155,6 +156,7 @@ namespace TheUndergroundTower.Pages
                             player.Equipment[(int)Definitions.EnumBodyParts.RightHand] = weapon;
                             if (weapon.TwoHanded)
                                 player.Equipment[(int)Definitions.EnumBodyParts.LeftHand] = null;
+                            GameLogic.PrintToGameLog($"You have equipped {weapon.Name}!");
                             break;
                         }
                     case "Armor":
@@ -165,6 +167,7 @@ namespace TheUndergroundTower.Pages
                                 player.Equipment[(int)Definitions.EnumBodyParts.LeftHand] = armor;
                                 if (rightHandItem != null && (rightHandItem as Weapon).TwoHanded)
                                     player.Equipment[(int)Definitions.EnumBodyParts.RightHand] = null;
+                                GameLogic.PrintToGameLog($"You have equipped {armor.Name}!");
                             }
                             else
                                 player.EquipArmor(armor);
@@ -308,6 +311,8 @@ namespace TheUndergroundTower.Pages
         /// <param name="e"></param>
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
+            bool performMonsterLogic = true;
+            if (GameStatus.GamePaused) return;
             Map map = GameStatus.CURRENT_MAP;
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
@@ -367,14 +372,23 @@ namespace TheUndergroundTower.Pages
                     }
                 case "OemComma": //','
                     {
-                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                        performMonsterLogic = false;
+                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) //handle '<'
                             GoUpStairs();
                         break;
                     }
                 case "OemPeriod": //'.'
                     {
-                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                        performMonsterLogic = false;
+                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) //handle '>'
                             GoDownStairs();
+                        break;
+                    }
+                case "OemQuestion": //'/'
+                    {
+                        performMonsterLogic = false;
+                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) //handle '?'
+                            new Instructions();
                         break;
                     }
                 default:
@@ -382,12 +396,15 @@ namespace TheUndergroundTower.Pages
                         return;
                     }
             }
-            LevelUpPlayer();
-            MonsterLogic();
-            RefreshScreen();
-            if (GameStatus.PLAYER.HP <= 0) //if player has died
+            if (performMonsterLogic)
             {
-                Console.WriteLine("DEAD");
+                LevelUpPlayer();
+                MonsterLogic();
+                RefreshScreen();
+                if (GameStatus.PLAYER.HP <= 0) //if player has died
+                {
+                    Console.WriteLine("DEAD");
+                }
             }
         }
 
