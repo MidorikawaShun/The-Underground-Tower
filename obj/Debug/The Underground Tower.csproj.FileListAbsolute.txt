@@ -87,3 +87,5 @@ C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Towe
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\The Underground Tower.csproj.CopyComplete
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\Instructions.g.cs
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Windows\MetaMenus\Instructions.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageHighScores.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Debug\Pages\pageHighScores.baml

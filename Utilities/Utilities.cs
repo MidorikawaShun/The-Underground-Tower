@@ -182,21 +182,85 @@ namespace WpfApp1
                 }
             }
 
+            public static List<HighScore> ReadHighScores()
+            {
+                if (!File.Exists(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores)))
+                    CreateHighScoreXmlFile();
+                XmlDocument xml = new XmlDocument();
+                xml.Load(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores));
+                List<HighScore> highScores = new List<HighScore>();
+                foreach (XmlNode highScore in xml.ChildNodes[1].ChildNodes)
+                    highScores.Add(new HighScore()
+                    {
+                        CharacterName = highScore.ChildNodes[0].InnerText,
+                        Score = Convert.ToInt32(highScore.ChildNodes[1].InnerText),
+                        Date = highScore.ChildNodes[2].InnerText
+                    });
+                return highScores;
+            }
+
             //adds a highscore
-            public static void AddHighScore(string characterName,string score)
+            public static void AddHighScore(string characterName, string score)
+            {
+                if (!File.Exists(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores)))
+                    CreateHighScoreXmlFile(); //create the file if it does not already exist
+                HighScore newScore = new HighScore()
+                {
+                    CharacterName = characterName,
+                    Score = Convert.ToInt32(score),
+                    Date = DateTime.Now.ToString("dd/MM/yyyy-HH:mm")
+                };
+                SortHighScores(newScore);
+            }
+
+            private static void CreateHighScoreXmlFile()
             {
                 XmlWriterSettings settings = new XmlWriterSettings()
                 {
                     Indent = true,
-                    Encoding = System.Text.Encoding.UTF32
+                    //Encoding = System.Text.Encoding.UTF32
                 };
-                using (XmlWriter xwriter = XmlWriter.Create(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores), settings))
+                using (XmlWriter xml = XmlWriter.Create(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores), settings))
                 {
-
-                    xwriter.Close();
+                    xml.WriteStartDocument();
+                    xml.WriteStartElement("HighScores");
+                    xml.WriteEndElement();
+                    xml.WriteEndDocument();
+                    xml.Close();
                 }
             }
 
+            private static XmlElement CreateNewHighScore(XmlDocument xml, HighScore newScore)
+            {
+                XmlElement highScore = xml.CreateElement("HighScore");
+                XmlElement xmlName = xml.CreateElement("CharacterName");
+                xmlName.InnerText = newScore.CharacterName;
+                XmlElement xmlScore = xml.CreateElement("Score");
+                xmlScore.InnerText = newScore.Score.ToString();
+                XmlElement datetime = xml.CreateElement("Date");
+                datetime.InnerText = DateTime.Now.ToString("dd/MM/yyyy-HH:mm");
+                highScore.AppendChild(xmlName);
+                highScore.AppendChild(xmlScore);
+                highScore.AppendChild(datetime);
+                return highScore;
+            }
+
+            private static void SortHighScores(HighScore highScore)
+            {
+                List<HighScore> scores = ReadHighScores();
+                int lowestOfOldScores = Convert.ToInt32(scores.Min(x => x.Score));
+                int newScore = Convert.ToInt32(highScore.Score);
+                if (lowestOfOldScores > newScore) //if the new score is the lowest score, don't add it
+                    return;
+                XmlDocument xml = new XmlDocument();
+                xml.Load(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores));
+                xml.ChildNodes[1].RemoveAll(); //remove the previous scores from the file -- but we have them saved in 'scores'
+                scores.Add(highScore);
+                IEnumerable<HighScore> orderedScores = scores.OrderByDescending(x => x.Score).Take(10); //take the 10 best highscores
+                foreach (HighScore score in orderedScores)
+                    xml.ChildNodes[1].AppendChild(CreateNewHighScore(xml,score));
+                xml.Save(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores));
+            }
         }
 
         /// <summary>
@@ -483,5 +547,11 @@ namespace WpfApp1
 
     }
 
+    public class HighScore
+    {
+        public string CharacterName { get; set; }
+        public int Score { get; set; }
+        public string Date { get; set; }
+    }
 
 }

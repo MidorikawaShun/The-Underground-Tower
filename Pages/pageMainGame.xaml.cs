@@ -406,7 +406,9 @@ namespace TheUndergroundTower.Pages
                 RefreshScreen();
                 if (GameStatus.PLAYER.HP <= 0) //if player has died
                 {
-                    Console.WriteLine("DEAD");
+                    GameStatus.GameEnded = true;
+                    Utilities.Xml.AddHighScore(GameStatus.PLAYER.Name, GameStatus.FinalScore);
+                    Definitions.MAIN_WINDOW.Content = new pageHighScores();
                 }
             }
         }

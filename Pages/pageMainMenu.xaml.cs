@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using TheUndergroundTower.Pages;
 using TheUndergroundTower.Windows;
 using TheUndergroundTower.Windows.MetaMenus;
 using WpfApp1.GameProperties;
@@ -50,7 +51,7 @@ namespace WpfApp1.Pages
         /// <param name="e"></param>
         private void Leaderboard_Click(object sender, RoutedEventArgs e)
         {
-            Utilities.Xml.AddHighScore("test", "5");
+            Definitions.MAIN_WINDOW.Main.Content = new pageHighScores();
         }
 
         /// <summary>

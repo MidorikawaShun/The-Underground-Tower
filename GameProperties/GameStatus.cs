@@ -35,7 +35,7 @@ namespace WpfApp1
         /// </summary>
         public static Map CURRENT_MAP { get; set; }
 
-        public static Dictionary<Map,Tile> STAIRS_DOWN_LOCATIONS { get; set; }
+        public static Dictionary<Map, Tile> STAIRS_DOWN_LOCATIONS { get; set; }
 
         public static Dictionary<Map, Tile> STAIRS_UP_LOCATIONS { get; set; }
 
@@ -48,12 +48,20 @@ namespace WpfApp1
         /// A Random object. Exists so we only have one and it is initialized
         /// in the beginning.
         /// </summary>
-        public static Random RANDOM = new Random(DateTime.Now.Millisecond);
+        public static Random RANDOM { get; set; } = new Random(DateTime.Now.Millisecond);
 
-        public static List<Monster> Monsters;
+        public static List<Monster> Monsters { get; set; }
 
-        public static List<Item> Items;
+        public static List<Item> Items { get; set; }
 
-        public static bool GamePaused = false;
+        public static bool GamePaused { get; set; } = false;
+
+        public static bool GameEnded { get; set; } = false;
+
+        public static int Score { get; set; } = 0;
+
+        public static int ScoreMultiplier { get; set; } = 0;
+
+        public static string FinalScore { get => (Score * ScoreMultiplier).ToString("#,#0"); }
     }
 }
