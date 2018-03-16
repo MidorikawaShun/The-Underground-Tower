@@ -182,6 +182,21 @@ namespace WpfApp1
                 }
             }
 
+            //adds a highscore
+            public static void AddHighScore(string characterName,string score)
+            {
+                XmlWriterSettings settings = new XmlWriterSettings()
+                {
+                    Indent = true,
+                    Encoding = System.Text.Encoding.UTF32
+                };
+                using (XmlWriter xwriter = XmlWriter.Create(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores), settings))
+                {
+
+                    xwriter.Close();
+                }
+            }
+
         }
 
         /// <summary>

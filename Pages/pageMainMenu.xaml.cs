@@ -4,6 +4,8 @@ using TheUndergroundTower.Windows;
 using TheUndergroundTower.Windows.MetaMenus;
 using WpfApp1.GameProperties;
 using WpfApp1.Windows;
+using static TheUndergroundTower.Options.Sound;
+using static WpfApp1.GameProperties.Definitions;
 
 namespace WpfApp1.Pages
 {
@@ -18,6 +20,7 @@ namespace WpfApp1.Pages
         public pageMainMenu()
         {
             InitializeComponent();
+            PlaySound(EnumSoundFiles.MainMenuMusic, EnumMediaPlayers.MusicPlayer);
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace WpfApp1.Pages
         /// <param name="e"></param>
         private void Leaderboard_Click(object sender, RoutedEventArgs e)
         {
-
+            Utilities.Xml.AddHighScore("test", "5");
         }
 
         /// <summary>

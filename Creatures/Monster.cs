@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using WpfApp1;
 using WpfApp1.Creatures;
+using WpfApp1.GameProperties;
+using static TheUndergroundTower.Options.Sound;
+using static WpfApp1.GameProperties.Definitions;
 
 namespace TheUndergroundTower.Creatures
 {
@@ -74,9 +77,15 @@ namespace TheUndergroundTower.Creatures
             int targetDefense = (player as Player).DefenseSkill + GameLogic.Roll20(1);
             double monsterAttack = MeleeSkill + GameLogic.Roll20(1);
             if (monsterAttack > targetDefense)
+            {
+                PlaySound(EnumSoundFiles.SwordSlash, EnumMediaPlayers.SfxPlayer);
                 player.TakeDamage(GameLogic.DiceRoll(_damageRange));
+            }
             else
+            {
                 GameLogic.PrintToGameLog(Name + " has missed you!");
+                PlaySound(EnumSoundFiles.Miss, EnumMediaPlayers.SfxPlayer);
+            }
         }
     }
 }

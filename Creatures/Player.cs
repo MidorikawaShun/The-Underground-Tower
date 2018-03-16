@@ -9,6 +9,8 @@ using WpfApp1.GameProperties;
 using Microsoft.VisualBasic;
 using TheUndergroundTower.Windows.MetaMenus;
 using TheUndergroundTower.Pathfinding;
+using static WpfApp1.GameProperties.Definitions;
+using static TheUndergroundTower.Options.Sound;
 
 namespace WpfApp1.Creatures
 {
@@ -151,6 +153,7 @@ namespace WpfApp1.Creatures
             DefenseSkill = 10;
             _neededExperience = 100;
             _experience = 0;
+            _level = 1;
         }
         #endregion
         #region Methods
@@ -203,6 +206,7 @@ namespace WpfApp1.Creatures
             _playerStats[rand.Next(6)] += rand.Next(3); //increase two random stats
             _playerStats[rand.Next(6)] += rand.Next(3);
             HP = MaxHP += GameLogic.DiceRoll("1d6", _playerStats[(int)Definitions.EnumCharacterStats.Constitution]);
+            _level++;
         }
 
         public override void Attack(Creature target)
@@ -211,6 +215,7 @@ namespace WpfApp1.Creatures
             int defenseScore = (target as Monster).Defense + GameLogic.Roll20(1);
             if (attackScore > defenseScore)
             {
+                PlaySound(EnumSoundFiles.SwordSlash, EnumMediaPlayers.SfxPlayer);
                 //int damage = GameLogic.DiceRoll(this.DamageRange, this[(int)Definitions.EnumCharacterStats.Strength]) + _playerStats[0];
                 int damage = GameLogic.RollDamage(this.DamageRange) + _playerStats[(int)Definitions.EnumCharacterStats.Strength];
                 target.TakeDamage(damage);
@@ -221,7 +226,11 @@ namespace WpfApp1.Creatures
                     GameLogic.PrintToGameLog(target.Name + " has died!");
                 }
             }
-            else GameLogic.PrintToGameLog("You have missed " + target.Name);
+            else
+            {
+                GameLogic.PrintToGameLog("You have missed " + target.Name);
+                PlaySound(EnumSoundFiles.Miss, EnumMediaPlayers.SfxPlayer);
+            }
             MeleeSkill += GameLogic.DiceRoll("1d3") / 100.0;
         }
 

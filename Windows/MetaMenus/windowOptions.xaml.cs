@@ -20,16 +20,19 @@ namespace TheUndergroundTower.Windows
         private void MasterVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Sound.TempMasterVolume = MasterVolume.Value/100;
+            Sound.ChangeSoundVolume();
         }
 
         private void MusicVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Sound.TempMusicVolume = MusicVolume.Value/100;
+            Sound.ChangeSoundVolume();
         }
 
         private void SoundVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Sound.TempSfxVolume = SoundVolume.Value/100;
+            Sound.ChangeSoundVolume();
         }
 
 

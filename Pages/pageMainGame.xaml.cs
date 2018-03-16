@@ -22,6 +22,8 @@ using TheUndergroundTower.Windows.MetaMenus;
 using WpfApp1;
 using WpfApp1.Creatures;
 using WpfApp1.GameProperties;
+using static TheUndergroundTower.Options.Sound;
+using static WpfApp1.GameProperties.Definitions;
 
 namespace TheUndergroundTower.Pages
 {
@@ -56,6 +58,7 @@ namespace TheUndergroundTower.Pages
             GameStatus.PLAYER = GameStatus.PLAYER ?? new Player();
             Map map = GameStatus.CURRENT_MAP;
             SetInitialPlayerLocation(map);
+            PlaySound(EnumSoundFiles.MainGameMusic, EnumMediaPlayers.MusicPlayer);
             RefreshScreen();
         }
 

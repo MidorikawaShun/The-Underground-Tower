@@ -50,7 +50,8 @@ namespace WpfApp1.GameProperties
         /// </summary>
         public static string[] XML_FILES = { @"../../Assets/XML Files/Races.xml", @"../../Assets/XML Files/Careers.xml" ,
             @"../../Assets/XML Files/Difficulties.xml",@"../../Assets/XML Files/TowerDepths.xml",
-            @"../../Assets/XML Files/Tiles.xml",@"../../Assets/XML Files/Monsters.xml",@"../../Assets/XML Files/Items.xml"};
+            @"../../Assets/XML Files/Tiles.xml",@"../../Assets/XML Files/Monsters.xml",@"../../Assets/XML Files/Items.xml",
+            @"../../Assets/XML Files/XmlFileHighScores.xml"};
 
         /// <summary>
         /// Easy access to the XML files.
@@ -64,19 +65,24 @@ namespace WpfApp1.GameProperties
             XmlFileTiles=4,
             XmlFileMonsters=5,
             XmlFileItems=6,
+            XmlFileHighScores=7
         };
 
         /// <summary>
         /// The sound files we use.
         /// </summary>
-        public static string[] SOUND_FILES = { @"../../Assets/Sounds/Nonstop.mp3", @"../../Assets/Sounds/Sword Slash.mp3" };
+        public static string[] SOUND_FILES = { @"../../Assets/Sounds/Nonstop.mp3", @"../../Assets/Sounds/Sword Slash.mp3",@"../../Assets/Sounds/Bite.mp3",@"../../Assets/Sounds/Miss.mp3",
+                                               @"../../Assets/Sounds/Dungeon Music.mp3"};
         /// <summary>
         /// Enum for easy access to the sound files.
         /// </summary>
         public enum EnumSoundFiles
         {
             MainMenuMusic=0,
-            SwordSlash=1
+            SwordSlash=1,
+            Bite=2,
+            Miss=3,
+            MainGameMusic=4
         };
 
         /// <summary>
