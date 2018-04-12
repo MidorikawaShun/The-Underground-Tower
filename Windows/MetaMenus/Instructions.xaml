@@ -1,0 +1,26 @@
+﻿<Window x:Class="TheUndergroundTower.Windows.MetaMenus.Instructions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TheUndergroundTower.Windows.MetaMenus"
+        mc:Ignorable="d"
+        Title="Instructions" Height="475" Width="600" ResizeMode="NoResize">
+    <Canvas x:Name="CanvasCharacterCreation">
+        <Image Source="/Assets/Images/Scroll-Background.png" x:Name="imgCharacterCreationBackground" Height="456" Width="654" Canvas.Left="-33"/>
+        <ScrollViewer Canvas.Left="67" Canvas.Top="84">
+            <StackPanel Canvas.Left="76" Canvas.Top="78" Height="269" Width="434">
+                <TextBlock TextWrapping="Wrap" Text="You can open up this window at any time during play by pressing '?'." Width="408" Canvas.Left="100" Canvas.Top="87" Height="40"></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="Your purpose in this game is to reach the bottom-most floor and take The Orb Of Zonk." Width="408" Canvas.Left="100" Canvas.Top="87" Height="40"></TextBlock>
+                <TextBlock FontSize="25" TextWrapping="Wrap" Text="Controls" Width="408" Height="32" Margin="13,0"/>
+                <TextBlock TextWrapping="Wrap" Text="- use the arrow keys or numpad keys to move" Width="408" Canvas.Left="100" Canvas.Top="87" Height="19" Margin="13,0"></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="- g - pick up item" Width="408" Canvas.Left="100" Canvas.Top="87" Height="19" Margin="13,0"></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="- > - go down a floor" Width="408" Canvas.Left="100" Canvas.Top="87" Height="19" Margin="13,0"></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="- hover your mouse over something to see it's description" Width="408" Canvas.Left="100" Canvas.Top="87" Height="19" Margin="13,0" x:Name="GoUpAFloor"></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="- left click an item in your inventory to equip it" Width="408" Canvas.Left="100" Canvas.Top="87" Height="19" Margin="13,0"></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="- right click an item in your inventory to drop it" Width="408" Canvas.Left="100" Canvas.Top="87" Height="19" Margin="13,0"></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="- in order to attack enemies, move in their direction" Width="408" Canvas.Left="100" Canvas.Top="87" Height="19" Margin="13,0"></TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </Canvas>
+</Window>

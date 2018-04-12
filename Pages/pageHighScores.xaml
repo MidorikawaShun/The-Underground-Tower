@@ -1,0 +1,52 @@
+﻿<Page x:Class="TheUndergroundTower.Pages.pageHighScores"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TheUndergroundTower.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="High Scores">
+    <Canvas x:Name="HighScoreCanvas">
+        <Image Source="/Assets\Images\HighScores.png" Stretch="Fill" Width="800" Height="600"/>
+        <TextBlock FontSize="25" Foreground="DarkGoldenrod"  Text="Name" Canvas.Left="241" Canvas.Top="71" Height="34" Width="74">
+            <TextBlock.Effect>
+                <DropShadowEffect></DropShadowEffect>
+            </TextBlock.Effect>
+        </TextBlock>
+        <TextBlock FontSize="25" Foreground="DarkGoldenrod" Text="Score" Canvas.Left="363" Canvas.Top="72">
+            <TextBlock.Effect>
+                <DropShadowEffect></DropShadowEffect>
+            </TextBlock.Effect>
+        </TextBlock>
+        <TextBlock FontSize="25" Foreground="DarkGoldenrod" Text="Date" Canvas.Left="504" Canvas.Top="72">
+            <TextBlock.Effect>
+                <DropShadowEffect></DropShadowEffect>
+            </TextBlock.Effect>
+        </TextBlock>
+        <StackPanel Width="460" Canvas.Left="142" Canvas.Top="111">
+            <Grid x:Name="HighScoresGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                    <RowDefinition Height="40px"/>
+                </Grid.RowDefinitions>
+            </Grid>
+        </StackPanel>
+        <Button x:Name="ToMainMenu" Content="To Main menu" Height="43" Width="117" Canvas.Left="333" Canvas.Top="527" Click="ToMainMenu_Click"></Button>
+        <Button x:Name="Exit" Content="Exit" Height="43" Width="116" Canvas.Left="334" Canvas.Top="527" Click="Exit_Click"></Button>
+    </Canvas>
+</Page>
