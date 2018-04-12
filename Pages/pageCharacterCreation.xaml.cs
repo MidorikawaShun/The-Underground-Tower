@@ -352,13 +352,15 @@ namespace WpfApp1.Pages
         /// <param name="e"></param>
         private void btnProceed_Click(object sender, RoutedEventArgs e)
         {
-            Player player = GameStatus.PLAYER = new Player();
+            Player player = GameStatus.Player = new Player();
             for (int i = 0; i < Definitions.NUMBER_OF_CHARACTER_STATS; i++)
                 player[i] = PlayerStats[i];
             player.SetRace(ChosenRace);
             player.SetCareer(ChosenClass);
             player.Name = lblName.Content as string;
             player.Description = "This is you.";
+            GameStatus.ChosenDifficulty = ChosenDifficulty;
+            GameStatus.ChosenDepth = ChosenDepth;
             Definitions.MAIN_WINDOW.Main.Content = new pageMainGame();
         }
 
@@ -374,7 +376,7 @@ namespace WpfApp1.Pages
             {
                 sum = 0;
                 for (int j = 0; j < 3; j++)
-                    sum += GameStatus.RANDOM.Next(1, 7);
+                    sum += GameStatus.Random.Next(1, 7);
                 PlayerStats[i] = sum + ChosenRace[i];
             }
             lblStrength.Content = PlayerStats[0];

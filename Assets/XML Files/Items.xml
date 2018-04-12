@@ -40,4 +40,9 @@
     <ImageIndex>1191</ImageIndex>
     <Type>Ring</Type>
   </Armor>
+  <Item Name="Amulet Of The Tower">
+    <Description>The amulet you've been searching for, within arm's reach. Once you (g)et it, it's all over.</Description>
+    <ImageIndex>1207</ImageIndex>
+    <IsGameEnderItem>true</IsGameEnderItem>
+  </Item>
 </Items>

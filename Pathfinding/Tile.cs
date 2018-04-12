@@ -62,6 +62,8 @@ namespace TheUndergroundTower.Pathfinding
         private bool _leadsDown;
         public bool LeadsDown { get => _leadsDown; set => _leadsDown = value; }
 
+        private bool _isGameEnd;
+        public bool IsGameEnd { get => _isGameEnd; set => _isGameEnd = value; }
 
         #endregion
 

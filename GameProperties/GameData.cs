@@ -56,7 +56,7 @@ namespace WpfApp1
         {
             POSSIBLE_TILES = new List<Tile>();
             Utilities.Xml.PopulateTiles();
-            GameStatus.TILES = new List<Tile>();
+            GameStatus.Tiles = new List<Tile>();
         }
 
         public static void InitializeMonsters()

@@ -201,7 +201,7 @@ namespace WpfApp1.Creatures
 
         public void LevelUp()
         {
-            Random rand = GameStatus.RANDOM;
+            Random rand = GameStatus.Random;
             _neededExperience += _neededExperience * 2;
             _playerStats[rand.Next(6)] += rand.Next(3); //increase two random stats
             _playerStats[rand.Next(6)] += rand.Next(3);
@@ -224,6 +224,7 @@ namespace WpfApp1.Creatures
                 {
                     _experience += (target as Monster).ExperienceValue;
                     GameLogic.PrintToGameLog(target.Name + " has died!");
+                    GameStatus.Score += (target as Monster).ScoreValue;
                 }
             }
             else

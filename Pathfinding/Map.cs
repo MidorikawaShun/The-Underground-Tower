@@ -53,7 +53,10 @@ namespace TheUndergroundTower.Pathfinding
         //Constructor
         public Map(int size)
         {
-            mapNum = GameStatus.MAPS.Count() + 1;
+            //dont create the map 
+            if (GameStatus.ChosenDepth.MaximumFloors <= mapNum) return;
+            size = (int)(GameStatus.ChosenDepth.FloorSizeMultiplier * size);
+            mapNum = GameStatus.Maps.Count() + 1;
             _rand = new Random(DateTime.Now.Millisecond);
             _wallTile = GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryWall];
             _floorTile = GameData.POSSIBLE_TILES[(int)CreateTile.Tiles.OrdinaryFloor];
@@ -68,20 +71,37 @@ namespace TheUndergroundTower.Pathfinding
             Items = new List<Item>();
             GenerateMonsters();
             GenerateItems();
+            CreateAmulet(); //creates end-game condition if chosen depth allows
         }
 
+        private void CreateAmulet()
+        {
+            //don't do this if not on the last floor
+            if (GameStatus.ChosenDepth.MaximumFloors != mapNum) return;
+            Room amuletRoom = Rooms.Random(_rand);
+            Item amulet = new Item(GameData.POSSIBLE_ITEMS.Where(x=>x.IsGameEnderItem).FirstOrDefault());
+            int xCenter = (int)((amuletRoom.BottomLeftX + amuletRoom.BottomRightX) / 2);
+            int yCenter = (int)((amuletRoom.BottomLeftY + amuletRoom.TopRightY) / 2);
+            if (_tiles[xCenter, yCenter].Objects != null)
+                _tiles[xCenter, yCenter].Objects.Add(amulet);
+            else
+                _tiles[xCenter, yCenter].Objects = new List<GameObject>() { amulet };
+        }
+
+        //create stairs to next floor
         private void GenerateStairsDown()
         {
             try
             {
-                //create stairs to next floor
+                //dont make another floor if reached floor limit
+                if (GameStatus.ChosenDepth.MaximumFloors <= mapNum) return;
                 Room roomToPutStairsIn = _rooms.Random(_rand);
                 int stairsX = _rand.Next(roomToPutStairsIn.TopLeftX + 1, roomToPutStairsIn.XSize + roomToPutStairsIn.TopLeftX);
                 int stairsY = _rand.Next(roomToPutStairsIn.BottomLeftY + 1, roomToPutStairsIn.YSize + roomToPutStairsIn.BottomLeftY);
                 Tile stairsDownTile = new Tile(_stairsDownTile) { LeadsDown = true, X = stairsX, Y = stairsY };
                 stairsDownTile.Image = CreateTile.Overlay(_tiles[stairsX, stairsY].Image, stairsDownTile.Image);
                 _tiles[stairsX, stairsY] = stairsDownTile;
-                GameStatus.STAIRS_DOWN_LOCATIONS.Add(this, stairsDownTile); //will be used to navigate up floors
+                GameStatus.StairsDownLocations.Add(this, stairsDownTile); //will be used to navigate up floors
             }
             catch (Exception ex)
             {
@@ -91,10 +111,10 @@ namespace TheUndergroundTower.Pathfinding
 
         public void GenerateStairsUp()
         {
-            Tile stairsUpTile = new Tile(_stairsUpTile) { LeadsUp = true, X = GameStatus.PLAYER.X, Y = GameStatus.PLAYER.Y };
-            stairsUpTile.Image = CreateTile.Overlay(_tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y].Image,stairsUpTile.Image);
-            _tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y] = stairsUpTile;
-            GameStatus.STAIRS_UP_LOCATIONS.Add(this, stairsUpTile);
+            Tile stairsUpTile = new Tile(_stairsUpTile) { LeadsUp = true, X = GameStatus.Player.X, Y = GameStatus.Player.Y };
+            stairsUpTile.Image = CreateTile.Overlay(_tiles[GameStatus.Player.X, GameStatus.Player.Y].Image, stairsUpTile.Image);
+            _tiles[GameStatus.Player.X, GameStatus.Player.Y] = stairsUpTile;
+            GameStatus.StairsUpLocations.Add(this, stairsUpTile);
         }
 
         private void GenerateRooms()
@@ -358,7 +378,7 @@ namespace TheUndergroundTower.Pathfinding
                     Tile targetTile = currentMap.Tiles[x, y];
                     if (targetTile.Objects == null) targetTile.Objects = new List<GameObject>();
                     if (targetTile.Objects.OfType<Creature>().Count() > 0) continue;
-                    Monster monster = (new Monster(monsters.Random(_rand)) { X = targetTile.X, Y = targetTile.Y, Z = GameStatus.MAPS.IndexOf(currentMap) });
+                    Monster monster = (new Monster(monsters.Random(_rand)) { X = targetTile.X, Y = targetTile.Y, Z = GameStatus.Maps.IndexOf(currentMap) });
                     targetTile.Objects.Add(monster);
                     Monsters.Add(monster);
                     monstersPlaced++;
@@ -369,7 +389,7 @@ namespace TheUndergroundTower.Pathfinding
 
         private void GenerateItems()
         {
-            List<Item> items = GameData.POSSIBLE_ITEMS;
+            List<Item> items = GameData.POSSIBLE_ITEMS.Where(x=>x.IsGameEnderItem==false).ToList();
             Map currentMap = this;
             foreach (Room room in currentMap.Rooms)
             {
@@ -380,7 +400,7 @@ namespace TheUndergroundTower.Pathfinding
                     Tile targetTile = currentMap.Tiles[x, y];
                     if (targetTile.Objects == null) targetTile.Objects = new List<GameObject>();
                     var item = Item.Create(items.Random(_rand));
-                    item.X = targetTile.X; item.Y = targetTile.Y; item.Z = GameStatus.MAPS.IndexOf(currentMap);
+                    item.X = targetTile.X; item.Y = targetTile.Y; item.Z = GameStatus.Maps.IndexOf(currentMap);
                     targetTile.Objects.Add(item);
                     Items.Add(item);
                 }

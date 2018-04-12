@@ -185,8 +185,11 @@ namespace WpfApp1.Creatures
 
         public virtual void TakeDamage(int damage)
         {
+            if (this is Monster)
+                damage = (int)(damage * GameStatus.ChosenDifficulty.PlayerDamage); //modify damage monsters take
+            if (this is Player)
+                damage = (int)(damage * GameStatus.ChosenDifficulty.EnemyDamage); //modify damage player takes
             HP -= damage;
-
         }
 
     }

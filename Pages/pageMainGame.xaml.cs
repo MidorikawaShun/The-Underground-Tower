@@ -44,19 +44,19 @@ namespace TheUndergroundTower.Pages
             GameData.InitializeItems();
             Console.WriteLine("Items initialized");
             _rand = new Random(DateTime.Now.Millisecond);
-            GameStatus.MAPS = new List<Map>();
-            GameStatus.STAIRS_DOWN_LOCATIONS = new Dictionary<Map, Tile>();
-            GameStatus.STAIRS_UP_LOCATIONS = new Dictionary<Map, Tile>();
-            GameStatus.CURRENT_MAP = new Map(60);
+            GameStatus.Maps = new List<Map>();
+            GameStatus.StairsDownLocations = new Dictionary<Map, Tile>();
+            GameStatus.StairsUpLocations = new Dictionary<Map, Tile>();
+            GameStatus.CurrentMap = new Map(60);
             Console.WriteLine("Map generated");
-            GameStatus.MAPS.Add(GameStatus.CURRENT_MAP);
+            GameStatus.Maps.Add(GameStatus.CurrentMap);
             Console.WriteLine("Monsters generated");
             Console.WriteLine("Items generated");
             CreateDisplay();
             Console.WriteLine("Display generated");
             GameLogic.GameLog = GameLog; //initialize gamelog
-            GameStatus.PLAYER = GameStatus.PLAYER ?? new Player();
-            Map map = GameStatus.CURRENT_MAP;
+            GameStatus.Player = GameStatus.Player ?? new Player();
+            Map map = GameStatus.CurrentMap;
             SetInitialPlayerLocation(map);
             PlaySound(EnumSoundFiles.MainGameMusic, EnumMediaPlayers.MusicPlayer);
             RefreshScreen();
@@ -74,9 +74,9 @@ namespace TheUndergroundTower.Pages
                 selectedY = startingRoom.TopLeftY - startingRoom.YSize / 2;
                 firstLoop = false;
             }
-            GameStatus.PLAYER.X = selectedX;
-            GameStatus.PLAYER.Y = selectedY;
-            map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y].Objects = new List<GameObject>() { GameStatus.PLAYER };
+            GameStatus.Player.X = selectedX;
+            GameStatus.Player.Y = selectedY;
+            map.Tiles[GameStatus.Player.X, GameStatus.Player.Y].Objects = new List<GameObject>() { GameStatus.Player };
         }
 
         //create a map and fill it with empty image elements
@@ -126,13 +126,13 @@ namespace TheUndergroundTower.Pages
 
         private void DropItem(object sender, RoutedEventArgs e)
         {
-            Player player = GameStatus.PLAYER;
+            Player player = GameStatus.Player;
             string slotString = ((System.Windows.Controls.Button)sender).Name;
             if (slotString.Equals("EmptySlot") || !slotString.Contains("_")) return;
             slotString = "_" + slotString.Split('_')[1];
             Item droppedItem = player.Inventory.Where(x => x.ID.Equals(slotString)).FirstOrDefault();
             player.Inventory.Remove(droppedItem);
-            Tile playerTile = GameStatus.CURRENT_MAP.Tiles[player.X, player.Y];
+            Tile playerTile = GameStatus.CurrentMap.Tiles[player.X, player.Y];
             playerTile.Objects = playerTile.Objects ?? new List<GameObject>();
             playerTile.Objects.Add(droppedItem);
             GameLogic.PrintToGameLog("You have dropped " + droppedItem.Name);
@@ -143,7 +143,7 @@ namespace TheUndergroundTower.Pages
         {
             string slot = ((Button)sender).Name;
             if (string.IsNullOrEmpty(slot) || slot.Equals("EmptySlot")) return;
-            Player player = GameStatus.PLAYER;
+            Player player = GameStatus.Player;
             string itemIDString = slot.Split(new string[] { "InventoryItem" }, StringSplitOptions.None)[1];
             if (string.IsNullOrEmpty(itemIDString)) return;
             Item itemInSlot = player.Inventory.Where(x => x.ID == itemIDString).SingleOrDefault();
@@ -194,19 +194,19 @@ namespace TheUndergroundTower.Pages
 
         private void DrawPlayerInfoScreen()
         {
-            Player player = GameStatus.PLAYER;
+            Player player = GameStatus.Player;
             PlayerName.Content = "Name: " + player.Name;
             PlayerHP.Content = "HP: " + player.HP + "\\" + player.MaxHP;
             PlayerLevel.Content = "Level: " + player.Level;
             PlayerEXP.Content = "EXP: " + player.Experience + "\\" + player.NeededExperience;
-            PlayerScore.Content = "Score: " + "NONE!";
-            CurrentFloor.Content = "Floor: " + GameStatus.MAPS.IndexOf(GameStatus.CURRENT_MAP) + 1;
+            PlayerScore.Content = "Score: " + GameStatus.FinalScore;
+            CurrentFloor.Content = "Floor: " + (GameStatus.Maps.IndexOf(GameStatus.CurrentMap) + 1);
         }
 
         private void DrawGameScreen()
         {
-            int xpos = GameStatus.PLAYER.X - 5;
-            int ypos = GameStatus.PLAYER.Y - 6;
+            int xpos = GameStatus.Player.X - 5;
+            int ypos = GameStatus.Player.Y - 6;
             int z = 0;
             for (int y = Definitions.WINDOW_Y_SIZE - 1; y >= 0; y--)
             {
@@ -214,9 +214,9 @@ namespace TheUndergroundTower.Pages
                 {
                     (XAMLMap.Children[z] as Image).ToolTip = new TextBlock() { Text = string.Empty };
                     bool tileExists = false;
-                    if ((xpos + x) >= 0 && (ypos + y) >= 0 && (xpos + x) < GameStatus.CURRENT_MAP.XSize && (ypos + y) < GameStatus.CURRENT_MAP.YSize) //Make sure indices are in range of array
+                    if ((xpos + x) >= 0 && (ypos + y) >= 0 && (xpos + x) < GameStatus.CurrentMap.XSize && (ypos + y) < GameStatus.CurrentMap.YSize) //Make sure indices are in range of array
                     {
-                        Tile tile = GameStatus.CURRENT_MAP.Tiles[xpos + x, ypos + y];
+                        Tile tile = GameStatus.CurrentMap.Tiles[xpos + x, ypos + y];
                         if (tile != null)
                         {
                             ImageSource overlayedImage = tile.Image;
@@ -264,7 +264,7 @@ namespace TheUndergroundTower.Pages
 
         private void DrawInventoryScreen()
         {
-            List<Item> inventory = GameStatus.PLAYER.Inventory;
+            List<Item> inventory = GameStatus.Player.Inventory;
             for (int i = 0; i <= inventory.Count; i++)
             {
                 Button btn = (((InventoryGrid.Children[i] as Border).Child as Canvas).Children[0] as Button);
@@ -299,7 +299,7 @@ namespace TheUndergroundTower.Pages
 
         private Tile GetTileFromCoordinate(int x, int y)
         {
-            return GameStatus.CURRENT_MAP.Tiles[x, y];
+            return GameStatus.CurrentMap.Tiles[x, y];
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -316,52 +316,52 @@ namespace TheUndergroundTower.Pages
         {
             bool performMonsterLogic = true;
             if (GameStatus.GamePaused) return;
-            Map map = GameStatus.CURRENT_MAP;
+            Map map = GameStatus.CurrentMap;
             string str = e.Key.ToString(); //get the string value of pressed key
             switch (str)
             {
                 case "NumPad8":
                 case "Up":
                     {
-                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X, GameStatus.PLAYER.Y + 1, map);
+                        GameStatus.Player.MoveTo(GameStatus.Player.X, GameStatus.Player.Y + 1, map);
                         break;
                     }
                 case "NumPad2":
                 case "Down":
                     {
-                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X, GameStatus.PLAYER.Y - 1, map);
+                        GameStatus.Player.MoveTo(GameStatus.Player.X, GameStatus.Player.Y - 1, map);
                         break;
                     }
                 case "NumPad4":
                 case "Left":
                     {
-                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X - 1, GameStatus.PLAYER.Y, map);
+                        GameStatus.Player.MoveTo(GameStatus.Player.X - 1, GameStatus.Player.Y, map);
                         break;
                     }
                 case "NumPad6":
                 case "Right":
                     {
-                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X + 1, GameStatus.PLAYER.Y, map);
+                        GameStatus.Player.MoveTo(GameStatus.Player.X + 1, GameStatus.Player.Y, map);
                         break;
                     }
                 case "NumPad1":
                     {
-                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X - 1, GameStatus.PLAYER.Y - 1, map);
+                        GameStatus.Player.MoveTo(GameStatus.Player.X - 1, GameStatus.Player.Y - 1, map);
                         break;
                     }
                 case "NumPad3":
                     {
-                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X + 1, GameStatus.PLAYER.Y - 1, map);
+                        GameStatus.Player.MoveTo(GameStatus.Player.X + 1, GameStatus.Player.Y - 1, map);
                         break;
                     }
                 case "NumPad7":
                     {
-                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X - 1, GameStatus.PLAYER.Y + 1, map);
+                        GameStatus.Player.MoveTo(GameStatus.Player.X - 1, GameStatus.Player.Y + 1, map);
                         break;
                     }
                 case "NumPad9":
                     {
-                        GameStatus.PLAYER.MoveTo(GameStatus.PLAYER.X + 1, GameStatus.PLAYER.Y + 1, map);
+                        GameStatus.Player.MoveTo(GameStatus.Player.X + 1, GameStatus.Player.Y + 1, map);
                         break;
                     }
                 case "NumPad5":
@@ -370,7 +370,7 @@ namespace TheUndergroundTower.Pages
                     }
                 case "G":
                     {
-                        GameStatus.PLAYER.PickUp(map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y]);
+                        GameStatus.Player.PickUp(map.Tiles[GameStatus.Player.X, GameStatus.Player.Y]);
                         break;
                     }
                 case "OemComma": //','
@@ -399,15 +399,17 @@ namespace TheUndergroundTower.Pages
                         return;
                     }
             }
+            if (GameStatus.Player.Inventory.Exists(x => x.IsGameEnderItem)) ShowVictoryScreen();
             if (performMonsterLogic)
             {
                 LevelUpPlayer();
                 MonsterLogic();
                 RefreshScreen();
-                if (GameStatus.PLAYER.HP <= 0) //if player has died
+                if (GameStatus.Player.HP <= 0) //if player has died
                 {
-                    GameStatus.GameEnded = true;
-                    Utilities.Xml.AddHighScore(GameStatus.PLAYER.Name, GameStatus.FinalScore);
+                    GameStatus.GameEnded = GameStatus.GamePaused = true;
+                    Utilities.Xml.AddHighScore(GameStatus.Player.Name, GameStatus.FinalScore);
+                    new ToHighScores().ShowDialog();
                     Definitions.MAIN_WINDOW.Content = new pageHighScores();
                 }
             }
@@ -415,7 +417,7 @@ namespace TheUndergroundTower.Pages
 
         private void ResetMonsterLogic()
         {
-            foreach (Monster monster in GameStatus.CURRENT_MAP.Monsters)
+            foreach (Monster monster in GameStatus.CurrentMap.Monsters)
             {
                 monster.AwareOfPlayer = false;
                 monster.FollowingPlayer = false;
@@ -426,69 +428,71 @@ namespace TheUndergroundTower.Pages
         private void GoDownStairs()
         {
             bool isNewMap = false;
-            Map currentMap = GameStatus.CURRENT_MAP;
-            if (GameStatus.CURRENT_MAP.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y].LeadsDown == false)
+            Map currentMap = GameStatus.CurrentMap;
+            if (GameStatus.CurrentMap.Tiles[GameStatus.Player.X, GameStatus.Player.Y].LeadsDown == false)
             {
                 GameLogic.PrintToGameLog("There are no stairs down here!");
                 return;
             }
-            if (GameStatus.MAPS.Count == GameStatus.MAPS.IndexOf(currentMap) + 1)
+            if (GameStatus.Maps.Count == GameStatus.Maps.IndexOf(currentMap) + 1)
             {
-                GameStatus.MAPS.Add(new Map(100));
+                GameStatus.Maps.Add(new Map(100));
                 isNewMap = true;
 
             }
             ResetMonsterLogic();
-            GameStatus.PLAYER.Z++;
-            int currentMapIndex = GameStatus.MAPS.IndexOf(currentMap);
-            currentMap = GameStatus.CURRENT_MAP = GameStatus.MAPS[++currentMapIndex];
+            GameStatus.Player.Z++;
+            int currentMapIndex = GameStatus.Maps.IndexOf(currentMap);
+            currentMap = GameStatus.CurrentMap = GameStatus.Maps[++currentMapIndex];
 
             //check if we've already been to the floor we're going down to
             if (isNewMap)
             {
+                GameStatus.Score += (int)(10 * GameStatus.ChosenDifficulty.ScoreMultiplier);
                 Console.WriteLine("Making new map!");
                 SetInitialPlayerLocation(currentMap);
                 currentMap.GenerateStairsUp();
-                Tile currentTile = currentMap.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y];
+                Tile currentTile = currentMap.Tiles[GameStatus.Player.X, GameStatus.Player.Y];
                 Console.WriteLine($"New tile location: {currentTile.X},{currentTile.Y},{currentTile.Z}");
-                currentTile.Objects = new List<GameObject>() { GameStatus.PLAYER };
+                currentTile.Objects = new List<GameObject>() { GameStatus.Player };
             }
             else //if an already existing floor
             {
                 Console.WriteLine("Moving to existing floor!");
-                GameStatus.PLAYER.X = GameStatus.STAIRS_UP_LOCATIONS[currentMap].X;
-                GameStatus.PLAYER.Y = GameStatus.STAIRS_UP_LOCATIONS[currentMap].Y;
-                Console.WriteLine($"New tile location: {GameStatus.STAIRS_DOWN_LOCATIONS[currentMap].X},{GameStatus.STAIRS_DOWN_LOCATIONS[currentMap].Y},{GameStatus.STAIRS_DOWN_LOCATIONS[currentMap].Z}");
+                GameStatus.Player.X = GameStatus.StairsUpLocations[currentMap].X;
+                GameStatus.Player.Y = GameStatus.StairsUpLocations[currentMap].Y;
             }
+            RefreshScreen();
         }
 
         private void GoUpStairs()
         {
-            Map currentMap = GameStatus.CURRENT_MAP;
-            if (GameStatus.CURRENT_MAP.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y].LeadsUp == false)
+            Map currentMap = GameStatus.CurrentMap;
+            if (GameStatus.CurrentMap.Tiles[GameStatus.Player.X, GameStatus.Player.Y].LeadsUp == false)
             {
                 GameLogic.PrintToGameLog("There are no stairs up here!");
                 return;
             }
             ResetMonsterLogic();
-            Map mapMovedTo = GameStatus.MAPS[GameStatus.MAPS.IndexOf(currentMap) - 1];
-            Player player = GameStatus.PLAYER;
-            Tile stairsLocation = GameStatus.STAIRS_DOWN_LOCATIONS[mapMovedTo];
+            Map mapMovedTo = GameStatus.Maps[GameStatus.Maps.IndexOf(currentMap) - 1];
+            Player player = GameStatus.Player;
+            Tile stairsLocation = GameStatus.StairsDownLocations[mapMovedTo];
             player.X = stairsLocation.X;
             player.Y = stairsLocation.Y;
             player.Z--;
-            GameStatus.CURRENT_MAP = mapMovedTo;
+            GameStatus.CurrentMap = mapMovedTo;
+            RefreshScreen();
         }
 
         private void LevelUpPlayer()
         {
-            if (GameStatus.PLAYER.Experience >= GameStatus.PLAYER.NeededExperience)
-                GameStatus.PLAYER.LevelUp();
+            if (GameStatus.Player.Experience >= GameStatus.Player.NeededExperience)
+                GameStatus.Player.LevelUp();
         }
 
         public void MonsterLogic()
         {
-            Map map = GameStatus.CURRENT_MAP;
+            Map map = GameStatus.CurrentMap;
             List<Monster> deadMonsters = new List<Monster>();
             foreach (Monster monster in map.Monsters)
             {
@@ -500,20 +504,20 @@ namespace TheUndergroundTower.Pages
                 }
                 List<Tile> path = null;
                 //Get the line representing the tiles between monster and Player
-                List<Tile> line = Algorithms.Line(monster.X, GameStatus.PLAYER.X, monster.Y, GameStatus.PLAYER.Y, map, IsSeeThrough);
+                List<Tile> line = Algorithms.Line(monster.X, GameStatus.Player.X, monster.Y, GameStatus.Player.Y, map, IsSeeThrough);
                 monster.AwareOfPlayer = line == null ? false : true;
                 if (monster.AwareOfPlayer)
                 {
                     monster.FollowingPlayer = true;
-                    monster.LastKnownPlayerLocationX = GameStatus.PLAYER.X;
-                    monster.LastKnownPlayerLocationY = GameStatus.PLAYER.Y;
+                    monster.LastKnownPlayerLocationX = GameStatus.Player.X;
+                    monster.LastKnownPlayerLocationY = GameStatus.Player.Y;
                     monster.TurnsWithoutPlayerInSight = 0;
                 }
                 else
                     monster.TurnsWithoutPlayerInSight++;
                 if (monster.FollowingPlayer) //move monsters
                 {
-                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y], CostToEnterTile);
+                    if (monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[GameStatus.Player.X, GameStatus.Player.Y], CostToEnterTile);
                     if (!monster.AwareOfPlayer && monster.FollowingPlayer) path = Algorithms.FindPath(map, map.Tiles[monster.X, monster.Y], map.Tiles[monster.LastKnownPlayerLocationX, monster.LastKnownPlayerLocationY], CostToEnterTile);
                     if (path != null)
                     {
@@ -522,9 +526,9 @@ namespace TheUndergroundTower.Pages
                             int pathX = path.First().X, pathY = path.First().Y;
                             monster.MoveTo(pathX, pathY, map);
                         }
-                        if (path.Count == 1 && path.Last() == map.Tiles[GameStatus.PLAYER.X, GameStatus.PLAYER.Y]) //adjacent to player
+                        if (path.Count == 1 && path.Last() == map.Tiles[GameStatus.Player.X, GameStatus.Player.Y]) //adjacent to player
                         {
-                            monster.Attack(GameStatus.PLAYER);
+                            monster.Attack(GameStatus.Player);
                         }
                     }
                     else BrownianMotion(monster);
@@ -569,7 +573,7 @@ namespace TheUndergroundTower.Pages
                 if (tilesChecked.Count() == 8) return; //No walkable tile to move to
                 int newX = _rand.Next(-1, 2) + creature.X;
                 int newY = _rand.Next(-1, 2) + creature.Y;
-                Tile newTile = GameStatus.CURRENT_MAP.Tiles[newX, newY];
+                Tile newTile = GameStatus.CurrentMap.Tiles[newX, newY];
                 if (tilesChecked.Where(coord => coord.X == newX && coord.Y == newY).Count() > 0) continue;
                 if (IsWalkable(newTile))
                 {
@@ -579,13 +583,21 @@ namespace TheUndergroundTower.Pages
                     newTile.Objects.Add(creature);
                     creature.X = newX; creature.Y = newY;
                 }
-                else tilesChecked.Add(GameStatus.CURRENT_MAP.Tiles[newX, newY]);
+                else tilesChecked.Add(GameStatus.CurrentMap.Tiles[newX, newY]);
             }
         }
 
         private void MainGamePage_KeyDown(object sender, KeyEventArgs e)
         {
 
+        }
+
+        private void ShowVictoryScreen()
+        {
+            GameStatus.GamePaused = GameStatus.GameEnded = true;
+            GameStatus.Score *= (int)(10 + GameStatus.ChosenDifficulty.ScoreMultiplier);
+            Utilities.Xml.AddHighScore(GameStatus.Player.Name, GameStatus.FinalScore);
+            Definitions.MAIN_WINDOW.Main.Content = new pageVictoryScreen();
         }
 
     }

@@ -24,6 +24,7 @@ namespace TheUndergroundTower.Creatures
         private int _lastKnownPlayerLocationX, _lastKnownPlayerLocationY;
         private int _defense;
         private int _experienceValue;
+        private int _scoreValue;
 
         public bool AwareOfPlayer { get => _awareOfPlayer; set => _awareOfPlayer = value; }
         public string DamageRange { get => _damageRange; set => _damageRange = value; }
@@ -34,6 +35,7 @@ namespace TheUndergroundTower.Creatures
         public int Defense { get => _defense; set => _defense = value; }
         public bool FollowingPlayer { get => _followingPlayer; set => _followingPlayer = value; }
         public int ExperienceValue { get => _experienceValue; set => _experienceValue = value; }
+        public int ScoreValue { get => _scoreValue; set => _scoreValue = value; }
 
         public Monster(XmlNode monster)
         {
@@ -47,6 +49,7 @@ namespace TheUndergroundTower.Creatures
             Index = Convert.ToInt32(monster.ChildNodes[5].FirstChild.Value);
             _defense = Convert.ToInt32(monster.ChildNodes[6].FirstChild.Value);
             _experienceValue = Convert.ToInt32(monster.ChildNodes[7].FirstChild.Value);
+            _scoreValue = Convert.ToInt32(monster.ChildNodes[8].FirstChild.Value);
 
             GameData.POSSIBLE_MONSTERS.Add(this);
         }
@@ -64,6 +67,7 @@ namespace TheUndergroundTower.Creatures
             Image = CreateTile.GetImageFromTileset(monster.Index);
             Defense = monster.Defense;
             ExperienceValue = monster.ExperienceValue;
+            ScoreValue = monster.ScoreValue;
             _followingPlayer = false;
         }
 

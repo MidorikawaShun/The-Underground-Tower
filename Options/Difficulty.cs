@@ -16,26 +16,14 @@ namespace TheUndergroundTower.OtherClasses
         /// <summary>
         /// The multiplier for enemy HP for this difficulty.
         /// </summary>
-        private double _enemyHealth;
-        public double EnemyHealth { get => _enemyHealth; set => _enemyHealth = value; }
+        private double _playerDamage;
+        public double PlayerDamage { get => _playerDamage; set => _playerDamage = value; }
 
         /// <summary>
         /// The multiplier for enemy damage for this difficulty.
         /// </summary>
         private double _enemyDamage;
         public double EnemyDamage { get => _enemyDamage; set => _enemyDamage = value; }
-
-        /// <summary>
-        /// The multiplier for player HP for this difficulty.
-        /// </summary>
-        private double _playerHealth;
-        public double PlayerHealth { get => _playerHealth; set => _playerHealth = value; }
-
-        /// <summary>
-        /// The multiplier for player damage for this difficulty.
-        /// </summary>
-        private double _playerDamage;
-        public double PlayerDamage { get => _playerDamage; set => _playerDamage = value; }
 
         /// <summary>
         /// The multiplier for leaderboard score for this difficulty.
@@ -51,11 +39,9 @@ namespace TheUndergroundTower.OtherClasses
         {
             Name = difficulty.Attributes["Name"].Value;
             Description = difficulty.ChildNodes[0].FirstChild.Value;
-            EnemyHealth = Convert.ToDouble(difficulty.ChildNodes[1].FirstChild.Value);
+            PlayerDamage = Convert.ToDouble(difficulty.ChildNodes[1].FirstChild.Value);
             EnemyDamage = Convert.ToDouble(difficulty.ChildNodes[2].FirstChild.Value);
-            PlayerHealth = Convert.ToDouble(difficulty.ChildNodes[3].FirstChild.Value);
-            PlayerDamage = Convert.ToDouble(difficulty.ChildNodes[4].FirstChild.Value);
-            ScoreMultiplier = Convert.ToDouble(difficulty.ChildNodes[5].FirstChild.Value);
+            ScoreMultiplier = Convert.ToDouble(difficulty.ChildNodes[3].FirstChild.Value);
             GameData.POSSIBLE_DIFFICULTIES.Add(this);
         }
 

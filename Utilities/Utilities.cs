@@ -173,6 +173,9 @@ namespace WpfApp1
                             case "Armor":
                                 new Armor(item);
                                 break;
+                            case "Item":
+                                new Item(item);
+                                break;
                             default: break;
                         }
                 }
@@ -210,6 +213,7 @@ namespace WpfApp1
                     Score = Convert.ToInt32(score),
                     Date = DateTime.Now.ToString("dd/MM/yyyy-HH:mm")
                 };
+                GameStatus.FinalizedHighScore = newScore;
                 SortHighScores(newScore);
             }
 
@@ -238,7 +242,7 @@ namespace WpfApp1
                 XmlElement xmlScore = xml.CreateElement("Score");
                 xmlScore.InnerText = newScore.Score.ToString();
                 XmlElement datetime = xml.CreateElement("Date");
-                datetime.InnerText = DateTime.Now.ToString("dd/MM/yyyy-HH:mm");
+                datetime.InnerText = newScore.Date;
                 highScore.AppendChild(xmlName);
                 highScore.AppendChild(xmlScore);
                 highScore.AppendChild(datetime);
@@ -248,7 +252,7 @@ namespace WpfApp1
             private static void SortHighScores(HighScore highScore)
             {
                 List<HighScore> scores = ReadHighScores();
-                int lowestOfOldScores = Convert.ToInt32(scores.Min(x => x.Score));
+                int lowestOfOldScores = scores.Count() > 0 ? Convert.ToInt32(scores.Min(x => x.Score)) : 0;
                 int newScore = Convert.ToInt32(highScore.Score);
                 if (lowestOfOldScores > newScore) //if the new score is the lowest score, don't add it
                     return;
@@ -258,7 +262,7 @@ namespace WpfApp1
                 scores.Add(highScore);
                 IEnumerable<HighScore> orderedScores = scores.OrderByDescending(x => x.Score).Take(10); //take the 10 best highscores
                 foreach (HighScore score in orderedScores)
-                    xml.ChildNodes[1].AppendChild(CreateNewHighScore(xml,score));
+                    xml.ChildNodes[1].AppendChild(CreateNewHighScore(xml, score));
                 xml.Save(Files.GetDefinitionFilePath(EnumXmlFiles.XmlFileHighScores));
             }
         }
@@ -453,7 +457,7 @@ namespace WpfApp1
             int typeOfDie = Convert.ToInt32(dice.Split('d')[1]);
             int sum = 0;
             for (int i = 0; i < numOfDice; i++)
-                sum += GameStatus.RANDOM.Next(1, typeOfDie + 1);
+                sum += GameStatus.Random.Next(1, typeOfDie + 1);
             return sum + bonus;
         }
 
@@ -464,7 +468,7 @@ namespace WpfApp1
 
         public static int RollDamage(string damageRange) //format {min limit}-{max limit}, for example 3-5
         {
-            return GameStatus.RANDOM.Next(Convert.ToInt32(damageRange.Split('-')[0]), Convert.ToInt32(damageRange.Split('-')[1]) + 1);
+            return GameStatus.Random.Next(Convert.ToInt32(damageRange.Split('-')[0]), Convert.ToInt32(damageRange.Split('-')[1]) + 1);
         }
 
         public static void PrintToGameLog(string message)
@@ -491,6 +495,7 @@ namespace WpfApp1
             OrdinaryStairsDown = 1381,
             OrdinaryStairsUp = 1387,
             Jelly = 146,
+            AmuletOfTheTower = 1207
         }
 
         public enum Tiles
@@ -500,6 +505,7 @@ namespace WpfApp1
             OrdinaryStairsDown = 2,
             OrdinaryStairsUp = 3,
             Jelly = 4,
+            AmuletOfTheTower = 5
         }
 
         /// <summary>

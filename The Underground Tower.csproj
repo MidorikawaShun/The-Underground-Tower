@@ -81,6 +81,9 @@
     <Compile Include="Pages\pageHighScores.xaml.cs">
       <DependentUpon>pageHighScores.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\pageVictoryScreen.xaml.cs">
+      <DependentUpon>pageVictoryScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pathfinding\Algorithms.cs" />
     <Compile Include="Pathfinding\Map.cs" />
     <Compile Include="Pathfinding\Room.cs" />
@@ -111,6 +114,9 @@
     </Compile>
     <Compile Include="Windows\MetaMenus\Instructions.xaml.cs">
       <DependentUpon>Instructions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MetaMenus\ToHighScores.xaml.cs">
+      <DependentUpon>ToHighScores.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MetaMenus\windowMessage.xaml.cs">
       <DependentUpon>windowMessage.xaml</DependentUpon>
@@ -146,6 +152,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\pageVictoryScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MetaMenus\ErrorPrompt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -159,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MetaMenus\Instructions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MetaMenus\ToHighScores.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -217,13 +231,16 @@
     <Folder Include="WpfApp1\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\XML Files\XmlFileHighScores.xml" />
     <Resource Include="Assets\XML Files\Items.xml" />
     <Resource Include="Assets\Images\rltiles-2d.png" />
     <Resource Include="Assets\Images\downhillduck.jpg" />
     <Resource Include="Assets\Images\HighScores.png" />
     <Content Include="Assets\Sounds\Nonstop.mp3" />
     <Content Include="Assets\Sounds\Sword Slash.mp3" />
-    <Resource Include="Assets\XML Files\Tiles.xml" />
+    <Resource Include="Assets\XML Files\Tiles.xml">
+      <SubType>Designer</SubType>
+    </Resource>
     <Resource Include="Assets\XML Files\Monsters.xml" />
     <Resource Include="Assets\XML Files\TowerDepths.xml" />
     <Resource Include="Assets\XML Files\Difficulties.xml" />
