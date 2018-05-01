@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Careers>
+  <Career Name="Warrior">
+    <Public>
+      <Description>A melee fighter who loves to get up close and fight with a weapon.</Description>
+      <IsCaster>False</IsCaster>
+      <MeleeSkill>1.5</MeleeSkill>
+      <RangedSkill>0.7</RangedSkill>
+      <MagicSkill>0.3</MagicSkill>
+    </Public>
+    <Private>
+      <StartingEquipment>
+        <Weapon Name="Rusty Sword">
+          <Description>An old-looking, rusty sword. It's almost useless, but the best you could bring with you.</Description>
+          <HitBonus>3</HitBonus>
+          <DamageRange>3-5</DamageRange>
+          <Two-Handed>False</Two-Handed>
+          <Weight>2</Weight>
+          <Value>1</Value>
+          <UnsellableItem>False</UnsellableItem>
+          <ImageIndex>725</ImageIndex>
+        </Weapon>
+        <Armor Name="Wooden Shield">
+          <Description>An old-looking wooden shield. Hardly any better than not carrying it, at all.</Description>
+          <ArmorBonus>1</ArmorBonus>
+          <HeldInHand>True</HeldInHand>
+          <Weight>3</Weight>
+          <Value>1</Value>
+          <UnsellableItem>False</UnsellableItem>
+          <ImageIndex>1176</ImageIndex>
+          <Type>Shield</Type>
+        </Armor>
+        <Armor Name="Old Ring">
+          <Description>An old-looking ring. You might get tetanus.</Description>
+          <ArmorBonus>1</ArmorBonus>
+          <HeldInHand>False</HeldInHand>
+          <Weight>1</Weight>
+          <Value>0</Value>
+          <UnsellableItem>False</UnsellableItem>
+          <ImageIndex>1191</ImageIndex>
+          <Type>Ring</Type>
+        </Armor>
+        <Armor Name="Older Ring">
+          <Description>An older-looking ring. You might get tetanus.</Description>
+          <ArmorBonus>0</ArmorBonus>
+          <HeldInHand>False</HeldInHand>
+          <Weight>1</Weight>
+          <Value>0</Value>
+          <UnsellableItem>False</UnsellableItem>
+          <ImageIndex>1191</ImageIndex>
+          <Type>Ring</Type>
+        </Armor>
+      </StartingEquipment>
+    </Private>
+  </Career>
+</Careers>

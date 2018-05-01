@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Races>
+  <Race Name="Human">
+    <Public>
+      <Description>Humans are the most common of the humanoid species. They are entirely average.</Description>
+      <Stats>
+        <Strength>+0</Strength>
+        <Dexterity>+0</Dexterity>
+        <Constitution>+0</Constitution>
+        <Intelligence>+0</Intelligence>
+        <Perception>+0</Perception>
+        <Charisma>+0</Charisma>
+      </Stats>
+    </Public>
+    <Private>
+      <Speed>+0</Speed>
+    </Private>
+  </Race>
+  <Race Name="Dwarf">
+    <Public>
+      <Description>Dwarves are a cave-dwelling race that spend their lives drinking alcohol, mining for wealth and fighting each other.</Description>
+      <Stats>
+        <Strength>+1</Strength>
+        <Dexterity>+0</Dexterity>
+        <Constitution>+2</Constitution>
+        <Intelligence>+0</Intelligence>
+        <Perception>+1</Perception>
+        <Charisma>+0</Charisma>
+      </Stats>
+    </Public>
+    <Private>
+      <Speed>+0</Speed>
+    </Private>
+  </Race>
+  <Race Name="Elf">
+    <Public>
+      <Description>Elves live in the forests, making their homes on treetops and canopies of leaves. Beautiful, smart and quick, they leave others in awe.</Description>
+      <Stats>
+        <Strength>+0</Strength>
+        <Dexterity>+1</Dexterity>
+        <Constitution>-2</Constitution>
+        <Intelligence>+2</Intelligence>
+        <Perception>+0</Perception>
+        <Charisma>+2</Charisma>
+      </Stats>
+    </Public>
+    <Private>
+      <Speed>+30</Speed>
+    </Private>
+  </Race>
+  <Race Name="Orc">
+    <Public>
+      <Description>Orcs are savage barbarians from faraway lands. Normally considered to be monsters, some become adventurers. Not for some noble goal; just because they like to hit things.</Description>
+      <Stats>
+        <Strength>+4</Strength>
+        <Dexterity>+2</Dexterity>
+        <Constitution>+4</Constitution>
+        <Intelligence>-3</Intelligence>
+        <Perception>-3</Perception>
+        <Charisma>-3</Charisma>
+      </Stats>
+    </Public>
+    <Private>
+      <Speed>+0</Speed>
+    </Private>
+  </Race>
+  <Race Name="Demi-God">
+    <Public>
+      <Description>Demigods are born from communion between gods and mortals. Their bodies are naturally better in almost all aspects to that of every other humanoid race.</Description>
+      <Stats>
+        <Strength>+10</Strength>
+        <Dexterity>+10</Dexterity>
+        <Constitution>+10</Constitution>
+        <Intelligence>+10</Intelligence>
+        <Perception>+10</Perception>
+        <Charisma>+10</Charisma>
+      </Stats>
+    </Public>
+    <Private>
+      <Speed>+0</Speed>
+    </Private>
+  </Race>
+</Races>

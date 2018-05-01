@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TowerDepths>
+  <TowerDepth Name="Almost Flat">
+    <Description>
+      Really? This is the fearsome tower? My house is taller than this!
+    </Description>
+    <MinimumFloors>2</MinimumFloors>
+    <MaximumFloors>2</MaximumFloors>
+    <FloorSizeMultiplier>0.5</FloorSizeMultiplier>
+  </TowerDepth>
+  <TowerDepth Name="Shallow">
+    <Description>
+      The tower isn't as big as people make it out to be, but don't underestimate the dangers in it.
+    </Description>
+    <MinimumFloors>6</MinimumFloors>
+    <MaximumFloors>10</MaximumFloors>
+    <FloorSizeMultiplier>1</FloorSizeMultiplier>
+  </TowerDepth>
+  <TowerDepth Name="Standard">
+    <Description>
+      Just the tower you've come to expect from what you had heard of it.
+    </Description>
+    <MinimumFloors>10</MinimumFloors>
+    <MaximumFloors>14</MaximumFloors>
+    <FloorSizeMultiplier>2</FloorSizeMultiplier>
+  </TowerDepth>
+  <TowerDepth Name="Long">
+    <Description>
+      Eh.. Maybe you got more than you bargained for. This tower is longer than you had anticipated.
+    </Description>
+    <MinimumFloors>14</MinimumFloors>
+    <MaximumFloors>20</MaximumFloors>
+    <FloorSizeMultiplier>3</FloorSizeMultiplier>
+  </TowerDepth>
+  <TowerDepth Name="Endless?">
+    <Description>
+      From the moment you stepped inside, you knew something was wrong. This tower is seemingly endless. Do not expect to come out alive.
+    </Description>
+    <MinimumFloors>999</MinimumFloors>
+    <MaximumFloors>999</MaximumFloors>
+    <FloorSizeMultiplier>1</FloorSizeMultiplier>
+  </TowerDepth>
+</TowerDepths>

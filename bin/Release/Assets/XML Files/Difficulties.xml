@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Difficulties>
+  
+  <Difficulty Name="Go Easy On Me">
+    <Description>
+      If you can't beat this difficulty, you should make an easier one by peeking at the XML files.
+    </Description>
+    <PlayerDamage>2</PlayerDamage>
+    <EnemyDamage>0.2</EnemyDamage>
+    <ScoreMultiplier>0.25</ScoreMultiplier>
+  </Difficulty>
+  
+  <Difficulty Name="Normal">
+    <Description>
+      Standard difficulty. Enemies have the proper amount of damage and health, and so do you.
+    </Description>
+    <PlayerDamage>1</PlayerDamage>
+    <EnemyDamage>1</EnemyDamage>
+    <ScoreMultiplier>1</ScoreMultiplier>
+
+  </Difficulty>
+  <Difficulty Name="Hard">
+    <Description>
+      Slightly unfair. Enemies do double health and have double damage, you have half of both.
+    </Description>
+    <PlayerDamage>1</PlayerDamage>
+    <EnemyDamage>2</EnemyDamage>
+    <ScoreMultiplier>2</ScoreMultiplier>
+
+  </Difficulty>
+  <Difficulty Name="Impossible">
+    <Description>
+      I don't think it's possible to beat this difficulty, but if you do, chances are you're at the top of the leaderboards.
+    </Description>
+    <PlayerDamage>1</PlayerDamage>
+    <EnemyDamage>5</EnemyDamage>
+    <ScoreMultiplier>5</ScoreMultiplier>
+  </Difficulty>
+  
+</Difficulties>

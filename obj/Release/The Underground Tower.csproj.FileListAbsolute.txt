@@ -1,0 +1,46 @@
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Release\TheUndergroundTower.exe.config
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Release\TheUndergroundTower.exe
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Release\TheUndergroundTower.pdb
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Release\System.Drawing.Primitives.dll
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\MainWindow.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageCharacterCreation.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageHighScores.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageMainGame.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageMainMenu.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageVictoryScreen.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\ErrorPrompt.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\ExitDialog.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\GenericWindow.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\Instructions.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\ToHighScores.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\windowMessage.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\windowOptions.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\App.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\TheUndergroundTower_Content.g.cs
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\TheUndergroundTower_MarkupCompile.cache
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\TheUndergroundTower_MarkupCompile.lref
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\MainWindow.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageCharacterCreation.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageMainGame.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageMainMenu.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\ErrorPrompt.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\ExitDialog.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\windowMessage.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\windowOptions.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageHighScores.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Pages\pageVictoryScreen.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\GenericWindow.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\Instructions.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\Windows\MetaMenus\ToHighScores.baml
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\TheUndergroundTower.g.resources
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\TheUndergroundTower.Properties.Resources.resources
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\The Underground Tower.csproj.GenerateResource.cache
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\The Underground Tower.csproj.CoreCompileInputs.cache
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\The Underground Tower.csproj.CopyComplete
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\TheUndergroundTower.exe
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\TheUndergroundTower.pdb
+C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\The Underground Tower.csprojResolveAssemblyReference.cache
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Release\Game\Gamefolder\TheUndergroundTower.exe.config
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Release\Game\Gamefolder\TheUndergroundTower.exe
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Release\Game\Gamefolder\TheUndergroundTower.pdb
+C:\Users\matan\Source\Repos\The-Underground-Tower\bin\Release\Game\Gamefolder\System.Drawing.Primitives.dll

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Monsters>
+  <Monster Name="Flame Elemental">
+    <Description>A creature made out of pure fire.</Description>
+    <HP>10</HP>
+    <RangedAttacker>False</RangedAttacker>
+    <MeleeSkill>5</MeleeSkill>
+    <MeleeDamage>1d10</MeleeDamage>
+    <ImageIndex>2</ImageIndex>
+    <Defense>2</Defense>
+    <ExperienceValue>30</ExperienceValue>
+    <ScoreValue>4</ScoreValue>
+  </Monster>
+  <Monster Name="Wisp">
+    <Description>This creature made of fog is anything but friendly.</Description>
+    <HP>10</HP>
+    <RangedAttacker>False</RangedAttacker>
+    <MeleeSkill>5</MeleeSkill>
+    <MeleeDamage>1d10</MeleeDamage>
+    <ImageIndex>3</ImageIndex>
+    <Defense>2</Defense>
+    <ExperienceValue>20</ExperienceValue>
+    <ScoreValue>2</ScoreValue>
+  </Monster>
+  <Monster Name="Yellow Giant">
+    <Description>It's a yellow giant. I don't like it.</Description>
+    <HP>10</HP>
+    <RangedAttacker>False</RangedAttacker>
+    <MeleeSkill>5</MeleeSkill>
+    <MeleeDamage>1d10</MeleeDamage>
+    <ImageIndex>4</ImageIndex>
+    <Defense>2</Defense>
+    <ExperienceValue>50</ExperienceValue>
+    <ScoreValue>7</ScoreValue>
+  </Monster>
+</Monsters>
