@@ -1,7 +1,7 @@
 ﻿TheUndergroundTower
 
 
-exe
+winexe
 C#
 .cs
 C:\Users\matan\Source\Repos\The-Underground-Tower\obj\Release\
@@ -10,11 +10,11 @@ none
 false
 TRACE
 C:\Users\matan\Source\Repos\The-Underground-Tower\App.xaml
-8420450914
+132108305613
 2-1580354251
-341221045006
+39-136600538
 151522055142
-MainWindow.xaml;Pages\pageCharacterCreation.xaml;Pages\pageMainGame.xaml;Pages\pageMainMenu.xaml;Windows\MetaMenus\ErrorPrompt.xaml;Windows\MetaMenus\ExitDialog.xaml;Windows\MetaMenus\windowMessage.xaml;Windows\MetaMenus\windowOptions.xaml;
+MainWindow.xaml;Pages\pageCharacterCreation.xaml;Pages\pageHighScores.xaml;Pages\pageMainGame.xaml;Pages\pageMainMenu.xaml;Pages\pageVictoryScreen.xaml;Windows\MetaMenus\ErrorPrompt.xaml;Windows\MetaMenus\ExitDialog.xaml;Windows\MetaMenus\GenericWindow.xaml;Windows\MetaMenus\Instructions.xaml;Windows\MetaMenus\ToHighScores.xaml;Windows\MetaMenus\windowMessage.xaml;Windows\MetaMenus\windowOptions.xaml;
 
-True
+False
 

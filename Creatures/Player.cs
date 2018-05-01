@@ -120,7 +120,7 @@ namespace WpfApp1.Creatures
             }
         }
 
-        public const int _imageIndex = 146;
+        public const int _imageIndex = 631;
 
         public int DefenseSkill;
         public int Protection

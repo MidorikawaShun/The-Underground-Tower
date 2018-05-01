@@ -2,10 +2,15 @@
 
 FC:\Users\matan\Source\Repos\The-Underground-Tower\MainWindow.xaml;;
 FC:\Users\matan\Source\Repos\The-Underground-Tower\Pages\pageCharacterCreation.xaml;;
+FC:\Users\matan\Source\Repos\The-Underground-Tower\Pages\pageHighScores.xaml;;
 FC:\Users\matan\Source\Repos\The-Underground-Tower\Pages\pageMainGame.xaml;;
 FC:\Users\matan\Source\Repos\The-Underground-Tower\Pages\pageMainMenu.xaml;;
+FC:\Users\matan\Source\Repos\The-Underground-Tower\Pages\pageVictoryScreen.xaml;;
 FC:\Users\matan\Source\Repos\The-Underground-Tower\Windows\MetaMenus\ErrorPrompt.xaml;;
 FC:\Users\matan\Source\Repos\The-Underground-Tower\Windows\MetaMenus\ExitDialog.xaml;;
+FC:\Users\matan\Source\Repos\The-Underground-Tower\Windows\MetaMenus\GenericWindow.xaml;;
+FC:\Users\matan\Source\Repos\The-Underground-Tower\Windows\MetaMenus\Instructions.xaml;;
+FC:\Users\matan\Source\Repos\The-Underground-Tower\Windows\MetaMenus\ToHighScores.xaml;;
 FC:\Users\matan\Source\Repos\The-Underground-Tower\Windows\MetaMenus\windowMessage.xaml;;
 FC:\Users\matan\Source\Repos\The-Underground-Tower\Windows\MetaMenus\windowOptions.xaml;;
 
